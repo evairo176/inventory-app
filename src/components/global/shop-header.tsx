@@ -16,7 +16,7 @@ const ShopHeader = (props: Props) => {
               <Logo />
             </div>
             <button className="lg:item-center hidden gap-2 rounded-md bg-slate-900 px-3 py-2 text-slate-50 lg:flex">
-              <LayoutGrid className="h-5 w-5" />
+              <LayoutGrid className="h-4 w-4" />
               <span className="text-xs">Catalogue</span>
             </button>
           </div>

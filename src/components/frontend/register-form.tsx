@@ -1,22 +1,46 @@
-import { Lock, Mail } from "lucide-react";
+"use client";
+import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {};
 
-const LoginForm = (props: Props) => {
+const RegisterForm = (props: Props) => {
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="px-5 py-5 lg:px-14 lg:py-8 ">
       <div className="py-4 ">
         <h2 className="text-2xl font-bold leading-9 tracking-tight text-gray-900 sm:mx-auto sm:w-full sm:max-w-sm">
-          Sign in to your account
+          Create an a account
         </h2>
         <p className="text-xs sm:mx-auto sm:w-full sm:max-w-sm">
-          Welcome back, fill in details to login
+          Join us, fill in details to login
         </p>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-3">
+            <div>
+              <label
+                htmlFor="fullname"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Full Name
+              </label>
+              <div className="relative mt-2">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <User className="h-4 w-4 text-slate-300" />
+                </div>
+                <input
+                  id="fullname"
+                  name="fullname"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  className="block w-full rounded-md border-0 py-1.5 pl-8 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
             <div>
               <label
                 htmlFor="email"
@@ -47,26 +71,29 @@ const LoginForm = (props: Props) => {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className="relative mt-2">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                   <Lock className="h-4 w-4 text-slate-300" />
                 </div>
+                <button
+                  onClick={() => setShowPassword(!showPassword)}
+                  type="button"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3"
+                >
+                  {!showPassword ? (
+                    <Eye className="h-4 w-4 text-slate-300" />
+                  ) : (
+                    <EyeOff className="h-4 w-4 text-slate-300" />
+                  )}
+                </button>
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={!showPassword ? "password" : "text"}
                   autoComplete="current-password"
                   required
-                  className="block w-full rounded-md border-0 py-1.5 pl-8 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 pl-8 pr-8 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
@@ -76,18 +103,18 @@ const LoginForm = (props: Props) => {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign in
+                Sign up
               </button>
             </div>
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            Not a registered?{" "}
+            Have a account?{" "}
             <Link
-              href="/register"
+              href="/login"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              Create a Account
+              Login
             </Link>
           </p>
         </div>
@@ -96,4 +123,4 @@ const LoginForm = (props: Props) => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

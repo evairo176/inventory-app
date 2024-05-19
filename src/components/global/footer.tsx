@@ -15,7 +15,7 @@ type Props = {};
 
 const Footer = (props: Props) => {
   return (
-    <footer className="px-10 py-8">
+    <footer className="px-4 py-4">
       <div className="md:container">
         <div className="grid grid-cols-12 gap-6 border-b border-gray-200 py-10">
           <div className="col-span-full lg:col-span-4">

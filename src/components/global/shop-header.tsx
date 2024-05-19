@@ -8,14 +8,14 @@ type Props = {};
 
 const ShopHeader = (props: Props) => {
   return (
-    <header className="border-b border-gray-200 px-8 py-3">
+    <header className="border-b border-gray-200 px-4 py-4">
       <div className="md:container">
         <nav className="flex items-center justify-between gap-6">
           <div className="flex items-center gap-2">
             <div className="mr-2">
               <Logo />
             </div>
-            <button className="item-center flex gap-2 rounded-md bg-slate-900 px-3 py-2 text-slate-50">
+            <button className="lg:item-center hidden gap-2 rounded-md bg-slate-900 px-3 py-2 text-slate-50 lg:flex">
               <LayoutGrid className="h-5 w-5" />
               <span className="text-xs">Catalogue</span>
             </button>

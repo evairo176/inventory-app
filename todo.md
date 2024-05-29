@@ -17,3 +17,12 @@
 - Integrate Dashboard from Shad
 - Integrated the Charts from Tremor
 - Deploy
+
+//STEP 3 1:04:12
+
+- Identify the modules
+- Identify pages
+- Group pages
+- Add dropdown on the sidebar
+- Start on design some
+- Deploy

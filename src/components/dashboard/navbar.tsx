@@ -33,7 +33,7 @@ import {
 
 type Props = {};
 
-const Header = (props: Props) => {
+const Navbar = (props: Props) => {
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
@@ -141,4 +141,4 @@ const Header = (props: Props) => {
   );
 };
 
-export default Header;
+export default Navbar;

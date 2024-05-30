@@ -8,6 +8,7 @@ import {
   Menu,
   Package,
   Package2,
+  Plus,
   Search,
   ShoppingCart,
   Users,
@@ -30,6 +31,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { ThemeModeToggle } from "../global/theme-mode-toggle";
+
+import { AvatarMenuButton } from "./menus/avatar-menu-button";
+import QuickAccessMenuButton from "./menus/quick-access-menu-button";
 
 type Props = {};
 
@@ -121,22 +126,9 @@ const Navbar = (props: Props) => {
           </div>
         </form>
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="secondary" size="icon" className="rounded-full">
-            <CircleUser className="h-5 w-5" />
-            <span className="sr-only">Toggle user menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <QuickAccessMenuButton />
+      <ThemeModeToggle />
+      <AvatarMenuButton />
     </header>
   );
 };

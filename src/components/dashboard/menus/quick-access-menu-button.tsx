@@ -155,9 +155,9 @@ export default function QuickAccessMenuButton() {
       </PopoverTrigger>
       <PopoverContent className="w-screen max-w-md">
         <div className="grid grid-cols-2  gap-3 p-2 lg:grid-cols-3 lg:gap-0">
-          {menu?.map((row) => {
+          {menu?.map((row, key) => {
             return (
-              <div>
+              <div key={key}>
                 <h2 className="text-xs font-medium tracking-tight">
                   {row.title}
                 </h2>

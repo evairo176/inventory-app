@@ -26,3 +26,10 @@
 - Add dropdown on the sidebar
 - Start on design some
 - Deploy
+
+//STEP 4
+
+- Build out the sidebar navigation
+- Build out the navbar
+- Start building some pages and modules
+- Deploy

@@ -1,23 +1,25 @@
 import {
   Bell,
+  ChevronRight,
   Home,
   LineChart,
   Package,
   Package2,
+  Settings,
   ShoppingCart,
+  Store,
   Users,
+  Users2,
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../ui/collapsible";
 
 type Props = {};
 
@@ -68,6 +70,17 @@ const Sidebar = (props: Props) => {
               <Users className="h-4 w-4" />
               Customers
             </Link>
+            <Collapsible>
+              <CollapsibleTrigger className="flex w-full  items-center justify-between gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                <ShoppingCart className="h-4 w-4" />
+                Orders
+                <ChevronRight className="ml-auto flex h-4 w-4 shrink-0 items-center justify-center rounded-full" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-3 py-2">
+                Yes. Free to use for personal and commercial projects. No
+                attribution required.
+              </CollapsibleContent>
+            </Collapsible>
             <Link
               href="#"
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
@@ -78,20 +91,9 @@ const Sidebar = (props: Props) => {
           </nav>
         </div>
         <div className="mt-auto p-4">
-          <Card x-chunk="dashboard-02-chunk-0">
-            <CardHeader className="p-2 pt-0 md:p-4">
-              <CardTitle>Upgrade to Pro</CardTitle>
-              <CardDescription>
-                Unlock all features and get unlimited access to our support
-                team.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-              <Button size="sm" className="w-full">
-                Upgrade
-              </Button>
-            </CardContent>
-          </Card>
+          <Button size="sm" className="w-full">
+            Logout
+          </Button>
         </div>
       </div>
     </div>

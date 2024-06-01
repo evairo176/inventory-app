@@ -9,12 +9,12 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="relative">
+      <Navbar />
       <Sidebar />
-      <div className="flex flex-col">
-        <Navbar />
-        {children}
-      </div>
+      <main className="mt-12 w-full  md:pl-72  lg:pl-72">
+        <div className="gap-4 p-4 lg:gap-6 lg:p-6">{children}</div>
+      </main>
     </div>
   );
 };

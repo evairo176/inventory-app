@@ -79,7 +79,7 @@ const CategoryForm = (props: Props) => {
         data,
       );
 
-      revalidatePath("/dashboard/inventory/categories");
+      // revalidatePath("/dashboard/inventory/categories");
 
       toast({
         title: response.data.message,

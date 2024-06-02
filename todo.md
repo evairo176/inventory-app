@@ -39,6 +39,10 @@
 - Install and set up mongodb & prisma on backend
 - Create cateogry model
 - Design form and form inputs
+
+//STEP 6
+
+- Design form and form inputs
 - React hook form/zod
 - Create with server action
 - Design our table

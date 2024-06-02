@@ -1,7 +1,7 @@
-import type { Config } from "tailwindcss";
+import { withUt } from "uploadthing/tw";
 import colors from "tailwindcss/colors";
 
-const config = {
+export default withUt({
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -9,6 +9,7 @@ const config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/react-tailwindcss-select/dist/index.esm.js",
   ],
   prefix: "",
   theme: {
@@ -198,6 +199,4 @@ const config = {
     require("@headlessui/tailwindcss"),
     require("@tailwindcss/forms"),
   ],
-} satisfies Config;
-
-export default config;
+});

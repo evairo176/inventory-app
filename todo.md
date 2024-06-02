@@ -33,3 +33,14 @@
 - Build out the navbar
 - Start building some pages and modules
 - Deploy
+
+//STEP 5
+
+- Install and set up mongodb & prisma on backend
+- Create cateogry model
+- Design form and form inputs
+- React hook form/zod
+- Create with server action
+- Design our table
+- Fetch the records
+- Deploy

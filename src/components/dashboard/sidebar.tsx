@@ -1,7 +1,7 @@
 "use client";
 import { Bell, Dot, Power } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import {
   Accordion,
@@ -21,16 +21,34 @@ type Props = {};
 const Sidebar = (props: Props) => {
   const pathname = usePathname();
   const defaultValuePathname = defaultPathname();
-  console.log({ defaultValuePathname });
+  const isOpenValue = isOpenMenu();
 
   function defaultPathname() {
     // Get the current path
     let currentPath = pathname;
-
     // Split the path into segments
     let pathSegments = currentPath.split("/");
     let newPath = "";
     if (pathSegments.length > 2) {
+      // Join the remaining segments to form the new path
+      newPath =
+        "/" + pathSegments[1] + "/" + pathSegments[2] + "/" + pathSegments[3];
+    } else {
+      newPath = currentPath;
+    }
+
+    // Navigate to the new path
+    return newPath;
+  }
+
+  function isOpenMenu() {
+    // Get the current path
+    let currentPath = pathname;
+    // Split the path into segments
+    let pathSegments = currentPath.split("/");
+    let newPath = "";
+
+    if (pathSegments.length > 0) {
       // Join the remaining segments to form the new path
       newPath = "/" + pathSegments[1] + "/" + pathSegments[2];
     } else {
@@ -59,14 +77,15 @@ const Sidebar = (props: Props) => {
                 const isHrefIncluded =
                   item.dropdownMenu &&
                   item.dropdownMenu?.some(
-                    (dropdownMenu) => dropdownMenu.href === pathname,
+                    (dropdownMenu) =>
+                      dropdownMenu.href === defaultValuePathname,
                   );
                 return (
                   <React.Fragment key={i}>
                     {item.dropdown ? (
                       <Accordion
                         key={i}
-                        defaultValue={defaultValuePathname}
+                        defaultValue={isOpenValue}
                         type="single"
                         collapsible
                       >
@@ -84,7 +103,7 @@ const Sidebar = (props: Props) => {
                               <Icon className="h-4 w-4" /> {item.title}
                             </div>
                           </AccordionTrigger>
-                          <AccordionContent className="rounded-b-md bg-background">
+                          <AccordionContent className="rounded-b-md bg-background pt-2">
                             {item.dropdownMenu &&
                               item.dropdownMenu?.map((menu, i) => {
                                 return (
@@ -93,7 +112,7 @@ const Sidebar = (props: Props) => {
                                     href={menu.href as string}
                                     className={cn(
                                       "flex items-center gap-3 rounded-lg py-2 pl-6 pr-3 text-muted-foreground transition-all hover:text-primary",
-                                      pathname === menu.href &&
+                                      defaultValuePathname === menu.href &&
                                         "bg-muted text-primary",
                                     )}
                                   >
@@ -110,7 +129,8 @@ const Sidebar = (props: Props) => {
                         href={item.href as string}
                         className={cn(
                           "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                          pathname === item.href && "bg-muted text-primary",
+                          defaultValuePathname === item.href &&
+                            "bg-muted text-primary",
                         )}
                       >
                         <Icon className="h-4 w-4" />

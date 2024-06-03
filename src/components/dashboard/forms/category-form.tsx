@@ -75,7 +75,7 @@ const CategoryForm = (props: Props) => {
       data.slug = generateSlug(data.title);
 
       const response = await axios.post(
-        "http://localhost:5000/api/category",
+        `${process.env.BACKEND_URL}/category`,
         data,
       );
 

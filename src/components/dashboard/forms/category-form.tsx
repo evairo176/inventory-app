@@ -47,6 +47,7 @@ import { UploadButton } from "@/utils/uploadthing";
 import { generateSlug } from "@/utils/generate-slug";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import { revalidatePath } from "next/cache";
+import { useAddCategory } from "@/action/category-action";
 
 type Props = {};
 
@@ -54,6 +55,9 @@ const CategoryForm = (props: Props) => {
   const router = useRouter();
   const [imageUrl, setImageUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const addCategory = useAddCategory(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+  );
   const status = [
     { label: "Active", value: "ACTIVE" },
     { label: "Disabled", value: "DISABLED" },
@@ -74,15 +78,10 @@ const CategoryForm = (props: Props) => {
       data.imageUrl = imageUrl;
       data.slug = generateSlug(data.title);
 
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
-        data,
-      );
-
-      // revalidatePath("/dashboard/inventory/categories");
+      const response = await addCategory(data);
 
       toast({
-        title: response.data.message,
+        title: `${response.message}`,
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
             <code className="text-white">{JSON.stringify(data, null, 2)}</code>
@@ -96,7 +95,7 @@ const CategoryForm = (props: Props) => {
     } catch (error: any) {
       console.error("There was an error creating the data!", error);
       toast({
-        title: error?.response?.data?.message,
+        title: error?.message,
         variant: "destructive",
       });
     } finally {

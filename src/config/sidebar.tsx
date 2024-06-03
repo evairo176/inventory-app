@@ -15,12 +15,14 @@ export const sidebarLinks: ISidebarLinks[] = [
   {
     title: "Dashboard",
     href: "/dashboard",
+    module: "dashboard",
     icon: Home,
     dropdown: false,
   },
   {
     title: "Users",
     href: "/dashboard/users",
+    module: "users",
     icon: Users,
     dropdown: true,
     dropdownMenu: [
@@ -37,6 +39,7 @@ export const sidebarLinks: ISidebarLinks[] = [
   {
     title: "Inventory",
     href: "/dashboard/inventory",
+    module: "inventory",
     icon: BriefcaseBusiness,
     dropdown: true,
     dropdownMenu: [
@@ -69,6 +72,7 @@ export const sidebarLinks: ISidebarLinks[] = [
   {
     title: "Sales",
     href: "/dashboard/sales",
+    module: "sales",
     icon: BadgeDollarSign,
     dropdown: true,
     dropdownMenu: [
@@ -93,6 +97,7 @@ export const sidebarLinks: ISidebarLinks[] = [
   {
     title: "Stock",
     href: "/dashboard/stock",
+    module: "stock",
     icon: FolderTree,
     dropdown: true,
     dropdownMenu: [
@@ -109,12 +114,14 @@ export const sidebarLinks: ISidebarLinks[] = [
   {
     title: "POS",
     href: "/dashboard/pos",
+    module: "pos",
     icon: Presentation,
     dropdown: false,
   },
   {
     title: "Integrations",
     href: "/dashboard/integrations",
+    module: "integrations",
     icon: Cable,
     dropdown: false,
   },
@@ -122,12 +129,14 @@ export const sidebarLinks: ISidebarLinks[] = [
   {
     title: "Settings",
     href: "/dashboard/settings",
+    module: "settings",
     icon: Settings,
     dropdown: false,
   },
   {
     title: "Reports",
     href: "/dashboard/reports",
+    module: "reports",
     icon: BarChart4,
     dropdown: false,
   },

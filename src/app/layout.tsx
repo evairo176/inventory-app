@@ -6,6 +6,7 @@ import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { Toaster } from "@/components/ui/toaster";
+import { SWRConfigurationProvider } from "@/providers/swr-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,7 +32,9 @@ export default function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <MainProviders>{children}</MainProviders>
+        <MainProviders>
+          <SWRConfigurationProvider>{children}</SWRConfigurationProvider>
+        </MainProviders>
         <Toaster />
       </body>
     </html>

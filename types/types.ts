@@ -4,6 +4,7 @@ export interface ISidebarLinks {
   title: string;
   href?: string;
   icon: LucideIcon;
+  module: string;
   dropdown: boolean;
   dropdownMenu?: IMenuItem[];
 }

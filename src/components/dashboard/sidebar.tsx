@@ -20,26 +20,7 @@ type Props = {};
 
 const Sidebar = (props: Props) => {
   const pathname = usePathname();
-  const defaultValuePathname = defaultPathname();
   const isOpenValue = isOpenMenu();
-
-  function defaultPathname() {
-    // Get the current path
-    let currentPath = pathname;
-    // Split the path into segments
-    let pathSegments = currentPath.split("/");
-    let newPath = "";
-    if (pathSegments.length > 2) {
-      // Join the remaining segments to form the new path
-      newPath =
-        "/" + pathSegments[1] + "/" + pathSegments[2] + "/" + pathSegments[3];
-    } else {
-      newPath = currentPath;
-    }
-
-    // Navigate to the new path
-    return newPath;
-  }
 
   function isOpenMenu() {
     // Get the current path
@@ -50,10 +31,15 @@ const Sidebar = (props: Props) => {
 
     if (pathSegments.length > 0) {
       // Join the remaining segments to form the new path
-      newPath = "/" + pathSegments[1] + "/" + pathSegments[2];
+      if (pathSegments.length === 2) {
+        newPath = pathSegments[1];
+      } else {
+        newPath = pathSegments[2];
+      }
     } else {
       newPath = currentPath;
     }
+    console.log({ isOpenMenu: newPath });
 
     // Navigate to the new path
     return newPath;
@@ -74,12 +60,7 @@ const Sidebar = (props: Props) => {
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {sidebarLinks?.map((item, i) => {
                 const Icon = item.icon;
-                const isHrefIncluded =
-                  item.dropdownMenu &&
-                  item.dropdownMenu?.some(
-                    (dropdownMenu) =>
-                      dropdownMenu.href === defaultValuePathname,
-                  );
+
                 return (
                   <React.Fragment key={i}>
                     {item.dropdown ? (
@@ -90,13 +71,14 @@ const Sidebar = (props: Props) => {
                         collapsible
                       >
                         <AccordionItem
-                          value={item.href as string}
+                          value={item.module}
                           className="border-b-0"
                         >
                           <AccordionTrigger
                             className={cn(
                               "flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-muted-foreground  transition-all hover:text-primary ",
-                              isHrefIncluded && "bg-muted text-primary",
+                              item.module === isOpenValue &&
+                                "bg-muted text-primary",
                             )}
                           >
                             <div className="flex gap-3">
@@ -112,7 +94,7 @@ const Sidebar = (props: Props) => {
                                     href={menu.href as string}
                                     className={cn(
                                       "flex items-center gap-3 rounded-lg py-2 pl-6 pr-3 text-muted-foreground transition-all hover:text-primary",
-                                      defaultValuePathname === menu.href &&
+                                      menu.href === pathname &&
                                         "bg-muted text-primary",
                                     )}
                                   >
@@ -129,7 +111,7 @@ const Sidebar = (props: Props) => {
                         href={item.href as string}
                         className={cn(
                           "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                          defaultValuePathname === item.href &&
+                          item.module === isOpenValue &&
                             "bg-muted text-primary",
                         )}
                       >

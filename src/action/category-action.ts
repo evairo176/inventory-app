@@ -29,10 +29,10 @@ export const useAddCategory = (path: string) => {
 };
 
 export const useGetCategory = (path: string) => {
-  const { mutate, isLoading, error } = useSWR(path, fetcher, {
+  const { mutate, isLoading, error, data } = useSWR(path, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
 
-  return { mutate, isLoading, error };
+  return { mutate, isLoading, error, data };
 };

@@ -1,0 +1,34 @@
+"use client";
+
+import { useGetCategory } from "@/action/category-action";
+import React from "react";
+import TableHeader from "../../dashboard/tables/table-header";
+import CustomDatatable from "../../dashboard/tables/custom-datatable";
+import DataTable from "../../datatable-components/data-table";
+import { columns } from "./columns";
+
+type Props = {};
+
+const DashboardPage = (props: Props) => {
+  const { data, error, isLoading } = useGetCategory(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+  );
+
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <div>loading...</div>;
+
+  console.log(data);
+
+  return (
+    <div className="space-y-3">
+      <TableHeader
+        title="Categories"
+        linkTitle="Add Category"
+        href="/dashboard/inventory/categories/new"
+      />
+      <DataTable data={data.data} columns={columns} />
+    </div>
+  );
+};
+
+export default DashboardPage;

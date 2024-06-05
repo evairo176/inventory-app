@@ -37,9 +37,13 @@ import {
 import Link from "next/link";
 import React, { useState } from "react";
 
-type Props = {};
+type TableHeaderProps = {
+  title: string;
+  href: string;
+  linkTitle: string;
+};
 
-const TableHeader = (props: Props) => {
+const TableHeader = ({ title, href, linkTitle }: TableHeaderProps) => {
   const [status, setStatus] = useState<any>({
     label: null,
     value: null,
@@ -60,7 +64,7 @@ const TableHeader = (props: Props) => {
     <React.Fragment>
       <div className="mb-3 flex items-center justify-between border-b border-gray-200 py-3 dark:border-gray-600">
         <h2 className="mt-10 scroll-m-20  text-2xl font-semibold tracking-tight transition-colors first:mt-0">
-          Categories
+          {title}
         </h2>
 
         <div className="flex items-center space-x-4">
@@ -96,10 +100,10 @@ const TableHeader = (props: Props) => {
             </span>
           </Button>
           <Button size="sm" className="h-8 gap-1" asChild>
-            <Link href={"/dashboard/inventory/categories/new"}>
+            <Link href={href}>
               <PlusCircle className="h-3.5 w-3.5" />
               <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Add Category
+                {linkTitle}
               </span>
             </Link>
           </Button>

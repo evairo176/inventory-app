@@ -1,5 +1,5 @@
+import DashboardPage from "@/components/pages/categories/categories-page";
 import React from "react";
-import DashboardPage from "./components/dashboard-page";
 
 type Props = {};
 

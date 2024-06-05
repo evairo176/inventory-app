@@ -40,11 +40,17 @@
 - Create cateogry model
 - Design form and form inputs
 
-//STEP 6
+//STEP 6 and 7
 
 - Design form and form inputs
 - React hook form/zod
 - Create with server action
 - Design our table
 - Fetch the records
+- Deploy
+
+//STEP 8
+
+- Integrating data table with pagination
+- Implement import and export
 - Deploy

@@ -23,6 +23,7 @@ import { getAllCategorySchema } from "@/config/form-schema";
 import SortableColumn from "@/components/datatable-components/sortable-column";
 import DateColumn from "@/components/datatable-components/date-column";
 import ActionColumn from "@/components/datatable-components/action-column";
+import ImageColumn from "@/components/datatable-components/image-column";
 export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
   {
     id: "select",
@@ -50,11 +51,11 @@ export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
     accessorKey: "title",
     header: ({ column }) => <SortableColumn column={column} title="Title" />,
   },
-  // {
-  //   accessorKey: "imageUrl",
-  //   header: "Category Image",
-  //   cell: ({ row }) => <ImageColumn row={row} accessorKey="imageUrl" />,
-  // },
+  {
+    accessorKey: "imageUrl",
+    header: "Category Image",
+    cell: ({ row }) => <ImageColumn row={row} accessorKey="imageUrl" />,
+  },
 
   {
     accessorKey: "createdAt",

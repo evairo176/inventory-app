@@ -14,7 +14,7 @@ export default function ImageColumn({
   return (
     <div className="shrink-0">
       <Image
-        src={imageUrl}
+        src={imageUrl ? imageUrl : "/placeholder.svg"}
         width={500}
         height={500}
         alt={`${accessorKey}`}

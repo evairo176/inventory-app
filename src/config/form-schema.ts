@@ -14,4 +14,14 @@ const createCategorySchema = z.object({
   imageUrl: z.string().optional(),
 });
 
-export { createCategorySchema };
+const getAllCategorySchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  slug: z.string(),
+  status: z.string(),
+  imageUrl: z.string(),
+  createdAt: z.string(),
+});
+
+export { createCategorySchema, getAllCategorySchema };

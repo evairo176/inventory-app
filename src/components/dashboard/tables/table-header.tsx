@@ -1,4 +1,13 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -9,6 +18,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import {
+  Check,
+  ChevronsUpDown,
   File,
   FileDown,
   FileUp,
@@ -18,11 +35,27 @@ import {
   Search,
 } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {};
 
 const TableHeader = (props: Props) => {
+  const [status, setStatus] = useState<any>({
+    label: null,
+    value: null,
+  });
+  const [date, setDate] = useState<any>({
+    label: null,
+    value: null,
+  });
+  const statusOption = [
+    { label: "Active", value: "ACTIVE" },
+    { label: "Disabled", value: "DISABLED" },
+  ];
+  const dateOption = [
+    { label: "Last Month", value: "lastMonth" },
+    { label: "This Month", value: "thisMonth" },
+  ];
   return (
     <React.Fragment>
       <div className="mb-3 flex items-center justify-between border-b border-gray-200 py-3 dark:border-gray-600">
@@ -81,7 +114,101 @@ const TableHeader = (props: Props) => {
             className="w-full appearance-none bg-background pl-8 shadow-none "
           />
         </div>
-        <div>dwwf</div>
+        <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className={cn(
+                  "w-full justify-between",
+                  !date.value && "text-muted-foreground",
+                )}
+              >
+                {date.value
+                  ? dateOption.find((stat) => stat.value === date.value)?.label
+                  : "Select date"}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className=" p-0">
+              <Command>
+                <CommandInput placeholder="Search date..." />
+                <CommandEmpty>No date found.</CommandEmpty>
+                <CommandGroup>
+                  <CommandList>
+                    {dateOption.map((stat) => (
+                      <CommandItem
+                        value={stat.label}
+                        key={stat.value}
+                        onSelect={() => {
+                          setDate({ value: stat.value });
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            stat.value === date.value
+                              ? "opacity-100"
+                              : "opacity-0",
+                          )}
+                        />
+                        {stat.label}
+                      </CommandItem>
+                    ))}
+                  </CommandList>
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className={cn(
+                  "w-full justify-between",
+                  !status.value && "text-muted-foreground",
+                )}
+              >
+                {status.value
+                  ? statusOption.find((stat) => stat.value === status.value)
+                      ?.label
+                  : "Select status"}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className=" p-0">
+              <Command>
+                <CommandInput placeholder="Search status..." />
+                <CommandEmpty>No status found.</CommandEmpty>
+                <CommandGroup>
+                  <CommandList>
+                    {statusOption.map((stat) => (
+                      <CommandItem
+                        value={stat.label}
+                        key={stat.value}
+                        onSelect={() => {
+                          setStatus({ value: stat.value });
+                        }}
+                      >
+                        <Check
+                          className={cn(
+                            "mr-2 h-4 w-4",
+                            stat.value === status.value
+                              ? "opacity-100"
+                              : "opacity-0",
+                          )}
+                        />
+                        {stat.label}
+                      </CommandItem>
+                    ))}
+                  </CommandList>
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
     </React.Fragment>
   );

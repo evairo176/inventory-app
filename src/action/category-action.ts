@@ -1,38 +1,72 @@
 import { createCategorySchema } from "@/config/form-schema";
 import fetcher from "@/utils/fetcher";
-import axios from "axios";
-import useSWR from "swr";
+import useSWR, { mutate as globalMutate } from "swr";
 import { z } from "zod";
+import { ExcelCategoryProps } from "../../types/types";
 
+// Utility function to handle API requests
+const apiRequest = async (path: string, method: string, data?: any) => {
+  const res = await fetch(path, {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(errorText || "API request failed");
+  }
+
+  return res.json();
+};
+
+// Hook to add a single category
 export const useAddCategory = (path: string) => {
   const { mutate } = useSWR(path);
 
   const addCategory = async (data: z.infer<typeof createCategorySchema>) => {
-    const res = await fetch(path, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const response = await apiRequest(path, "POST", data);
 
-    if (!res.ok) {
-      throw new Error("Could not add crategory");
-    }
+    // Update the local data
+    await mutate();
 
-    mutate();
+    // Optionally, globally mutate if necessary
+    await globalMutate(path);
 
-    return res.json();
+    return response;
   };
 
   return addCategory;
 };
 
+// Hook to create bulk categories
+export const useCreateBulkCategory = (path: string) => {
+  const { mutate } = useSWR(path);
+
+  const createBulkCategory = async (data: ExcelCategoryProps[]) => {
+    const bulkData = { categories: data };
+    const response = await apiRequest(path, "POST", bulkData);
+
+    // Update the local data
+    await mutate();
+
+    // Optionally, globally mutate if necessary
+    await globalMutate(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`);
+
+    return response;
+  };
+
+  return createBulkCategory;
+};
+
+// Hook to get categories
 export const useGetCategory = (path: string) => {
-  const { mutate, isLoading, error, data } = useSWR(path, fetcher, {
+  const { data, error, mutate, isLoading } = useSWR(path, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
 
-  return { mutate, isLoading, error, data };
+  return { data, error, mutate, isLoading };
 };

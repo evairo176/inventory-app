@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import {
   Card,
   CardContent,
@@ -35,7 +34,6 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import Image from "next/image";
 import { Check, ChevronsUpDown, Upload } from "lucide-react";
 import FormHeader from "./form-header";
 import { useRouter } from "next/navigation";
@@ -43,10 +41,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
 import { createCategorySchema } from "@/config/form-schema";
-import { UploadButton } from "@/utils/uploadthing";
-import { generateSlug } from "@/utils/generate-slug";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
-import { revalidatePath } from "next/cache";
 import { useAddCategory } from "@/action/category-action";
 import ImageInput from "@/components/global/form-inputs/image-input";
 
@@ -77,7 +72,6 @@ const CategoryForm = (props: Props) => {
     setIsLoading(true);
     try {
       data.imageUrl = imageUrl;
-      data.slug = generateSlug(data.title);
 
       const response = await addCategory(data);
 

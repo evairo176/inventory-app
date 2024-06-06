@@ -20,10 +20,11 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { z } from "zod";
 import { getAllCategorySchema } from "@/config/form-schema";
-import SortableColumn from "@/components/datatable-components/sortable-column";
-import DateColumn from "@/components/datatable-components/date-column";
+import SortableColumn from "@/components/datatable-columns/sortable-column";
+import DateColumn from "@/components/datatable-columns/date-column";
 import ActionColumn from "@/components/datatable-components/action-column";
-import ImageColumn from "@/components/datatable-components/image-column";
+import ImageColumn from "@/components/datatable-columns/image-column";
+import StatusColumn from "@/components/datatable-columns/status-column";
 export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
   {
     id: "select",
@@ -48,15 +49,19 @@ export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "title",
-    header: ({ column }) => <SortableColumn column={column} title="Title" />,
-  },
-  {
     accessorKey: "imageUrl",
     header: "Category Image",
     cell: ({ row }) => <ImageColumn row={row} accessorKey="imageUrl" />,
   },
-
+  {
+    accessorKey: "title",
+    header: ({ column }) => <SortableColumn column={column} title="Title" />,
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => <StatusColumn row={row} accessorKey="status" />,
+  },
   {
     accessorKey: "createdAt",
     header: "Date Created",

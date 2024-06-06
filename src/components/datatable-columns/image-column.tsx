@@ -18,7 +18,7 @@ export default function ImageColumn({
         width={500}
         height={500}
         alt={`${accessorKey}`}
-        className="h-10 w-10 rounded-full object-cover"
+        className="h-12 w-16 rounded-md object-cover"
       />
     </div>
   );

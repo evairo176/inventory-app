@@ -30,7 +30,7 @@ export function DataTableToolbar({
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+      <div className="flex flex-1 flex-row items-center space-x-2">
         {filterKeys.map((key: any) => (
           <Input
             key={key}

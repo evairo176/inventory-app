@@ -4,7 +4,7 @@ import { useGetCategory } from "@/action/category-action";
 import React from "react";
 import TableHeader from "../../dashboard/tables/table-header";
 import CustomDatatable from "../../dashboard/tables/custom-datatable";
-import DataTable from "../../datatable-components/data-table";
+import DataTable from "../../datatable-columns/data-table";
 import { columns } from "./columns";
 
 type Props = {};
@@ -26,7 +26,11 @@ const DashboardPage = (props: Props) => {
         linkTitle="Add Category"
         href="/dashboard/inventory/categories/new"
       />
-      <DataTable data={data.data} columns={columns} />
+      <DataTable
+        filterKeys={["title", "status"]}
+        data={data.data}
+        columns={columns}
+      />
     </div>
   );
 };

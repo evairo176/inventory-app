@@ -53,6 +53,7 @@ import * as XLSX from "xlsx";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCreateBulkCategory } from "@/action/category-action";
 import { ExcelCategoryProps } from "../../../../types/types";
+import { toast } from "@/components/ui/use-toast";
 
 type TableHeaderProps = {
   title: string;
@@ -73,6 +74,7 @@ const TableHeader = ({ title, href, linkTitle }: TableHeaderProps) => {
   const [jsonData, setJsonData] = useState("");
   const [preview, setPreview] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const createBulkCategory = useCreateBulkCategory(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/category/bulk`,
   );
@@ -123,12 +125,24 @@ const TableHeader = ({ title, href, linkTitle }: TableHeaderProps) => {
             XLSX.utils.sheet_to_json(workSheet);
           //Save to the DB
           try {
-            console.log(json);
             const result = await createBulkCategory(json);
-
             console.log({ result });
+            const sumResultSuccess = result.data.filter(
+              (row: any) => row.status_upload !== "Error",
+            ).length;
+            toast({
+              title: `Import ${sumResultSuccess} data excel successfully`,
+            });
+            setExcelFile(null);
+            setJsonData("");
+            setPreview(false);
+            setOpen(false);
           } catch (error) {
             console.log(error);
+            toast({
+              title: "Failed to import",
+              variant: "destructive",
+            });
           } finally {
             setLoading(false);
           }
@@ -139,12 +153,12 @@ const TableHeader = ({ title, href, linkTitle }: TableHeaderProps) => {
   }
   return (
     <React.Fragment>
-      <div className="mb-3 flex items-center justify-between border-b border-gray-200 py-3 dark:border-gray-600">
+      <div className="mb-3 flex flex-wrap items-center justify-between border-b border-gray-200 py-3 dark:border-gray-600">
         <h2 className="mt-10 scroll-m-20  text-2xl font-semibold tracking-tight transition-colors first:mt-0">
           {title}
         </h2>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex  items-center space-x-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 gap-1">
@@ -170,7 +184,7 @@ const TableHeader = ({ title, href, linkTitle }: TableHeaderProps) => {
               Export
             </span>
           </Button>
-          <Dialog>
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button size="sm" variant="outline" className="h-8 gap-1">
                 <FileDown className="h-3.5 w-3.5" />
@@ -288,7 +302,7 @@ const TableHeader = ({ title, href, linkTitle }: TableHeaderProps) => {
           </Button>
         </div>
       </div>
-      <div className="flex w-full items-center justify-between">
+      <div className="flex w-full flex-wrap items-center justify-between gap-2 md:gap-0">
         <div className="relative">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input

@@ -33,9 +33,11 @@ export default function RootLayout({
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
         <MainProviders>
-          <SWRConfigurationProvider>{children}</SWRConfigurationProvider>
+          <SWRConfigurationProvider>
+            {children}
+            <Toaster />
+          </SWRConfigurationProvider>
         </MainProviders>
-        <Toaster />
       </body>
     </html>
   );

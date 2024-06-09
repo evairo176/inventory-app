@@ -25,8 +25,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import { DataTableToolbar } from "../datatable-components/data-table-toolbar";
 import { DataTablePagination } from "../datatable-components/data-table-pagination";
+import SearchBar from "../datatable-components/search-bar";
+import { DataTableViewOptions } from "../datatable-components/data-table-view-options";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { Button } from "../ui/button";
+import { ListFilter } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -36,17 +47,17 @@ interface DataTableProps<TData, TValue> {
 export default function DataTable<TData, TValue>({
   columns,
   data,
-  filterKeys = ["title"],
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState({});
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
+  const [searchResult, setSearchResult] = useState(data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
-    data,
+    data: searchResult,
     columns,
     state: {
       sorting,
@@ -69,7 +80,31 @@ export default function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} filterKeys={filterKeys} />
+      <div className="flex w-full flex-wrap items-center justify-between gap-2 md:gap-0">
+        <SearchBar data={data} onSearch={setSearchResult} />
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-8 gap-1">
+                <ListFilter className="h-3.5 w-3.5" />
+                <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                  Filter
+                </span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Filter by</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem checked>
+                Active
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem>Draft</DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem>Archived</DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DataTableViewOptions table={table} />
+        </div>
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

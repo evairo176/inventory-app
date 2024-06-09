@@ -22,7 +22,7 @@ import { z } from "zod";
 import { getAllCategorySchema } from "@/config/form-schema";
 import SortableColumn from "@/components/datatable-columns/sortable-column";
 import DateColumn from "@/components/datatable-columns/date-column";
-import ActionColumn from "@/components/datatable-components/action-column";
+import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
 export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [

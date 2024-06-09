@@ -39,7 +39,6 @@ const Sidebar = (props: Props) => {
     } else {
       newPath = currentPath;
     }
-    console.log({ isOpenMenu: newPath });
 
     // Navigate to the new path
     return newPath;

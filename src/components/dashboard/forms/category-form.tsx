@@ -48,7 +48,7 @@ import { ICategory } from "../../../../types/types";
 
 type Props = {
   editingId?: string;
-  initialCategory: ICategory | undefined;
+  initialCategory?: ICategory | undefined;
 };
 
 const CategoryForm = ({ editingId, initialCategory }: Props) => {

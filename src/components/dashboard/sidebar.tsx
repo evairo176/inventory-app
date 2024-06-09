@@ -21,6 +21,7 @@ type Props = {};
 const Sidebar = (props: Props) => {
   const pathname = usePathname();
   const isOpenValue = isOpenMenu();
+  const isCurrentPage = pathNameValue();
 
   function isOpenMenu() {
     // Get the current path
@@ -44,6 +45,28 @@ const Sidebar = (props: Props) => {
     return newPath;
   }
 
+  function pathNameValue() {
+    // Get the current path
+    let currentPath = pathname;
+    // Split the path into segments
+    let pathSegments = currentPath.split("/");
+    let newPath = "";
+
+    if (pathSegments.length > 0) {
+      // Join the remaining segments to form the new path
+      if (pathSegments.length > 3) {
+        newPath =
+          "/" + pathSegments[1] + "/" + pathSegments[2] + "/" + pathSegments[3];
+      } else {
+        newPath = currentPath;
+      }
+    } else {
+      newPath = currentPath;
+    }
+
+    // Navigate to the new path
+    return newPath;
+  }
   return (
     <div className="fixed left-0 top-0 hidden w-72 border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:bg-muted/40 md:block">
       <div className="flex max-h-screen flex-col gap-2">
@@ -93,7 +116,7 @@ const Sidebar = (props: Props) => {
                                     href={menu.href as string}
                                     className={cn(
                                       "flex items-center gap-3 rounded-lg py-2 pl-6 pr-3 text-muted-foreground transition-all hover:text-primary",
-                                      menu.href === pathname &&
+                                      menu.href === isCurrentPage &&
                                         "bg-muted text-primary",
                                     )}
                                   >

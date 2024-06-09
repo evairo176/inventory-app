@@ -89,3 +89,36 @@ export const useDeleteCategory = (path: string) => {
 
   return deleteCategory;
 };
+
+// Hook to get categories by id
+export const useGetCategoryId = (path: string) => {
+  const { data, error, mutate, isLoading } = useSWR(path, fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+  });
+
+  return { data, error, mutate, isLoading, useGetCategoryId };
+};
+
+// Hook to update a category by id
+export const useUpdateCategory = (path: string) => {
+  const { mutate } = useSWR(path);
+
+  const updateCategory = async (
+    id: string,
+    data: z.infer<typeof createCategorySchema>,
+  ) => {
+    const response = await apiRequest(`${path}/${id}`, "PUT", data);
+
+    // Update the local data
+    await mutate();
+
+    // Optionally, globally mutate if necessary
+    await globalMutate(path);
+    await globalMutate(`${path}/${id}`);
+
+    return response;
+  };
+
+  return updateCategory;
+};

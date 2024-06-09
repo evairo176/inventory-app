@@ -9,20 +9,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { MoreHorizontal, Trash } from "lucide-react";
+import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import DeleteBtn from "../datatable-components/delete-btn";
+import Link from "next/link";
 // import DeleteBtn from "../Actions/DeleteBtn";
 // import EditBtn from "../Actions/EditBtn";
 type ActionColumnProps = {
   row: any;
   title: string;
   editEndpoint: string;
+  deleteEndpoint: string;
   id: string | undefined;
 };
 export default function ActionColumn({
   row,
   title,
   editEndpoint,
+  deleteEndpoint,
   id,
 }: ActionColumnProps) {
   const isActive = row.isActive;
@@ -42,18 +45,28 @@ export default function ActionColumn({
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => setOpen(true)}
-            className="flex items-center gap-2"
+            className="flex cursor-pointer items-center gap-2"
           >
             <Trash className="h-4 w-4 text-rose-400" />
             <span className="text-rose-400">Delete</span>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            {/* <EditBtn title={title} editEndpoint={editEndpoint} /> */}
-            Edit
+          <DropdownMenuItem asChild>
+            <Link
+              href={editEndpoint}
+              className="flex cursor-pointer items-center gap-2"
+            >
+              <Pencil className="h-4 w-4" />
+              <span>Edit</span>
+            </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteBtn open={open} setOpen={setOpen} id={id as string} />
+      <DeleteBtn
+        open={open}
+        setOpen={setOpen}
+        id={id as string}
+        deletePath={deleteEndpoint}
+      />
     </>
   );
 }

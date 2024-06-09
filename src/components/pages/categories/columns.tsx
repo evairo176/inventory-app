@@ -76,6 +76,7 @@ export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
           row={row}
           title="Category"
           editEndpoint={`categories/update/${category.id}`}
+          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`}
           id={category.id}
         />
       );

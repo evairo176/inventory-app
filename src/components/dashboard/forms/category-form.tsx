@@ -42,16 +42,24 @@ import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
 import { createCategorySchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
-import { useAddCategory } from "@/action/category-action";
+import { useAddCategory, useUpdateCategory } from "@/action/category-action";
 import ImageInput from "@/components/global/form-inputs/image-input";
+import { ICategory } from "../../../../types/types";
 
-type Props = {};
+type Props = {
+  editingId?: string;
+  initialCategory: ICategory | undefined;
+};
 
-const CategoryForm = (props: Props) => {
+const CategoryForm = ({ editingId, initialCategory }: Props) => {
   const router = useRouter();
-  const [imageUrl, setImageUrl] = useState("");
+  const initialImage = initialCategory?.imageUrl || "/placeholder.svg";
+  const [imageUrl, setImageUrl] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
   const addCategory = useAddCategory(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+  );
+  const updateCategory = useUpdateCategory(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
   );
   const status = [
@@ -62,9 +70,10 @@ const CategoryForm = (props: Props) => {
   const form = useForm<z.infer<typeof createCategorySchema>>({
     resolver: zodResolver(createCategorySchema),
     defaultValues: {
-      title: "",
-      description: "",
-      status: "",
+      title: initialCategory?.title,
+      description: initialCategory?.description,
+      status: initialCategory?.status,
+      imageUrl: imageUrl,
     },
   });
 
@@ -72,8 +81,12 @@ const CategoryForm = (props: Props) => {
     setIsLoading(true);
     try {
       data.imageUrl = imageUrl;
-
-      const response = await addCategory(data);
+      let response: any;
+      if (editingId) {
+        response = await updateCategory(editingId, data);
+      } else {
+        response = await addCategory(data);
+      }
 
       toast({
         title: `${response.message}`,
@@ -105,7 +118,11 @@ const CategoryForm = (props: Props) => {
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormHeader goBack={goBack} module="Category" title="Create new" />
+          <FormHeader
+            goBack={goBack}
+            module="Category"
+            title={editingId ? "Update" : "Create new"}
+          />
           <div className="mt-3 grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
               <Card>
@@ -240,7 +257,10 @@ const CategoryForm = (props: Props) => {
                 endPoint={"categoryImage"}
               />
 
-              <SubmitButton loading={isLoading} title="Save Category" />
+              <SubmitButton
+                loading={isLoading}
+                title={editingId ? "Submit Update" : "Save Category"}
+              />
             </div>
           </div>
         </form>

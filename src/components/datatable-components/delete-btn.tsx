@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,13 +19,14 @@ type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
   id: string;
+  deletePath: string;
 };
 
-const DeleteBtn = ({ open, setOpen, id }: Props) => {
-  const deleteCategory = useDeleteCategory(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
-  );
+const DeleteBtn = ({ open, setOpen, id, deletePath }: Props) => {
+  const [loading, setLoading] = useState(false);
+  const deleteCategory = useDeleteCategory(deletePath);
   const handleDelete = async (id: string) => {
+    setLoading(true);
     try {
       const response = await deleteCategory(id);
 
@@ -40,6 +41,8 @@ const DeleteBtn = ({ open, setOpen, id }: Props) => {
         title: error?.message,
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -53,11 +56,14 @@ const DeleteBtn = ({ open, setOpen, id }: Props) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setOpen(false)}>
+          <AlertDialogCancel disabled={loading} onClick={() => setOpen(false)}>
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction onClick={() => handleDelete(id)}>
-            Delete
+          <AlertDialogAction
+            disabled={loading}
+            onClick={() => handleDelete(id)}
+          >
+            {loading ? "Loading..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

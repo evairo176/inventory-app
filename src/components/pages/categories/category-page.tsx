@@ -9,15 +9,13 @@ import { columns } from "./columns";
 
 type Props = {};
 
-const DashboardPage = (props: Props) => {
+const CategoryPage = (props: Props) => {
   const { data, error, isLoading } = useGetCategory(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
   );
 
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
-
-  console.log(data);
 
   return (
     <div className="space-y-3">
@@ -35,4 +33,4 @@ const DashboardPage = (props: Props) => {
   );
 };
 
-export default DashboardPage;
+export default CategoryPage;

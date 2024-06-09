@@ -1,10 +1,10 @@
-import DashboardPage from "@/components/pages/categories/categories-page";
+import CategoryPage from "@/components/pages/categories/category-page";
 import React from "react";
 
 type Props = {};
 
 const page = (props: Props) => {
-  return <DashboardPage />;
+  return <CategoryPage />;
 };
 
 export default page;

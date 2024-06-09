@@ -55,6 +55,7 @@ type Props = {};
 const Navbar = (props: Props) => {
   const pathname = usePathname();
   const isOpenValue = isOpenMenu();
+  const isCurrentPage = pathNameValue();
 
   function isOpenMenu() {
     // Get the current path
@@ -78,6 +79,28 @@ const Navbar = (props: Props) => {
     return newPath;
   }
 
+  function pathNameValue() {
+    // Get the current path
+    let currentPath = pathname;
+    // Split the path into segments
+    let pathSegments = currentPath.split("/");
+    let newPath = "";
+
+    if (pathSegments.length > 0) {
+      // Join the remaining segments to form the new path
+      if (pathSegments.length > 3) {
+        newPath =
+          "/" + pathSegments[1] + "/" + pathSegments[2] + "/" + pathSegments[3];
+      } else {
+        newPath = currentPath;
+      }
+    } else {
+      newPath = currentPath;
+    }
+
+    // Navigate to the new path
+    return newPath;
+  }
   return (
     <header className="fixed left-0 top-0 z-50 w-full md:pl-72 lg:pl-72">
       <div className="flex h-14 items-center gap-4 border-b border-border/40 bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:bg-muted/40 lg:h-[60px] lg:pl-0  lg:pr-6 ">
@@ -132,7 +155,7 @@ const Navbar = (props: Props) => {
                                       href={menu.href as string}
                                       className={cn(
                                         "flex items-center gap-3 rounded-lg py-2 pl-6 pr-3 text-muted-foreground transition-all hover:text-primary",
-                                        menu.href === pathname &&
+                                        menu.href === isCurrentPage &&
                                           "bg-muted text-primary",
                                       )}
                                     >

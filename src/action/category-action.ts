@@ -70,3 +70,22 @@ export const useGetCategory = (path: string) => {
 
   return { data, error, mutate, isLoading };
 };
+
+// Hook to delete a category
+export const useDeleteCategory = (path: string) => {
+  const { mutate } = useSWR(path);
+
+  const deleteCategory = async (id: string) => {
+    const response = await apiRequest(`${path}/${id}`, "DELETE");
+
+    // Update the local data
+    await mutate();
+
+    // Optionally, globally mutate if necessary
+    await globalMutate(path);
+
+    return response;
+  };
+
+  return deleteCategory;
+};

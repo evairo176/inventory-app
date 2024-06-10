@@ -42,9 +42,9 @@ import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
 import { createCategorySchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
-import { useAddCategory, useUpdateCategory } from "@/action/category-action";
 import ImageInput from "@/components/global/form-inputs/image-input";
 import { ICategory } from "../../../../types/types";
+import { useCreate, useUpdate } from "@/action/global-action";
 
 type Props = {
   editingId?: string;
@@ -56,11 +56,14 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
   const initialImage = initialCategory?.imageUrl || "/placeholder.svg";
   const [imageUrl, setImageUrl] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
-  const addCategory = useAddCategory(
+  const addCategory = useCreate(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+    "categories",
   );
-  const updateCategory = useUpdateCategory(
+  const updateCategory = useUpdate(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+    editingId as string,
+    "categories",
   );
   const status = [
     { label: "Active", value: "ACTIVE" },
@@ -83,9 +86,9 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
       data.imageUrl = imageUrl;
       let response: any;
       if (editingId) {
-        response = await updateCategory(editingId, data);
+        response = await updateCategory.mutateAsync(data);
       } else {
-        response = await addCategory(data);
+        response = await addCategory.mutateAsync(data);
       }
 
       toast({

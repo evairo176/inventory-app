@@ -6,12 +6,14 @@ import TableHeader from "../../dashboard/tables/table-header";
 import CustomDatatable from "../../dashboard/tables/custom-datatable";
 import DataTable from "../../datatable-columns/data-table";
 import { columns } from "./columns";
+import { useGet } from "@/action/global-action";
 
 type Props = {};
 
 const CategoryPage = (props: Props) => {
-  const { data, error, isLoading } = useGetCategory(
+  const { data, error, isLoading } = useGet(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+    "categories",
   );
 
   if (error) return <div>failed to load</div>;

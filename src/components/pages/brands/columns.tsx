@@ -78,6 +78,7 @@ export const columns: ColumnDef<z.infer<typeof getAllBrandSchema>>[] = [
           editEndpoint={`brands/update/${brand.id}`}
           deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/brand`}
           id={brand.id}
+          queryKey="brands"
         />
       );
     },

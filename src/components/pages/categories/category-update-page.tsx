@@ -3,15 +3,17 @@
 import React from "react";
 import { columns } from "./columns";
 import CategoryForm from "@/components/dashboard/forms/category-form";
-import { useGetCategoryId } from "@/action/category-action";
+import { useGetById } from "@/action/global-action";
 
 type Props = {
   id: string;
 };
 
 const CategoryUpdatePage = ({ id }: Props) => {
-  const { data, error, isLoading } = useGetCategoryId(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category/${id}`,
+  const { data, error, isLoading } = useGetById(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+    id,
+    "categories",
   );
 
   if (error) return <div>failed to load</div>;

@@ -20,6 +20,7 @@ type ActionColumnProps = {
   editEndpoint: string;
   deleteEndpoint: string;
   id: string | undefined;
+  queryKey: string;
 };
 export default function ActionColumn({
   row,
@@ -27,6 +28,7 @@ export default function ActionColumn({
   editEndpoint,
   deleteEndpoint,
   id,
+  queryKey,
 }: ActionColumnProps) {
   const isActive = row.isActive;
   const [open, setOpen] = useState(false);
@@ -66,6 +68,7 @@ export default function ActionColumn({
         setOpen={setOpen}
         id={id as string}
         deletePath={deleteEndpoint}
+        queryKey={queryKey}
       />
     </>
   );

@@ -2,23 +2,23 @@ import { apiRequest, fetcher } from "@/utils/api-request";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Fetch all brands
-export const useGetBrands = (path: string) => {
+export const useGet = (path: string, queryKey: string) => {
   return useQuery({
-    queryKey: ["brands"],
+    queryKey: [`${queryKey}`],
     queryFn: () => fetcher(path),
   });
 };
 
 // Fetch a single brand by ID
-export const useGetBrandById = (path: string, id: string) => {
+export const useGetById = (path: string, id: string, queryKey: string) => {
   return useQuery({
-    queryKey: ["brands", id],
+    queryKey: [`${queryKey}`, id],
     queryFn: () => fetcher(`${path}/${id}`),
   });
 };
 
 // Create a new brand
-export const useCreateBrand = (path: string) => {
+export const useCreate = (path: string, queryKey: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -26,13 +26,13 @@ export const useCreateBrand = (path: string) => {
       return await apiRequest(path, "POST", newBrand);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["brands"] });
+      queryClient.invalidateQueries({ queryKey: [`${queryKey}`] });
     },
   });
 };
 
 // Update an existing brand
-export const useUpdateBrand = (path: string, id: string) => {
+export const useUpdate = (path: string, id: string, queryKey: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -40,14 +40,14 @@ export const useUpdateBrand = (path: string, id: string) => {
       return await apiRequest(`${path}/${id}`, "PUT", updatedBrand);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["brands"] });
-      queryClient.invalidateQueries({ queryKey: ["brands", id] });
+      queryClient.invalidateQueries({ queryKey: [`${queryKey}`] });
+      queryClient.invalidateQueries({ queryKey: [`${queryKey}`, id] });
     },
   });
 };
 
 // Delete a brand
-export const useDeleteBrand = (path: string, id: string) => {
+export const useDelete = (path: string, id: string, queryKey: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -55,7 +55,7 @@ export const useDeleteBrand = (path: string, id: string) => {
       return await apiRequest(`${path}/${id}`, "DELETE");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["brands"] });
+      queryClient.invalidateQueries({ queryKey: [`${queryKey}`] });
     },
   });
 };

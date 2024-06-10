@@ -42,9 +42,9 @@ import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
 import { createBrandSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
-import { useAddBrand, useUpdateBrand } from "@/action/brand-action";
 import ImageInput from "@/components/global/form-inputs/image-input";
 import { IBrand } from "../../../../types/types";
+import { useCreate, useUpdate } from "@/action/global-action";
 
 type Props = {
   editingId?: string;
@@ -56,9 +56,14 @@ const BrandForm = ({ editingId, initialBrand }: Props) => {
   const initialImage = initialBrand?.imageUrl || "/placeholder.svg";
   const [imageUrl, setImageUrl] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
-  const addBrand = useAddBrand(`${process.env.NEXT_PUBLIC_BACKEND_URL}/Brand`);
-  const updateBrand = useUpdateBrand(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/Brand`,
+  const addBrand = useCreate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/brand`,
+    "brands",
+  );
+  const updateBrand = useUpdate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/brand`,
+    editingId as string,
+    "brands",
   );
   const status = [
     { label: "Active", value: "ACTIVE" },
@@ -80,9 +85,9 @@ const BrandForm = ({ editingId, initialBrand }: Props) => {
       data.imageUrl = imageUrl;
       let response: any;
       if (editingId) {
-        response = await updateBrand(editingId, data);
+        response = await updateBrand.mutateAsync(data);
       } else {
-        response = await addBrand(data);
+        response = await addBrand.mutateAsync(data);
       }
 
       toast({

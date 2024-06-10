@@ -35,6 +35,7 @@ export type ICategory = {
 };
 
 export type IBrand = {
+  id: string;
   title: string;
   imageUrl: string;
   slug: string;

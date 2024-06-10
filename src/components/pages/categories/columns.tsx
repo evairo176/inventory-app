@@ -78,6 +78,7 @@ export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
           editEndpoint={`categories/update/${category.id}`}
           deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`}
           id={category.id}
+          queryKey="categories"
         />
       );
     },

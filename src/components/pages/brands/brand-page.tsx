@@ -25,6 +25,7 @@ const BrandPage = (props: Props) => {
         title="Brands"
         linkTitle="Add Brand"
         href="/dashboard/inventory/brands/new"
+        queryKey="brands"
       />
       <DataTable data={data.data} columns={columns} />
     </div>

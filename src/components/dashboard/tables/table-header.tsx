@@ -51,17 +51,23 @@ import { ImportModal } from "./import-modal";
 import { formatFileSize } from "@/utils/format-file-size";
 import * as XLSX from "xlsx";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useCreateBulkCategory } from "@/action/category-action";
 import { ExcelCategoryProps } from "../../../../types/types";
 import { toast } from "@/components/ui/use-toast";
+import { useCreateBulk } from "@/action/global-action";
 
 type TableHeaderProps = {
   title: string;
   href: string;
   linkTitle: string;
+  queryKey: string;
 };
 
-const TableHeader = ({ title, href, linkTitle }: TableHeaderProps) => {
+const TableHeader = ({
+  title,
+  href,
+  linkTitle,
+  queryKey,
+}: TableHeaderProps) => {
   const [status, setStatus] = useState<any>({
     label: null,
     value: null,
@@ -75,8 +81,9 @@ const TableHeader = ({ title, href, linkTitle }: TableHeaderProps) => {
   const [preview, setPreview] = useState(false);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const createBulkCategory = useCreateBulkCategory(
+  const createBulkCategory = useCreateBulk(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/category/bulk`,
+    queryKey,
   );
   const statusOption = [
     { label: "Active", value: "ACTIVE" },
@@ -125,8 +132,8 @@ const TableHeader = ({ title, href, linkTitle }: TableHeaderProps) => {
             XLSX.utils.sheet_to_json(workSheet);
           //Save to the DB
           try {
-            const result = await createBulkCategory(json);
-            console.log({ result });
+            const result = await createBulkCategory.mutateAsync(json);
+
             const sumResultSuccess = result.data.filter(
               (row: any) => row.status_upload !== "Error",
             ).length;

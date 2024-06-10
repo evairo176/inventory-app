@@ -1,7 +1,7 @@
 import { apiRequest, fetcher } from "@/utils/api-request";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-// Fetch all brands
+// Fetch all datas
 export const useGet = (path: string, queryKey: string) => {
   return useQuery({
     queryKey: [`${queryKey}`],
@@ -9,7 +9,7 @@ export const useGet = (path: string, queryKey: string) => {
   });
 };
 
-// Fetch a single brand by ID
+// Fetch a single data by ID
 export const useGetById = (path: string, id: string, queryKey: string) => {
   return useQuery({
     queryKey: [`${queryKey}`, id],
@@ -17,13 +17,13 @@ export const useGetById = (path: string, id: string, queryKey: string) => {
   });
 };
 
-// Create a new brand
+// Create a new data
 export const useCreate = (path: string, queryKey: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (newBrand: any) => {
-      return await apiRequest(path, "POST", newBrand);
+    mutationFn: async (newData: any) => {
+      return await apiRequest(path, "POST", newData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${queryKey}`] });
@@ -31,13 +31,27 @@ export const useCreate = (path: string, queryKey: string) => {
   });
 };
 
-// Update an existing brand
+// Create a new data
+export const useCreateBulk = (path: string, queryKey: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (newData: any) => {
+      return await apiRequest(path, "POST", newData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${queryKey}`] });
+    },
+  });
+};
+
+// Update an existing data
 export const useUpdate = (path: string, id: string, queryKey: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (updatedBrand: any) => {
-      return await apiRequest(`${path}/${id}`, "PUT", updatedBrand);
+    mutationFn: async (updatedData: any) => {
+      return await apiRequest(`${path}/${id}`, "PUT", updatedData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${queryKey}`] });
@@ -46,7 +60,7 @@ export const useUpdate = (path: string, id: string, queryKey: string) => {
   });
 };
 
-// Delete a brand
+// Delete a data
 export const useDelete = (path: string, id: string, queryKey: string) => {
   const queryClient = useQueryClient();
 

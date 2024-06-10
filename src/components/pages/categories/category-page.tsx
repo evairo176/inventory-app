@@ -25,6 +25,7 @@ const CategoryPage = (props: Props) => {
         title="Categories"
         linkTitle="Add Category"
         href="/dashboard/inventory/categories/new"
+        queryKey="categories"
       />
       <DataTable
         filterKeys={["title", "status"]}

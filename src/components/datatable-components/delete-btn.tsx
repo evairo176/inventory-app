@@ -12,7 +12,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Trash } from "lucide-react";
-import { useDeleteCategory } from "@/action/category-action";
+import { useDeleteBrand } from "@/action/brand-action";
 import { toast } from "../ui/use-toast";
 
 type Props = {
@@ -24,14 +24,14 @@ type Props = {
 
 const DeleteBtn = ({ open, setOpen, id, deletePath }: Props) => {
   const [loading, setLoading] = useState(false);
-  const deleteCategory = useDeleteCategory(deletePath);
+  const deleteBrand = useDeleteBrand(deletePath);
   const handleDelete = async (id: string) => {
     setLoading(true);
     try {
-      const response = await deleteCategory(id);
+      const response = await deleteBrand(id);
 
       toast({
-        title: `Delete Category Successfully`,
+        title: response.message,
       });
 
       setOpen(false);

@@ -24,4 +24,29 @@ const getAllCategorySchema = z.object({
   createdAt: z.string(),
 });
 
-export { createCategorySchema, getAllCategorySchema };
+const createBrandSchema = z.object({
+  title: z.string().min(2, {
+    message: "title must be at least 2 characters.",
+  }),
+  slug: z.string().optional(),
+  status: z.string().min(2, {
+    message: "status must be at least 2 characters.",
+  }),
+  imageUrl: z.string().optional(),
+});
+
+const getAllBrandSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  slug: z.string(),
+  status: z.string(),
+  imageUrl: z.string(),
+  createdAt: z.string(),
+});
+
+export {
+  createCategorySchema,
+  getAllCategorySchema,
+  createBrandSchema,
+  getAllBrandSchema,
+};

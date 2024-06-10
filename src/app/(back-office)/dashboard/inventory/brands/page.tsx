@@ -1,9 +1,10 @@
+import BrandPage from "@/components/pages/brands/brand-page";
 import React from "react";
 
 type Props = {};
 
 const page = (props: Props) => {
-  return <div>Brands</div>;
+  return <BrandPage />;
 };
 
 export default page;

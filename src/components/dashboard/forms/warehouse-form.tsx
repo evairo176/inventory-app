@@ -45,7 +45,6 @@ import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
 import { IWarehouse } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
-import { Country, State, City } from "country-state-city";
 
 type Props = {
   editingId?: string;
@@ -66,8 +65,6 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
     editingId as string,
     "warehouses",
   );
-  // console.log(Country.getAllCountries());
-  // console.log(State.getAllStates());
   const status = [
     { label: "Active", value: "ACTIVE" },
     { label: "Disabled", value: "DISABLED" },
@@ -200,64 +197,12 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
                         control={form.control}
                         name="country"
                         render={({ field }) => (
-                          <FormItem className="flex flex-col">
+                          <FormItem>
                             <FormLabel>Country</FormLabel>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    className={cn(
-                                      "w-full justify-between",
-                                      !field.value && "text-muted-foreground",
-                                    )}
-                                  >
-                                    {field.value
-                                      ? Country.getAllCountries()?.find(
-                                          (country) =>
-                                            country.name === field.value,
-                                        )?.name
-                                      : "Select country"}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className=" p-0">
-                                <Command>
-                                  <CommandInput placeholder="Search status..." />
-                                  <CommandEmpty>No country found.</CommandEmpty>
-                                  <CommandGroup>
-                                    <CommandList>
-                                      {Country.getAllCountries()?.map(
-                                        (country) => (
-                                          <CommandItem
-                                            value={country.name}
-                                            key={country.name}
-                                            onSelect={() => {
-                                              form.setValue(
-                                                "country",
-                                                country.name,
-                                              );
-                                            }}
-                                          >
-                                            <Check
-                                              className={cn(
-                                                "mr-2 h-4 w-4",
-                                                country.name === field.value
-                                                  ? "opacity-100"
-                                                  : "opacity-0",
-                                              )}
-                                            />
-                                            {country.name}
-                                          </CommandItem>
-                                        ),
-                                      )}
-                                    </CommandList>
-                                  </CommandGroup>
-                                </Command>
-                              </PopoverContent>
-                            </Popover>
+                            <FormControl>
+                              <Input placeholder="Country..." {...field} />
+                            </FormControl>
+
                             <FormMessage />
                           </FormItem>
                         )}
@@ -266,58 +211,12 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
                         control={form.control}
                         name="city"
                         render={({ field }) => (
-                          <FormItem className="flex flex-col">
-                            <FormLabel>City</FormLabel>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    className={cn(
-                                      "w-full justify-between",
-                                      !field.value && "text-muted-foreground",
-                                    )}
-                                  >
-                                    {field.value
-                                      ? City.getAllCities()?.find(
-                                          (city) => city.name === field.value,
-                                        )?.name
-                                      : "Select country"}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className=" p-0">
-                                <Command>
-                                  <CommandInput placeholder="Search status..." />
-                                  <CommandEmpty>No country found.</CommandEmpty>
-                                  <CommandGroup>
-                                    <CommandList>
-                                      {City.getAllCities()?.map((city) => (
-                                        <CommandItem
-                                          value={city.name}
-                                          key={city.name}
-                                          onSelect={() => {
-                                            form.setValue("city", city.name);
-                                          }}
-                                        >
-                                          <Check
-                                            className={cn(
-                                              "mr-2 h-4 w-4",
-                                              city.name === field.value
-                                                ? "opacity-100"
-                                                : "opacity-0",
-                                            )}
-                                          />
-                                          {city.name}
-                                        </CommandItem>
-                                      ))}
-                                    </CommandList>
-                                  </CommandGroup>
-                                </Command>
-                              </PopoverContent>
-                            </Popover>
+                          <FormItem>
+                            <FormLabel>State</FormLabel>
+                            <FormControl>
+                              <Input placeholder="City..." {...field} />
+                            </FormControl>
+
                             <FormMessage />
                           </FormItem>
                         )}

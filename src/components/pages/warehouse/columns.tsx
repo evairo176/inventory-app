@@ -47,6 +47,18 @@ export const columns: ColumnDef<z.infer<typeof getAllWarehouseSchema>>[] = [
     header: ({ column }) => <SortableColumn column={column} title="Name" />,
   },
   {
+    accessorKey: "country",
+    header: ({ column }) => <SortableColumn column={column} title="Country" />,
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => <SortableColumn column={column} title="Email" />,
+  },
+  {
+    accessorKey: "zipCode",
+    header: ({ column }) => <SortableColumn column={column} title="Zip Code" />,
+  },
+  {
     accessorKey: "city",
     header: ({ column }) => <SortableColumn column={column} title="City" />,
   },

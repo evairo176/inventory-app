@@ -28,6 +28,16 @@ export const ourFileRouter = {
       return { uploadedBy: "evairo" };
     },
   ),
+  warehouseImage: f({ image: { maxFileSize: "4MB" } }).onUploadComplete(
+    async ({ file }) => {
+      // This code RUNS ON YOUR SERVER after upload
+
+      console.log("file url", file.url);
+
+      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+      return { uploadedBy: "evairo" };
+    },
+  ),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

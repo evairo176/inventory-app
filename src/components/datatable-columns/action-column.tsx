@@ -45,13 +45,6 @@ export default function ActionColumn({
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => setOpen(true)}
-            className="flex cursor-pointer items-center gap-2"
-          >
-            <Trash className="h-4 w-4 text-rose-400" />
-            <span className="text-rose-400">Delete</span>
-          </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link
               href={editEndpoint}
@@ -60,6 +53,13 @@ export default function ActionColumn({
               <Pencil className="h-4 w-4" />
               <span>Edit</span>
             </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setOpen(true)}
+            className="flex cursor-pointer items-center gap-2"
+          >
+            <Trash className="h-4 w-4 text-rose-400" />
+            <span className="text-rose-400">Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

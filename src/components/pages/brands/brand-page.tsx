@@ -22,6 +22,7 @@ const BrandPage = (props: Props) => {
   return (
     <div className="space-y-3">
       <TableHeader
+        data={data.data}
         title="Brands"
         linkTitle="Add Brand"
         href="/dashboard/inventory/brands/new"

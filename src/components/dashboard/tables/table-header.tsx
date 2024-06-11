@@ -54,6 +54,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ExcelCategoryProps } from "../../../../types/types";
 import { toast } from "@/components/ui/use-toast";
 import { useCreateBulk } from "@/action/global-action";
+import exportDataToExcel from "@/lib/export-data-to-excel";
 
 type TableHeaderProps = {
   title: string;
@@ -61,6 +62,7 @@ type TableHeaderProps = {
   linkTitle: string;
   queryKey: string;
   createBulkPath: string;
+  data: any;
 };
 
 const TableHeader = ({
@@ -69,6 +71,7 @@ const TableHeader = ({
   linkTitle,
   queryKey,
   createBulkPath,
+  data,
 }: TableHeaderProps) => {
   const [status, setStatus] = useState<any>({
     label: null,
@@ -162,6 +165,14 @@ const TableHeader = ({
       reader.readAsBinaryString(excelFile);
     }
   }
+
+  function handleExportData() {
+    console.log("data exported");
+    const today = new Date();
+    const filename = `Exported ${queryKey}-${today.toDateString()}`;
+    // console.log(filename);
+    exportDataToExcel(data, filename);
+  }
   return (
     <React.Fragment>
       <div className="mb-3 flex flex-wrap items-center justify-between border-b border-gray-200 py-3 dark:border-gray-600">
@@ -170,7 +181,12 @@ const TableHeader = ({
         </h2>
 
         <div className="flex  items-center space-x-4">
-          <Button size="sm" variant="outline" className="h-8 gap-1">
+          <Button
+            onClick={handleExportData}
+            size="sm"
+            variant="outline"
+            className="h-8 gap-1"
+          >
             <FileUp className="h-3.5 w-3.5" />
             <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
               Export
@@ -202,7 +218,7 @@ const TableHeader = ({
               ) : (
                 <div className="grid gap-4 py-4">
                   <Button asChild variant={"outline"}>
-                    <Link href={"/categories.xlsx"} download>
+                    <Link href={`/example-${queryKey}-import.xlsx`} download>
                       Download Sample categories Data
                     </Link>
                   </Button>

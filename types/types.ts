@@ -56,6 +56,8 @@ export type IWarehouse = {
   email: string;
   zipCode: string;
   imageUrl: string;
+  status: string;
+  contactPerson: string;
 };
 
 export type ISupplier = {

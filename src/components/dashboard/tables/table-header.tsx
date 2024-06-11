@@ -60,6 +60,7 @@ type TableHeaderProps = {
   href: string;
   linkTitle: string;
   queryKey: string;
+  createBulkPath: string;
 };
 
 const TableHeader = ({
@@ -67,6 +68,7 @@ const TableHeader = ({
   href,
   linkTitle,
   queryKey,
+  createBulkPath,
 }: TableHeaderProps) => {
   const [status, setStatus] = useState<any>({
     label: null,
@@ -81,10 +83,7 @@ const TableHeader = ({
   const [preview, setPreview] = useState(false);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const createBulkCategory = useCreateBulk(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category/bulk`,
-    queryKey,
-  );
+  const createBulkCategory = useCreateBulk(createBulkPath, queryKey);
   const statusOption = [
     { label: "Active", value: "ACTIVE" },
     { label: "Disabled", value: "DISABLED" },
@@ -108,6 +107,7 @@ const TableHeader = ({
           const workSheet = workbook.Sheets[sheetName];
           // Json
           const json = XLSX.utils.sheet_to_json(workSheet);
+
           setJsonData(JSON.stringify(json, null, 2));
         }
       };
@@ -132,7 +132,11 @@ const TableHeader = ({
             XLSX.utils.sheet_to_json(workSheet);
           //Save to the DB
           try {
-            const result = await createBulkCategory.mutateAsync(json);
+            let dataBULK = {
+              [queryKey]: json,
+            };
+
+            const result = await createBulkCategory.mutateAsync(dataBULK);
 
             const sumResultSuccess = result.data.filter(
               (row: any) => row.status_upload !== "Error",

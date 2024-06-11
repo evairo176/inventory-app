@@ -26,6 +26,7 @@ const BrandPage = (props: Props) => {
         linkTitle="Add Brand"
         href="/dashboard/inventory/brands/new"
         queryKey="brands"
+        createBulkPath={`${process.env.NEXT_PUBLIC_BACKEND_URL}/brand/bulk`}
       />
       <DataTable data={data.data} columns={columns} />
     </div>

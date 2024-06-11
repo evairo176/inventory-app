@@ -26,6 +26,7 @@ const CategoryPage = (props: Props) => {
         linkTitle="Add Category"
         href="/dashboard/inventory/categories/new"
         queryKey="categories"
+        createBulkPath={`${process.env.NEXT_PUBLIC_BACKEND_URL}/category/bulk`}
       />
       <DataTable
         filterKeys={["title", "status"]}

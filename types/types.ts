@@ -51,6 +51,7 @@ export type IWarehouse = {
   name: string;
   slug: string;
   country: string;
+  state: string;
   city: string;
   phone: string;
   email: string;

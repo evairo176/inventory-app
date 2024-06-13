@@ -44,7 +44,8 @@ export type IBrand = {
 
 export type IUnit = {
   title: string;
-  abrreviation: string;
+  abbreviation: string;
+  status: string;
 };
 
 export type IWarehouse = {

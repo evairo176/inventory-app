@@ -14,18 +14,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 // import ActionColumn from "@/components/DataTableColumns/ActionColumn";
-// import brandForm from "@/components/Dashboard/Forms/brandForm";
-// import { brandFormProps } from "@/types/types";
+// import unitForm from "@/components/Dashboard/Forms/unitForm";
+// import { unitFormProps } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { z } from "zod";
-import { getAllBrandSchema } from "@/config/form-schema";
+import { getAllUnitSchema } from "@/config/form-schema";
 import SortableColumn from "@/components/datatable-columns/sortable-column";
 import DateColumn from "@/components/datatable-columns/date-column";
 import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
-export const columns: ColumnDef<z.infer<typeof getAllBrandSchema>>[] = [
+export const columns: ColumnDef<z.infer<typeof getAllUnitSchema>>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -49,19 +49,21 @@ export const columns: ColumnDef<z.infer<typeof getAllBrandSchema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "imageUrl",
-    header: "brand Image",
-    cell: ({ row }) => <ImageColumn row={row} accessorKey="imageUrl" />,
-  },
-  {
     accessorKey: "title",
     header: ({ column }) => <SortableColumn column={column} title="Title" />,
+  },
+  {
+    accessorKey: "abbreviation",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Abbreviation" />
+    ),
   },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => <StatusColumn row={row} accessorKey="status" />,
   },
+
   {
     accessorKey: "createdAt",
     header: "Date Created",
@@ -70,15 +72,15 @@ export const columns: ColumnDef<z.infer<typeof getAllBrandSchema>>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const brand = row.original;
+      const unit = row.original;
       return (
         <ActionColumn
           row={row}
-          title="brand"
-          editEndpoint={`brands/update/${brand.id}`}
-          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/brand`}
-          id={brand.id}
-          queryKey="brands"
+          title="unit"
+          editEndpoint={`units/update/${unit.id}`}
+          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/unit`}
+          id={unit.id}
+          queryKey="units"
         />
       );
     },

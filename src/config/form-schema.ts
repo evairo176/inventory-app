@@ -148,6 +148,24 @@ const getAllSupplierSchema = z.object({
   createdAt: z.string(),
 });
 
+const createUnitSchema = z.object({
+  title: z.string().min(2, {
+    message: "title must be at least 2 characters.",
+  }),
+  abbreviation: z.string(),
+  status: z.string().min(2, {
+    message: "status must be at least 2 characters.",
+  }),
+});
+
+const getAllUnitSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  abbreviation: z.string(),
+  status: z.string(),
+  createdAt: z.string(),
+});
+
 export {
   createCategorySchema,
   getAllCategorySchema,
@@ -157,4 +175,6 @@ export {
   getAllWarehouseSchema,
   createSupplierSchema,
   getAllSupplierSchema,
+  createUnitSchema,
+  getAllUnitSchema,
 };

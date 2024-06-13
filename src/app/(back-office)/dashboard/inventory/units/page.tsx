@@ -1,10 +1,11 @@
-import CategoryPage from "@/components/pages/categories/category-page";
 import React from "react";
+
+import UnitPage from "@/components/pages/unit/unit-page";
 
 type Props = {};
 
 const page = (props: Props) => {
-  return <CategoryPage />;
+  return <UnitPage />;
 };
 
 export default page;

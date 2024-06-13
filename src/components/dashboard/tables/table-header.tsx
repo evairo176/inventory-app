@@ -219,7 +219,7 @@ const TableHeader = ({
                 <div className="grid gap-4 py-4">
                   <Button asChild variant={"outline"}>
                     <Link href={`/example-${queryKey}-import.xlsx`} download>
-                      Download Sample categories Data
+                      Download Sample {title} Data
                     </Link>
                   </Button>
 

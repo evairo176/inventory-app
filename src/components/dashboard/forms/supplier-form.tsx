@@ -40,90 +40,84 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
-import { createWarehouseSchema } from "@/config/form-schema";
+import { createSupplierSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
-import { IWarehouse } from "../../../../types/types";
+import { ISupplier } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import { Country, State, City } from "country-state-city";
 
 type Props = {
   editingId?: string;
-  initialWarehouse?: IWarehouse | undefined;
+  initialSupplier?: ISupplier | undefined;
 };
 
-const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
+const SupplierForm = ({ editingId, initialSupplier }: Props) => {
   const router = useRouter();
-  const initialImage = initialWarehouse?.imageUrl || "/placeholder.svg";
+  const initialImage = initialSupplier?.imageUrl || "/placeholder.svg";
   const [imageUrl, setImageUrl] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
   const [country, setCountry] = useState({
-    label: initialWarehouse?.country as string,
-    value: initialWarehouse
+    label: initialSupplier?.country as string,
+    value: initialSupplier
       ? Country.getAllCountries()?.find(
-          (row) => row.name === initialWarehouse?.country,
+          (row) => row.name === initialSupplier?.country,
         )?.isoCode
       : "",
   });
   const [state, setState] = useState({
-    label: initialWarehouse?.state as string,
-    value: initialWarehouse
-      ? State.getAllStates()?.find(
-          (row) => row.name === initialWarehouse?.state,
-        )?.isoCode
+    label: initialSupplier?.state as string,
+    value: initialSupplier
+      ? State.getAllStates()?.find((row) => row.name === initialSupplier?.state)
+          ?.isoCode
       : "",
   });
   const [city, setCity] = useState({
-    label: initialWarehouse?.city as string,
-    value: initialWarehouse?.city,
+    label: initialSupplier?.city as string,
+    value: initialSupplier?.city,
   });
-  const addWarehouse = useCreate(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/warehouse`,
-    "warehouses",
+  const addSupplier = useCreate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/supplier`,
+    "suppliers",
   );
-  const updateWarehouse = useUpdate(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/warehouse`,
+  const updateSupplier = useUpdate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/supplier`,
     editingId as string,
-    "warehouses",
+    "suppliers",
   );
   const status = [
     { label: "Active", value: "ACTIVE" },
     { label: "Disabled", value: "DISABLED" },
   ];
-  // const country = Country?.getCountryByCode("ID");
-  // const state =
-  //   State.getStatesOfCountry(country?.isoCode as string | undefined) ?? [];
-
-  // const city = City.getCitiesOfState(country?.isoCode as string, "PB") ?? [];
-
-  // console.log({ country, state, city });
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof createWarehouseSchema>>({
-    resolver: zodResolver(createWarehouseSchema),
+  const form = useForm<z.infer<typeof createSupplierSchema>>({
+    resolver: zodResolver(createSupplierSchema),
     defaultValues: {
-      name: initialWarehouse?.name,
-      status: initialWarehouse?.status,
-      phone: initialWarehouse?.phone,
-      email: initialWarehouse?.email,
-      country: initialWarehouse?.country,
-      state: initialWarehouse?.state,
-      city: initialWarehouse?.city,
-      zipCode: initialWarehouse?.zipCode,
-      contactPerson: initialWarehouse?.contactPerson,
+      name: initialSupplier?.name,
+      companyName: initialSupplier?.companyName,
+      vatNumber: initialSupplier?.vatNumber,
+      status: initialSupplier?.status,
+      phone: initialSupplier?.phone,
+      email: initialSupplier?.email,
+      country: initialSupplier?.country,
+      state: initialSupplier?.state,
+      city: initialSupplier?.city,
+      postalCode: initialSupplier?.postalCode,
+      address: initialSupplier?.address,
       imageUrl: imageUrl,
     },
   });
 
-  async function onSubmit(data: z.infer<typeof createWarehouseSchema>) {
+  async function onSubmit(data: z.infer<typeof createSupplierSchema>) {
     setIsLoading(true);
     try {
       data.imageUrl = imageUrl;
       let response: any;
       if (editingId) {
-        response = await updateWarehouse.mutateAsync(data);
+        response = await updateSupplier.mutateAsync(data);
       } else {
-        response = await addWarehouse.mutateAsync(data);
+        response = await addSupplier.mutateAsync(data);
       }
 
       toast({
@@ -137,7 +131,7 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
 
       form.reset();
 
-      router.push("/dashboard/inventory/warehouse");
+      router.push("/dashboard/inventory/suppliers");
     } catch (error: any) {
       console.error("There was an error creating the data!", error);
       toast({
@@ -185,14 +179,14 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
             goBack={goBack}
-            module="Warehouse"
+            module="Supplier"
             title={editingId ? "Update" : "Create new"}
           />
           <div className="mt-3 grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
               <Card>
                 <CardHeader>
-                  <CardTitle>Warehouse Name</CardTitle>
+                  <CardTitle>Supplier Name</CardTitle>
                   <CardDescription>
                     Lipsum dolor sit amet, consectetur adipiscing elit
                   </CardDescription>
@@ -222,6 +216,36 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
                             <FormLabel>Phone</FormLabel>
                             <FormControl>
                               <Input placeholder="Phone..." {...field} />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <FormField
+                        control={form.control}
+                        name="vatNumber"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>VAT number</FormLabel>
+                            <FormControl>
+                              <Input placeholder="VAT number..." {...field} />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="companyName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Company Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Company Name..." {...field} />
                             </FormControl>
 
                             <FormMessage />
@@ -459,15 +483,12 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
                     <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                       <FormField
                         control={form.control}
-                        name="contactPerson"
+                        name="address"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Contact Person</FormLabel>
+                            <FormLabel>Address</FormLabel>
                             <FormControl>
-                              <Input
-                                placeholder="Contact Person..."
-                                {...field}
-                              />
+                              <Input placeholder="Address..." {...field} />
                             </FormControl>
 
                             <FormMessage />
@@ -476,12 +497,12 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
                       />
                       <FormField
                         control={form.control}
-                        name="zipCode"
+                        name="postalCode"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Zip code</FormLabel>
+                            <FormLabel>Postal Code</FormLabel>
                             <FormControl>
-                              <Input placeholder="Zip code..." {...field} />
+                              <Input placeholder="Postal code..." {...field} />
                             </FormControl>
 
                             <FormMessage />
@@ -496,7 +517,7 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
             <div className="grid auto-rows-max items-start gap-4 lg:gap-8 ">
               <Card>
                 <CardHeader>
-                  <CardTitle>Warehouse Status</CardTitle>
+                  <CardTitle>Supplier Status</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-6">
@@ -559,7 +580,7 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
                             </Popover>
                             <FormDescription>
                               This is the status that will be used in display
-                              Warehouse.
+                              Supplier.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -570,15 +591,15 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
                 </CardContent>
               </Card>
               <ImageInput
-                title="Warehouse Image"
+                title="Supplier Image"
                 imageUrl={imageUrl}
                 setImageUrl={setImageUrl}
-                endPoint={"warehouseImage"}
+                endPoint={"supplierImage"}
               />
 
               <SubmitButton
                 loading={isLoading}
-                title={editingId ? "Submit Update" : "Save Warehouse"}
+                title={editingId ? "Submit Update" : "Save Supplier"}
               />
             </div>
           </div>
@@ -588,4 +609,4 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
   );
 };
 
-export default WarehouseForm;
+export default SupplierForm;

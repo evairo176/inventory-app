@@ -69,10 +69,11 @@ export type ISupplier = {
   email: string;
   phone: string;
   address: string;
-  city: string;
-  state: string;
-  postalCode: string;
   country: string;
+  state: string;
+  city: string;
+  postalCode: string;
+  status: string;
 };
 
 export type IProduct = {

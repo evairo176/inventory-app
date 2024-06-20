@@ -277,7 +277,9 @@ const SupplierForm = ({ editingId, initialSupplier }: Props) => {
                         name="country"
                         render={({ field }) => (
                           <FormItem className="flex flex-col">
-                            <FormLabel>Country</FormLabel>
+                            <FormLabel className="mb-[5px] mt-[5px]">
+                              Country
+                            </FormLabel>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <FormControl>
@@ -345,7 +347,9 @@ const SupplierForm = ({ editingId, initialSupplier }: Props) => {
                         name="state"
                         render={({ field }) => (
                           <FormItem className="flex flex-col">
-                            <FormLabel>State</FormLabel>
+                            <FormLabel className="mb-[5px] mt-[5px]">
+                              State
+                            </FormLabel>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <FormControl>
@@ -414,7 +418,9 @@ const SupplierForm = ({ editingId, initialSupplier }: Props) => {
                         name="city"
                         render={({ field }) => (
                           <FormItem className="flex flex-col">
-                            <FormLabel>City</FormLabel>
+                            <FormLabel className="mb-[5px] mt-[5px]">
+                              City
+                            </FormLabel>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <FormControl>

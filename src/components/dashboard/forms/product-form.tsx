@@ -40,56 +40,84 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
-import { createCategorySchema } from "@/config/form-schema";
+import { createProductSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
-import { ICategory } from "../../../../types/types";
+import { IBrand, ICategory, IProduct } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
+import AddNewButton from "../add-new-button";
+import SelectInput from "@/components/global/form-inputs/select-input";
 
 type Props = {
   editingId?: string;
-  initialCategory?: ICategory | undefined;
+  initialProduct?: IProduct | undefined;
+  categories?: ICategory[] | undefined;
+  brands: IBrand[] | undefined;
 };
 
-const CategoryForm = ({ editingId, initialCategory }: Props) => {
+const ProductForm = ({
+  editingId,
+  initialProduct,
+  categories,
+  brands,
+}: Props) => {
   const router = useRouter();
-  const initialImage = initialCategory?.imageUrl || "/placeholder.svg";
+  const initialImage = initialProduct?.productThumbnail || "/placeholder.svg";
   const [imageUrl, setImageUrl] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
-  const addCategory = useCreate(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+  const addProduct = useCreate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/product`,
     "categories",
   );
-  const updateCategory = useUpdate(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
+  const updateProduct = useUpdate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/product`,
     editingId as string,
     "categories",
   );
+
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof createProductSchema>>({
+    resolver: zodResolver(createProductSchema),
+    defaultValues: {
+      // title: initialProduct?.title,
+      // description: initialProduct?.description,
+      // status: initialProduct?.status,
+      // imageUrl: imageUrl,
+    },
+  });
+
+  const categoryOptions = categories
+    ? categories?.map((row: ICategory) => {
+        return {
+          label: row.title,
+          value: row.id,
+        };
+      })
+    : [];
+
+  const brandOptions = brands
+    ? brands?.map((row: IBrand) => {
+        return {
+          label: row.title,
+          value: row.id,
+        };
+      })
+    : [];
 
   const status = [
     { label: "Active", value: "ACTIVE" },
     { label: "Disabled", value: "DISABLED" },
   ];
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof createCategorySchema>>({
-    resolver: zodResolver(createCategorySchema),
-    defaultValues: {
-      title: initialCategory?.title,
-      description: initialCategory?.description,
-      status: initialCategory?.status,
-      imageUrl: imageUrl,
-    },
-  });
 
-  async function onSubmit(data: z.infer<typeof createCategorySchema>) {
+  async function onSubmit(data: z.infer<typeof createProductSchema>) {
     setIsLoading(true);
     try {
-      data.imageUrl = imageUrl;
+      data.productThumbnail = imageUrl;
       let response: any;
       if (editingId) {
-        response = await updateCategory.mutateAsync(data);
+        response = await updateProduct.mutateAsync(data);
       } else {
-        response = await addCategory.mutateAsync(data);
+        response = await addProduct.mutateAsync(data);
       }
 
       toast({
@@ -124,49 +152,44 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
             goBack={goBack}
-            module="Category"
+            module="Product"
             title={editingId ? "Update" : "Create new"}
           />
           <div className="mt-3 grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
               <Card>
                 <CardHeader>
-                  <CardTitle>Category Title</CardTitle>
+                  <CardTitle>Product Title</CardTitle>
                   <CardDescription>
                     Lipsum dolor sit amet, consectetur adipiscing elit
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-6">
-                    <div className="grid gap-3">
-                      <FormField
-                        control={form.control}
-                        name="title"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Title</FormLabel>
-                            <FormControl>
-                              <Input placeholder="Title..." {...field} />
-                            </FormControl>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <SelectInput
+                        form={form}
+                        nameInput="categoryId"
+                        title="Category"
+                        options={categoryOptions}
+                      />
 
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                      <SelectInput
+                        form={form}
+                        nameInput="brandId"
+                        title="Brand"
+                        options={brandOptions}
                       />
                     </div>
                     <div className="grid gap-3">
                       <FormField
                         control={form.control}
-                        name="description"
+                        name="productDetails"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Description</FormLabel>
+                            <FormLabel>Product Detail</FormLabel>
                             <FormControl>
-                              <Textarea
-                                id="description"
-                                className="min-h-32"
-                                {...field}
-                              />
+                              <Textarea className="min-h-32" {...field} />
                             </FormControl>
 
                             <FormMessage />
@@ -181,7 +204,7 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
             <div className="grid auto-rows-max items-start gap-4 lg:gap-8 ">
               <Card>
                 <CardHeader>
-                  <CardTitle>Category Status</CardTitle>
+                  <CardTitle>Product Status</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-6">
@@ -244,7 +267,7 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
                             </Popover>
                             <FormDescription>
                               This is the status that will be used in display
-                              category.
+                              product.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -255,15 +278,15 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
                 </CardContent>
               </Card>
               <ImageInput
-                title="Category Image"
+                title="Product Main Image"
                 imageUrl={imageUrl}
                 setImageUrl={setImageUrl}
-                endPoint={"categoryImage"}
+                endPoint={"productImage"}
               />
 
               <SubmitButton
                 loading={isLoading}
-                title={editingId ? "Submit Update" : "Save Category"}
+                title={editingId ? "Submit Update" : "Save Product"}
               />
             </div>
           </div>
@@ -273,4 +296,4 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
   );
 };
 
-export default CategoryForm;
+export default ProductForm;

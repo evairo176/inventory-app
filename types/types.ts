@@ -82,7 +82,7 @@ export type IProduct = {
   slug: string;
   productCode: string;
   stockQty: number;
-  warehousId: string;
+  warehouseId: string;
   supplierId: string;
   brandId: string;
   categoryId: string;
@@ -93,5 +93,7 @@ export type IProduct = {
   productTax: number;
   taxMethod: string;
   productImages: string[];
+  productThumbnail: string;
   productDetails: string;
+  status: string;
 };

@@ -43,12 +43,14 @@ export type IBrand = {
 };
 
 export type IUnit = {
+  id: string;
   title: string;
   abbreviation: string;
   status: string;
 };
 
 export type IWarehouse = {
+  id: string;
   name: string;
   slug: string;
   country: string;
@@ -63,6 +65,7 @@ export type IWarehouse = {
 };
 
 export type ISupplier = {
+  id: string;
   name: string;
   imageUrl: string;
   companyName: string;

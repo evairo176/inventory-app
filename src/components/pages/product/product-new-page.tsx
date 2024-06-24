@@ -20,11 +20,49 @@ const ProductNewPage = () => {
     isLoading: isLoadingBrand,
   } = useGet(`${process.env.NEXT_PUBLIC_BACKEND_URL}/brand`, "brands");
 
-  if (errorCategory || errorBrand) return <div>failed to load</div>;
-  if (isLoadingCategory || isLoadingBrand) return <div>loading...</div>;
+  const {
+    data: dataWarehouse,
+    error: errorWarehouse,
+    isLoading: isLoadingWarehouse,
+  } = useGet(`${process.env.NEXT_PUBLIC_BACKEND_URL}/warehouse`, "warehouses");
+
+  const {
+    data: dataSupplier,
+    error: errorSupplier,
+    isLoading: isLoadingSupplier,
+  } = useGet(`${process.env.NEXT_PUBLIC_BACKEND_URL}/supplier`, "suppliers");
+
+  const {
+    data: dataUnit,
+    error: errorUnit,
+    isLoading: isLoadingUnit,
+  } = useGet(`${process.env.NEXT_PUBLIC_BACKEND_URL}/unit`, "units");
+
+  if (
+    errorCategory ||
+    errorBrand ||
+    errorWarehouse ||
+    errorSupplier ||
+    errorUnit
+  )
+    return <div>failed to load</div>;
+  if (
+    isLoadingCategory ||
+    isLoadingBrand ||
+    isLoadingWarehouse ||
+    isLoadingSupplier ||
+    isLoadingUnit
+  )
+    return <div>loading...</div>;
 
   return (
-    <ProductForm categories={dataCategory?.data} brands={dataBrand?.data} />
+    <ProductForm
+      categories={dataCategory?.data}
+      brands={dataBrand?.data}
+      warehouses={dataWarehouse?.data}
+      suppliers={dataSupplier?.data}
+      units={dataUnit?.data}
+    />
   );
 };
 

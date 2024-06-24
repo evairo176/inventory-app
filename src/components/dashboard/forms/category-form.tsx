@@ -130,14 +130,8 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
           <div className="mt-3 grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
               <Card>
-                <CardHeader>
-                  <CardTitle>Category Title</CardTitle>
-                  <CardDescription>
-                    Lipsum dolor sit amet, consectetur adipiscing elit
-                  </CardDescription>
-                </CardHeader>
                 <CardContent>
-                  <div className="grid gap-6">
+                  <div className="mt-4 grid gap-6 ">
                     <div className="grid gap-3">
                       <FormField
                         control={form.control}

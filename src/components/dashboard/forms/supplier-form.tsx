@@ -185,14 +185,8 @@ const SupplierForm = ({ editingId, initialSupplier }: Props) => {
           <div className="mt-3 grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
             <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
               <Card>
-                <CardHeader>
-                  <CardTitle>Supplier Name</CardTitle>
-                  <CardDescription>
-                    Lipsum dolor sit amet, consectetur adipiscing elit
-                  </CardDescription>
-                </CardHeader>
                 <CardContent>
-                  <div className="grid gap-6">
+                  <div className="mt-4 grid gap-6 ">
                     <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                       <FormField
                         control={form.control}

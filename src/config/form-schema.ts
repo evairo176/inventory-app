@@ -168,7 +168,6 @@ const getAllUnitSchema = z.object({
 
 const createProductSchema = z.object({
   name: z.string(),
-  slug: z.string(),
   productCode: z.string(),
   stockQty: z.number(),
   warehouseId: z.string(),
@@ -180,7 +179,7 @@ const createProductSchema = z.object({
   productPrice: z.number(),
   alertQty: z.number(),
   productTax: z.number(),
-  taxMethod: z.enum(["inclusive", "exclusive"]), // Assuming taxMethod can be "inclusive" or "exclusive"
+  taxMethod: z.enum(["INCLUSIVE", "EXCLUSIVE"]), // Assuming taxMethod can be "inclusive" or "exclusive"
   productImages: z.array(z.string()),
   productThumbnail: z.string(),
   productDetails: z.string(),

@@ -14,18 +14,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 // import ActionColumn from "@/components/DataTableColumns/ActionColumn";
-// import CategoryForm from "@/components/Dashboard/Forms/CategoryForm";
-// import { CategoryFormProps } from "@/types/types";
+// import ProductForm from "@/components/Dashboard/Forms/ProductForm";
+// import { ProductFormProps } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { z } from "zod";
-import { getAllCategorySchema } from "@/config/form-schema";
+import { getAllProductSchema } from "@/config/form-schema";
 import SortableColumn from "@/components/datatable-columns/sortable-column";
 import DateColumn from "@/components/datatable-columns/date-column";
 import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
-export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
+export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -49,13 +49,17 @@ export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "imageUrl",
-    header: "Category Image",
-    cell: ({ row }) => <ImageColumn row={row} accessorKey="imageUrl" />,
+    accessorKey: "productImages",
+    header: "Product Image",
+    cell: ({ row }) => (
+      <ImageColumn index row={row} accessorKey="productImages" />
+    ),
   },
   {
-    accessorKey: "title",
-    header: ({ column }) => <SortableColumn column={column} title="Title" />,
+    accessorKey: "name",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Name Product" />
+    ),
   },
   {
     accessorKey: "status",
@@ -70,14 +74,14 @@ export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const category = row.original;
+      const product = row.original;
       return (
         <ActionColumn
           row={row}
-          title="Category"
-          editEndpoint={`categories/update/${category.id}`}
-          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`}
-          id={category.id}
+          title="Product"
+          editEndpoint={`categories/update/${product.id}`}
+          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/product`}
+          id={product.id}
           queryKey="categories"
         />
       );

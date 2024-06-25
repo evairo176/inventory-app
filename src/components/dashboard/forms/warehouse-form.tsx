@@ -495,11 +495,8 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
             </div>
             <div className="grid auto-rows-max items-start gap-4 lg:gap-8 ">
               <Card>
-                <CardHeader>
-                  <CardTitle>Warehouse Status</CardTitle>
-                </CardHeader>
                 <CardContent>
-                  <div className="grid gap-6">
+                  <div className="mt-4 grid gap-6">
                     <div className="grid gap-3">
                       <FormField
                         control={form.control}

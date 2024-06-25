@@ -66,6 +66,12 @@ import {
 } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import SelectInput from "@/components/global/form-inputs/select-input";
+import {
+  generateBarcode,
+  generateUniqueNineDigitNumber,
+} from "@/utils/barcode";
+import Image from "next/image";
+import MultipleImageInput from "@/components/global/form-inputs/multiple-image-input";
 
 type Props = {
   editingId?: string;
@@ -87,9 +93,15 @@ const ProductForm = ({
   units,
 }: Props) => {
   const router = useRouter();
-  const initialImage = initialProduct?.productThumbnail || "/placeholder.svg";
-  const [imageUrl, setImageUrl] = useState(initialImage);
+  const initialImages = initialProduct?.productImages || [
+    "/placeholder.svg",
+    "/placeholder.svg",
+    "/placeholder.svg",
+  ];
+  const [productImages, setProductImages] = useState(initialImages);
   const [isLoading, setIsLoading] = useState(false);
+  const [barcode, setBarcode] = useState<string>("");
+  const [imageBarcode, setImageBarcode] = useState<string>("");
   const addProduct = useCreate(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/product`,
     "products",
@@ -108,6 +120,8 @@ const ProductForm = ({
       // description: initialProduct?.description,
       // status: initialProduct?.status,
       // imageUrl: imageUrl,
+      productThumbnail: "/placeholder.svg",
+      productImages: productImages,
     },
   });
 
@@ -161,11 +175,18 @@ const ProductForm = ({
     { label: "Disabled", value: "DISABLED" },
   ];
 
+  const taxMethodOptions = [
+    { label: "Inclusive", value: "INCLUSIVE" },
+    { label: "Exclusive", value: "EXCLUSIVE" },
+  ];
+
   async function onSubmit(data: z.infer<typeof createProductSchema>) {
     setIsLoading(true);
     try {
-      data.productThumbnail = imageUrl;
+      data.productImages = productImages;
+      data.productThumbnail = "/placeholder.svg";
       let response: any;
+      console.log({ data });
       if (editingId) {
         response = await updateProduct.mutateAsync(data);
       } else {
@@ -198,6 +219,15 @@ const ProductForm = ({
   function goBack() {
     router.back();
   }
+  function genarateBarcode() {
+    const uniqueNumber = generateUniqueNineDigitNumber(); // Generate a unique barcode number
+    const barcodeDataUrl = generateBarcode(uniqueNumber);
+
+    setBarcode(uniqueNumber);
+    form.setValue("productCode", uniqueNumber);
+    setImageBarcode(barcodeDataUrl);
+  }
+
   return (
     <div>
       <Form {...form}>
@@ -218,7 +248,7 @@ const ProductForm = ({
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Name Producr</FormLabel>
+                            <FormLabel>Name Product</FormLabel>
                             <FormControl>
                               <Input placeholder="Name Product..." {...field} />
                             </FormControl>
@@ -345,6 +375,9 @@ const ProductForm = ({
                                 type="number"
                                 placeholder="Quantity Alert..."
                                 {...field}
+                                onChange={(event) =>
+                                  field.onChange(parseFloat(event.target.value))
+                                }
                               />
                             </FormControl>
 
@@ -356,18 +389,118 @@ const ProductForm = ({
                   </div>
                 </CardContent>
               </Card>
+              <Card>
+                <CardContent>
+                  <div className="mt-4 grid gap-6">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <FormField
+                        control={form.control}
+                        name="productCost"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Product Cost</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder="Product Cost..."
+                                {...field}
+                                onChange={(event) =>
+                                  field.onChange(parseFloat(event.target.value))
+                                }
+                              />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="productPrice"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Product Price</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder="Product Price..."
+                                {...field}
+                                onChange={(event) =>
+                                  field.onChange(parseFloat(event.target.value))
+                                }
+                              />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <div className="mt-4 grid gap-6">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <FormField
+                        control={form.control}
+                        name="productTax"
+                        render={({ field }) => (
+                          <FormItem>
+                            <div className="mb-[10px] mt-[5px] flex items-center gap-2">
+                              <FormLabel>Product Tax (%)</FormLabel>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <button type="button">
+                                      <CircleHelp className="h-4 w-4" />
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>
+                                      The product tax is in percentage eg 3{" "}
+                                      {"=>"} 3%
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </div>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder="Product Tax..."
+                                {...field}
+                                onChange={(event) =>
+                                  field.onChange(parseFloat(event.target.value))
+                                }
+                              />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <SelectInput
+                        form={form}
+                        nameInput="taxMethod"
+                        title="Tax Method"
+                        options={taxMethodOptions}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
             <div className="grid auto-rows-max items-start gap-4 lg:gap-8 ">
               <Card>
-                <CardHeader>
-                  <CardTitle>Product Status</CardTitle>
-                </CardHeader>
                 <CardContent>
-                  <div className="grid gap-6">
+                  <div className="mt-4 grid gap-6">
                     <div className="grid gap-3">
                       <FormField
                         control={form.control}
-                        name="categoryId"
+                        name="status"
                         render={({ field }) => (
                           <FormItem className="flex flex-col">
                             <FormLabel>Status</FormLabel>
@@ -433,12 +566,6 @@ const ProductForm = ({
                   </div>
                 </CardContent>
               </Card>
-              <ImageInput
-                title="Product Main Image"
-                imageUrl={imageUrl}
-                setImageUrl={setImageUrl}
-                endPoint={"productImage"}
-              />
               <Card>
                 <CardContent>
                   <div className="mt-4 grid gap-6">
@@ -475,10 +602,43 @@ const ProductForm = ({
                                 variant={"outline"}
                                 type="button"
                                 size={"sm"}
+                                onClick={genarateBarcode}
                               >
                                 <RefreshCw className="5-4 w-4" />
                               </Button>
                             </div>
+                            {imageBarcode && (
+                              <Image
+                                src={imageBarcode}
+                                width={200}
+                                height={100}
+                                alt={barcode}
+                                className="mx-auto h-[100px] w-[200px]"
+                              />
+                            )}
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1">
+                      <FormField
+                        control={form.control}
+                        name="stockQty"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Product Stock Qty</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder="Product Stock Qty..."
+                                {...field}
+                                onChange={(event) =>
+                                  field.onChange(parseFloat(event.target.value))
+                                }
+                              />
+                            </FormControl>
+
                             <FormMessage />
                           </FormItem>
                         )}
@@ -487,6 +647,12 @@ const ProductForm = ({
                   </div>
                 </CardContent>
               </Card>
+              <MultipleImageInput
+                title="Product Images"
+                imageUrls={productImages}
+                setImageUrls={setProductImages}
+                endPoint={"productImages"}
+              />
               <SubmitButton
                 loading={isLoading}
                 title={editingId ? "Submit Update" : "Save Product"}

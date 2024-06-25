@@ -13,10 +13,10 @@ type Props = {
 const ImageInput = ({ title, imageUrl, setImageUrl, endPoint }: Props) => {
   return (
     <Card className="overflow-hidden">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
       <CardContent>
+        <h2 className="mb-3 mt-4  text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+          {title}
+        </h2>
         <div className="grid gap-2">
           <Image
             alt="Product image"

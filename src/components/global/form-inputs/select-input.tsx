@@ -35,7 +35,7 @@ type SelectInputProps = {
   nameInput: string;
   title: string;
   options: any;
-  href: string;
+  href?: string;
   tooltipText?: string;
   add?: boolean;
 };
@@ -114,7 +114,7 @@ const SelectInput = ({
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button size={"sm"} variant={"outline"} asChild>
-                      <Link href={href}>
+                      <Link href={href as string}>
                         <Plus className="h-4 w-4" />
                       </Link>
                     </Button>

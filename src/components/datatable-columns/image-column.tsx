@@ -4,11 +4,15 @@ import React from "react";
 export default function ImageColumn({
   row,
   accessorKey,
+  index = false,
 }: {
   row: any;
   accessorKey: any;
+  index?: boolean;
 }) {
-  const imageUrl = row.getValue(`${accessorKey}`);
+  const imageUrl = index
+    ? row.getValue(`${accessorKey}`) && row.getValue(`${accessorKey}`)[0]
+    : row.getValue(`${accessorKey}`);
   // const thum = row.getValue(`${accessorKey}`);
   // console.log(imageUrl);
   return (

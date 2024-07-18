@@ -2,13 +2,7 @@
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
   Command,
@@ -62,7 +56,6 @@ import {
   IProduct,
   ISupplier,
   IUnit,
-  IWarehouse,
 } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import SelectInput from "@/components/global/form-inputs/select-input";
@@ -72,13 +65,17 @@ import {
 } from "@/utils/barcode";
 import Image from "next/image";
 import MultipleImageInput from "@/components/global/form-inputs/multiple-image-input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+import { CalendarComponent } from "@/components/ui/calendar";
+import { convertToIsoDatetime } from "@/utils/convert-to-iso-datetime";
 
 type Props = {
   editingId?: string;
   initialProduct?: IProduct | undefined;
   categories?: ICategory[] | undefined;
   brands: IBrand[] | undefined;
-  warehouses: IWarehouse[] | undefined;
   suppliers: ISupplier[] | undefined;
   units: IUnit[] | undefined;
 };
@@ -88,7 +85,6 @@ const ProductForm = ({
   initialProduct,
   categories,
   brands,
-  warehouses,
   suppliers,
   units,
 }: Props) => {
@@ -116,10 +112,6 @@ const ProductForm = ({
   const form = useForm<z.infer<typeof createProductSchema>>({
     resolver: zodResolver(createProductSchema),
     defaultValues: {
-      // title: initialProduct?.title,
-      // description: initialProduct?.description,
-      // status: initialProduct?.status,
-      // imageUrl: imageUrl,
       productThumbnail: "/placeholder.svg",
       productImages: productImages,
     },
@@ -138,15 +130,6 @@ const ProductForm = ({
     ? brands?.map((row: IBrand) => {
         return {
           label: row.title,
-          value: row.id,
-        };
-      })
-    : [];
-
-  const warehouseOptions = warehouses
-    ? warehouses?.map((row: IWarehouse) => {
-        return {
-          label: row.name,
           value: row.id,
         };
       })
@@ -184,9 +167,10 @@ const ProductForm = ({
     setIsLoading(true);
     try {
       data.productImages = productImages;
-      data.productThumbnail = "/placeholder.svg";
+      data.productThumbnail = productImages[0];
+
       let response: any;
-      console.log({ data });
+
       if (editingId) {
         response = await updateProduct.mutateAsync(data);
       } else {
@@ -233,7 +217,8 @@ const ProductForm = ({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
-            goBack={goBack}
+            menu="inventory"
+            submenu="products"
             module="Product"
             title={editingId ? "Update" : "Create new"}
           />
@@ -321,14 +306,52 @@ const ProductForm = ({
                         options={suppliersOptions}
                         href="/dashboard/inventory/suppliers/new"
                       />
-                      <SelectInput
-                        add
-                        tooltipText="Add Warehouses"
-                        form={form}
-                        nameInput="warehouseId"
-                        title="Warehouse"
-                        options={warehouseOptions}
-                        href="/dashboard/inventory/warehouse/new"
+                      <FormField
+                        control={form.control}
+                        name="expiryDate"
+                        render={({ field }) => (
+                          <FormItem className="flex w-full flex-col">
+                            <FormLabel className="mb-[5px] mt-[5px]">
+                              Expiry Date
+                            </FormLabel>
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                      "w-full pl-3 text-left font-normal",
+                                      !field.value && "text-muted-foreground",
+                                    )}
+                                  >
+                                    {field.value ? (
+                                      format(field.value, "PPP")
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-2"
+                                align="start"
+                              >
+                                <CalendarComponent
+                                  initialFocus
+                                  mode="single"
+                                  selected={field.value ?? undefined}
+                                  toYear={2050}
+                                  translate="en"
+                                  onSelect={field.onChange}
+                                  disabled={(date) => date <= new Date()}
+                                />
+                              </PopoverContent>
+                            </Popover>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
                     </div>
                   </div>
@@ -487,6 +510,56 @@ const ProductForm = ({
                         nameInput="taxMethod"
                         title="Tax Method"
                         options={taxMethodOptions}
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent>
+                  <div className="mt-4 grid gap-6">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <FormField
+                        control={form.control}
+                        name="batchNumber"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Batch Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                className="justify-between"
+                                type="text"
+                                placeholder="Batch Number..."
+                                {...field}
+                                onChange={(event) =>
+                                  field.onChange(event.target.value)
+                                }
+                              />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="isFeatured"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-start space-x-3 space-y-0 ">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>Featured</FormLabel>
+                              <FormDescription>
+                                Featured Products will be used in POS
+                              </FormDescription>
+                            </div>
+                          </FormItem>
+                        )}
                       />
                     </div>
                   </div>

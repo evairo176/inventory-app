@@ -1,31 +1,20 @@
 "use client";
 
-import Image from "next/image";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 // import ActionColumn from "@/components/DataTableColumns/ActionColumn";
-// import ProductForm from "@/components/Dashboard/Forms/ProductForm";
-// import { ProductFormProps } from "@/types/types";
+// import warehouseForm from "@/components/Dashboard/Forms/warehouseForm";
+// import { warehouseFormProps } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { z } from "zod";
-import { getAllProductSchema } from "@/config/form-schema";
+import { getAllWarehouseSchema } from "@/config/form-schema";
 import SortableColumn from "@/components/datatable-columns/sortable-column";
 import DateColumn from "@/components/datatable-columns/date-column";
 import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
-export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
+export const columns: ColumnDef<z.infer<typeof getAllWarehouseSchema>>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -49,18 +38,40 @@ export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "productThumbnail",
-    header: "Product Thumbnail",
-    cell: ({ row }) => (
-      <ImageColumn index row={row} accessorKey="productThumbnail" />
-    ),
+    accessorKey: "imageUrl",
+    header: "Warehouse Image",
+    cell: ({ row }) => <ImageColumn row={row} accessorKey="imageUrl" />,
   },
   {
     accessorKey: "name",
-    header: ({ column }) => (
-      <SortableColumn column={column} title="Name Product" />
-    ),
+    header: ({ column }) => <SortableColumn column={column} title="Name" />,
   },
+
+  {
+    accessorKey: "email",
+    header: ({ column }) => <SortableColumn column={column} title="Email" />,
+  },
+  {
+    accessorKey: "phone",
+    header: ({ column }) => <SortableColumn column={column} title="Phone" />,
+  },
+  {
+    accessorKey: "country",
+    header: ({ column }) => <SortableColumn column={column} title="Country" />,
+  },
+  {
+    accessorKey: "state",
+    header: ({ column }) => <SortableColumn column={column} title="State" />,
+  },
+  {
+    accessorKey: "city",
+    header: ({ column }) => <SortableColumn column={column} title="City" />,
+  },
+  {
+    accessorKey: "zipCode",
+    header: ({ column }) => <SortableColumn column={column} title="Zip Code" />,
+  },
+
   {
     accessorKey: "status",
     header: "Status",
@@ -74,15 +85,15 @@ export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const product = row.original;
+      const warehouse = row.original;
       return (
         <ActionColumn
           row={row}
-          title="Product"
-          editEndpoint={`categories/update/${product.id}`}
-          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/product`}
-          id={product.id}
-          queryKey="products"
+          title="warehouse"
+          editEndpoint={`warehouse/update/${warehouse.id}`}
+          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/warehouse`}
+          id={warehouse.id}
+          queryKey="warehouses"
         />
       );
     },

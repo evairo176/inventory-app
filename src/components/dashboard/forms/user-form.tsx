@@ -40,55 +40,68 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
-import { createUnitSchema } from "@/config/form-schema";
+import { createUserSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
-import { IUnit } from "../../../../types/types";
+import { IUser } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
+import { Country, State, City } from "country-state-city";
+import SelectInput from "@/components/global/form-inputs/select-input";
 
 type Props = {
   editingId?: string;
-  initialUnit?: IUnit | undefined;
+  initialUser?: IUser | undefined;
 };
 
-const UnitForm = ({ editingId, initialUnit }: Props) => {
+const UserForm = ({ editingId, initialUser }: Props) => {
   const router = useRouter();
-  // const initialImage = initialUnit?.imageUrl || "/placeholder.svg";
-  // const [imageUrl, setImageUrl] = useState(initialImage);
+  const initialImage = initialUser?.imageUrl || "/placeholder.svg";
+  const [imageUrl, setImageUrl] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
-  const addUnit = useCreate(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/unit`,
-    "units",
+
+  const addUser = useCreate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
+    "users",
   );
-  const updateUnit = useUpdate(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/unit`,
+  const updateUser = useUpdate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
     editingId as string,
-    "units",
+    "users",
   );
   const status = [
     { label: "Active", value: "ACTIVE" },
     { label: "Disabled", value: "DISABLED" },
   ];
+  // const country = Country?.getCountryByCode("ID");
+  // const state =
+  //   State.getStatesOfCountry(country?.isoCode as string | undefined) ?? [];
+
+  // const city = City.getCitiesOfState(country?.isoCode as string, "PB") ?? [];
+
+  // console.log({ country, state, city });
+
   // 1. Define your form.
-  const form = useForm<z.infer<typeof createUnitSchema>>({
-    resolver: zodResolver(createUnitSchema),
+  const form = useForm<z.infer<typeof createUserSchema>>({
+    resolver: zodResolver(createUserSchema),
     defaultValues: {
-      title: initialUnit?.title,
-      abbreviation: initialUnit?.abbreviation,
-      status: initialUnit?.status,
-      // imageUrl: imageUrl,
+      firstName: initialUser?.firstName,
+      lastName: initialUser?.lastName,
+      status: initialUser?.status,
+      phone: initialUser?.phone,
+      email: initialUser?.email,
+      imageUrl: imageUrl,
     },
   });
 
-  async function onSubmit(data: z.infer<typeof createUnitSchema>) {
+  async function onSubmit(data: z.infer<typeof createUserSchema>) {
     setIsLoading(true);
     try {
-      // data.imageUrl = imageUrl;
+      data.imageUrl = imageUrl;
       let response: any;
       if (editingId) {
-        response = await updateUnit.mutateAsync(data);
+        response = await updateUser.mutateAsync(data);
       } else {
-        response = await addUnit.mutateAsync(data);
+        response = await addUser.mutateAsync(data);
       }
 
       toast({
@@ -102,7 +115,7 @@ const UnitForm = ({ editingId, initialUnit }: Props) => {
 
       form.reset();
 
-      router.push("/dashboard/inventory/units");
+      router.push("/dashboard/inventory/user");
     } catch (error: any) {
       console.error("There was an error creating the data!", error);
       toast({
@@ -120,8 +133,8 @@ const UnitForm = ({ editingId, initialUnit }: Props) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
             menu="inventory"
-            submenu="units"
-            module="Unit"
+            submenu="user"
+            module="User"
             title={editingId ? "Update" : "Create new"}
           />
           <div className="mt-3 grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -129,15 +142,29 @@ const UnitForm = ({ editingId, initialUnit }: Props) => {
               <Card>
                 <CardContent>
                   <div className="mt-4 grid gap-6 ">
-                    <div className="grid gap-3">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                       <FormField
                         control={form.control}
-                        name="title"
+                        name="firstName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Title</FormLabel>
+                            <FormLabel>First Name</FormLabel>
                             <FormControl>
-                              <Input placeholder="Title..." {...field} />
+                              <Input placeholder="First Name..." {...field} />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="lastName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Last Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Last Name..." {...field} />
                             </FormControl>
 
                             <FormMessage />
@@ -145,20 +172,68 @@ const UnitForm = ({ editingId, initialUnit }: Props) => {
                         )}
                       />
                     </div>
-                    <div className="grid gap-3">
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                       <FormField
                         control={form.control}
-                        name="abbreviation"
+                        name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Abbreviation</FormLabel>
+                            <FormLabel>Email Address</FormLabel>
                             <FormControl>
-                              <Input placeholder="Abbreviation..." {...field} />
+                              <Input
+                                type="email"
+                                placeholder="Email Address..."
+                                {...field}
+                              />
                             </FormControl>
 
                             <FormMessage />
                           </FormItem>
                         )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone Number</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="text"
+                                placeholder="Phone Number..."
+                                {...field}
+                              />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="password"
+                                placeholder="Password..."
+                                {...field}
+                              />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <SelectInput
+                        form={form}
+                        nameInput="role"
+                        title="Role"
+                        options={status}
                       />
                     </div>
                   </div>
@@ -228,7 +303,7 @@ const UnitForm = ({ editingId, initialUnit }: Props) => {
                             </Popover>
                             <FormDescription>
                               This is the status that will be used in display
-                              Unit.
+                              User.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -238,10 +313,16 @@ const UnitForm = ({ editingId, initialUnit }: Props) => {
                   </div>
                 </CardContent>
               </Card>
+              <ImageInput
+                title="User Image"
+                imageUrl={imageUrl}
+                setImageUrl={setImageUrl}
+                endPoint={"userImage"}
+              />
 
               <SubmitButton
                 loading={isLoading}
-                title={editingId ? "Submit Update" : "Save Unit"}
+                title={editingId ? "Submit Update" : "Save User"}
               />
             </div>
           </div>
@@ -251,4 +332,4 @@ const UnitForm = ({ editingId, initialUnit }: Props) => {
   );
 };
 
-export default UnitForm;
+export default UserForm;

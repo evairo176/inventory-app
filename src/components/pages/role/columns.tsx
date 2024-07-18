@@ -14,18 +14,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 // import ActionColumn from "@/components/DataTableColumns/ActionColumn";
-// import ProductForm from "@/components/Dashboard/Forms/ProductForm";
-// import { ProductFormProps } from "@/types/types";
+// import unitForm from "@/components/Dashboard/Forms/unitForm";
+// import { unitFormProps } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { z } from "zod";
-import { getAllProductSchema } from "@/config/form-schema";
+import { getAllUnitSchema } from "@/config/form-schema";
 import SortableColumn from "@/components/datatable-columns/sortable-column";
 import DateColumn from "@/components/datatable-columns/date-column";
 import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
-export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
+export const columns: ColumnDef<z.infer<typeof getAllUnitSchema>>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -49,16 +49,13 @@ export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "productThumbnail",
-    header: "Product Thumbnail",
-    cell: ({ row }) => (
-      <ImageColumn index row={row} accessorKey="productThumbnail" />
-    ),
+    accessorKey: "title",
+    header: ({ column }) => <SortableColumn column={column} title="Title" />,
   },
   {
-    accessorKey: "name",
+    accessorKey: "abbreviation",
     header: ({ column }) => (
-      <SortableColumn column={column} title="Name Product" />
+      <SortableColumn column={column} title="Abbreviation" />
     ),
   },
   {
@@ -66,6 +63,7 @@ export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
     header: "Status",
     cell: ({ row }) => <StatusColumn row={row} accessorKey="status" />,
   },
+
   {
     accessorKey: "createdAt",
     header: "Date Created",
@@ -74,15 +72,15 @@ export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const product = row.original;
+      const unit = row.original;
       return (
         <ActionColumn
           row={row}
-          title="Product"
-          editEndpoint={`categories/update/${product.id}`}
-          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/product`}
-          id={product.id}
-          queryKey="products"
+          title="unit"
+          editEndpoint={`units/update/${unit.id}`}
+          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/unit`}
+          id={unit.id}
+          queryKey="units"
         />
       );
     },

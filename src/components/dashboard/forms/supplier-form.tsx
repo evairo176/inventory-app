@@ -178,7 +178,8 @@ const SupplierForm = ({ editingId, initialSupplier }: Props) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
-            goBack={goBack}
+            menu="inventory"
+            submenu="suppliers"
             module="Supplier"
             title={editingId ? "Update" : "Create new"}
           />

@@ -121,7 +121,8 @@ const BrandForm = ({ editingId, initialBrand }: Props) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
-            goBack={goBack}
+            menu="inventory"
+            submenu="brands"
             module="Brand"
             title={editingId ? "Update" : "Create new"}
           />

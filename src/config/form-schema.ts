@@ -168,9 +168,11 @@ const getAllUnitSchema = z.object({
 
 const createProductSchema = z.object({
   name: z.string(),
+  isFeatured: z.boolean(),
+  batchNumber: z.string(),
+  expiryDate: z.date(),
   productCode: z.string(),
   stockQty: z.number(),
-  warehouseId: z.string(),
   supplierId: z.string(),
   brandId: z.string(),
   categoryId: z.string(),
@@ -192,9 +194,11 @@ const getAllProductSchema = z.object({
   id: z.string(),
   name: z.string(),
   slug: z.string(),
+  isFeatured: z.boolean(),
+  batchNumber: z.string(),
+  expiryDate: z.date(),
   productCode: z.string(),
   stockQty: z.number(),
-  warehouseId: z.string(),
   supplierId: z.string(),
   brandId: z.string(),
   categoryId: z.string(),
@@ -210,6 +214,48 @@ const getAllProductSchema = z.object({
   status: z.string(),
 });
 
+const createRolesSchema = z.object({
+  title: z.string().min(2, {
+    message: "title must be at least 2 characters.",
+  }),
+  description: z.string(),
+  canManageDashboard: z.boolean().default(false),
+  canManageBrands: z.boolean().default(false),
+  canViewBrands: z.boolean().default(false),
+  canAddBrands: z.boolean().default(false),
+  canUpdateBrands: z.boolean().default(false),
+  canDeleteBrands: z.boolean().default(false),
+  canManageCategories: z.boolean().default(false),
+  canViewCategories: z.boolean().default(false),
+  canAddCategories: z.boolean().default(false),
+  canUpdateCategories: z.boolean().default(false),
+  canDeleteCategories: z.boolean().default(false),
+});
+
+const getAllRolesSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  createdAt: z.string(),
+});
+
+const createUserSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "First Name must be at least 2 characters.",
+  }),
+  lastName: z.string().min(2, {
+    message: "Last Name must be at least 2 characters.",
+  }),
+  email: z.string().email(),
+  phone: z.string(),
+  imageUrl: z.string().optional(),
+  password: z.string(),
+  role: z.string(),
+  status: z.string().min(2, {
+    message: "status must be at least 2 characters.",
+  }),
+});
+
 export {
   createCategorySchema,
   getAllCategorySchema,
@@ -223,4 +269,7 @@ export {
   getAllUnitSchema,
   createProductSchema,
   getAllProductSchema,
+  createRolesSchema,
+  getAllRolesSchema,
+  createUserSchema,
 };

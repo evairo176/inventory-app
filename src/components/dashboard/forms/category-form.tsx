@@ -115,15 +115,13 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
     }
   }
 
-  function goBack() {
-    router.back();
-  }
   return (
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
-            goBack={goBack}
+            menu="inventory"
+            submenu="categories"
             module="Category"
             title={editingId ? "Update" : "Create new"}
           />

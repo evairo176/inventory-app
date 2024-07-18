@@ -21,12 +21,6 @@ const ProductNewPage = () => {
   } = useGet(`${process.env.NEXT_PUBLIC_BACKEND_URL}/brand`, "brands");
 
   const {
-    data: dataWarehouse,
-    error: errorWarehouse,
-    isLoading: isLoadingWarehouse,
-  } = useGet(`${process.env.NEXT_PUBLIC_BACKEND_URL}/warehouse`, "warehouses");
-
-  const {
     data: dataSupplier,
     error: errorSupplier,
     isLoading: isLoadingSupplier,
@@ -38,28 +32,15 @@ const ProductNewPage = () => {
     isLoading: isLoadingUnit,
   } = useGet(`${process.env.NEXT_PUBLIC_BACKEND_URL}/unit`, "units");
 
-  if (
-    errorCategory ||
-    errorBrand ||
-    errorWarehouse ||
-    errorSupplier ||
-    errorUnit
-  )
+  if (errorCategory || errorBrand || errorSupplier || errorUnit)
     return <div>failed to load</div>;
-  if (
-    isLoadingCategory ||
-    isLoadingBrand ||
-    isLoadingWarehouse ||
-    isLoadingSupplier ||
-    isLoadingUnit
-  )
+  if (isLoadingCategory || isLoadingBrand || isLoadingSupplier || isLoadingUnit)
     return <div>loading...</div>;
 
   return (
     <ProductForm
       categories={dataCategory?.data}
       brands={dataBrand?.data}
-      warehouses={dataWarehouse?.data}
       suppliers={dataSupplier?.data}
       units={dataUnit?.data}
     />

@@ -184,7 +184,8 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
-            goBack={goBack}
+            menu="inventory"
+            submenu="warehouse"
             module="Warehouse"
             title={editingId ? "Update" : "Create new"}
           />

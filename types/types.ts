@@ -85,7 +85,7 @@ export type IProduct = {
   slug: string;
   productCode: string;
   stockQty: number;
-  warehouseId: string;
+  // warehouseId: string;
   supplierId: string;
   brandId: string;
   categoryId: string;
@@ -99,4 +99,21 @@ export type IProduct = {
   productThumbnail: string;
   productDetails: string;
   status: string;
+};
+
+export type IRole = {
+  id: string;
+  title: string;
+  description: string;
+};
+export type IUser = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+  role: string;
+  status: string;
+  imageUrl: string;
 };

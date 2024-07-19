@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useGetById } from "@/action/global-action";
+import { useGet, useGetById } from "@/action/global-action";
 import RoleForm from "@/components/dashboard/forms/role-form";
 
 type Props = {
@@ -15,10 +15,25 @@ const RoleUpdatePage = ({ id }: Props) => {
     "roles",
   );
 
-  if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
+  const {
+    data: dataPermission,
+    error: errorPermission,
+    isLoading: isLoadingPermission,
+  } = useGet(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/permission?role=true`,
+    "permission",
+  );
 
-  return <RoleForm editingId={id} initialRole={data?.data} />;
+  if (error || errorPermission) return <div>failed to load</div>;
+  if (isLoading || isLoadingPermission) return <div>loading...</div>;
+
+  return (
+    <RoleForm
+      editingId={id}
+      initialRole={data?.data}
+      permissions={dataPermission?.data}
+    />
+  );
 };
 
 export default RoleUpdatePage;

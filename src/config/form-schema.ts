@@ -215,28 +215,19 @@ const getAllProductSchema = z.object({
 });
 
 const createRolesSchema = z.object({
-  title: z.string().min(2, {
-    message: "title must be at least 2 characters.",
-  }),
-  description: z.string(),
-  canManageDashboard: z.boolean().default(false),
-  canManageBrands: z.boolean().default(false),
-  canViewBrands: z.boolean().default(false),
-  canAddBrands: z.boolean().default(false),
-  canUpdateBrands: z.boolean().default(false),
-  canDeleteBrands: z.boolean().default(false),
-  canManageCategories: z.boolean().default(false),
-  canViewCategories: z.boolean().default(false),
-  canAddCategories: z.boolean().default(false),
-  canUpdateCategories: z.boolean().default(false),
-  canDeleteCategories: z.boolean().default(false),
+  displayName: z.string(),
+  roleName: z.string(),
+  description: z.string().optional(),
+  status: z.string(),
+  permissionIds: z.any(),
 });
 
 const getAllRolesSchema = z.object({
   id: z.string(),
-  title: z.string(),
+  displayName: z.string(),
+  roleName: z.string(),
   description: z.string(),
-  createdAt: z.string(),
+  status: z.string(),
 });
 
 const createUserSchema = z.object({
@@ -256,6 +247,23 @@ const createUserSchema = z.object({
   }),
 });
 
+const getAllPermissionsSchema = z.object({
+  id: z.string(),
+  displayName: z.string(),
+  permissionName: z.string(),
+  description: z.string(),
+  status: z.string(),
+  module: z.string().optional(),
+});
+
+const createPermissionsSchema = z.object({
+  displayName: z.string(),
+  permissionName: z.string(),
+  description: z.string(),
+  status: z.string(),
+  module: z.string().optional(),
+});
+
 export {
   createCategorySchema,
   getAllCategorySchema,
@@ -272,4 +280,6 @@ export {
   createRolesSchema,
   getAllRolesSchema,
   createUserSchema,
+  getAllPermissionsSchema,
+  createPermissionsSchema,
 };

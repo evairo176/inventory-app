@@ -34,6 +34,10 @@ export const sidebarLinks: ISidebarLinks[] = [
         title: "Roles",
         href: "/dashboard/users/roles",
       },
+      {
+        title: "Permissions",
+        href: "/dashboard/users/permissions",
+      },
     ],
   },
   {

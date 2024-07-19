@@ -2,14 +2,18 @@
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Command,
   CommandEmpty,
@@ -35,59 +39,63 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Check, ChevronsUpDown, Upload } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import FormHeader from "./form-header";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
-import { createBrandSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
-import ImageInput from "@/components/global/form-inputs/image-input";
-import { IBrand } from "../../../../types/types";
+import { IPermission } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
+import { permissions } from "@/config/permissions";
+import { createPermissionsSchema } from "@/config/form-schema";
+import SelectInput from "@/components/global/form-inputs/select-input";
+import { sidebarLinks } from "@/config/sidebar";
 
 type Props = {
   editingId?: string;
-  initialBrand?: IBrand | undefined;
+  initialPermission?: IPermission | undefined;
 };
 
-const BrandForm = ({ editingId, initialBrand }: Props) => {
+const PermissionForm = ({ editingId, initialPermission }: Props) => {
   const router = useRouter();
-  const initialImage = initialBrand?.imageUrl || "/placeholder.svg";
-  const [imageUrl, setImageUrl] = useState(initialImage);
+  // const initialImage = initialPermission?.imageUrl || "/placeholder.svg";
+  // const [imageUrl, setImageUrl] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
-  const addBrand = useCreate(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/brand`,
-    "brands",
+  const addPermission = useCreate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/permission`,
+    "permissions",
   );
-  const updateBrand = useUpdate(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/brand`,
+  const updatePermission = useUpdate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/permission`,
     editingId as string,
-    "brands",
+    "permissions",
   );
   const status = [
     { label: "Active", value: "ACTIVE" },
     { label: "Disabled", value: "DISABLED" },
   ];
   // 1. Define your form.
-  const form = useForm<z.infer<typeof createBrandSchema>>({
-    resolver: zodResolver(createBrandSchema),
+  const form = useForm<z.infer<typeof createPermissionsSchema>>({
+    resolver: zodResolver(createPermissionsSchema),
     defaultValues: {
-      title: initialBrand?.title,
-      status: initialBrand?.status,
-      imageUrl: imageUrl,
+      displayName: initialPermission?.displayName,
+      permissionName: initialPermission?.permissionName,
+      description: initialPermission?.description,
+      status: initialPermission?.status,
+      // imageUrl: imageUrl,
     },
   });
 
-  async function onSubmit(data: z.infer<typeof createBrandSchema>) {
+  async function onSubmit(data: z.infer<typeof createPermissionsSchema>) {
     setIsLoading(true);
     try {
-      data.imageUrl = imageUrl;
       let response: any;
       if (editingId) {
-        response = await updateBrand.mutateAsync(data);
+        response = await updatePermission.mutateAsync(data);
       } else {
-        response = await addBrand.mutateAsync(data);
+        response = await addPermission.mutateAsync(data);
       }
 
       toast({
@@ -96,7 +104,7 @@ const BrandForm = ({ editingId, initialBrand }: Props) => {
 
       form.reset();
 
-      router.push("/dashboard/inventory/brands");
+      router.push("/dashboard/users/permissions");
     } catch (error: any) {
       console.error("There was an error creating the data!", error);
       toast({
@@ -108,17 +116,44 @@ const BrandForm = ({ editingId, initialBrand }: Props) => {
     }
   }
 
-  function goBack() {
-    router.back();
-  }
+  const moduleOption = sidebarLinks.flatMap((link) => {
+    if (link.dropdown && link.dropdownMenu) {
+      return link.dropdownMenu.map((dropdownItem) => ({
+        label: dropdownItem.title,
+        value: dropdownItem.title?.toLocaleLowerCase(),
+      }));
+    } else {
+      return { label: link.title, value: link.title?.toLocaleLowerCase() };
+    }
+  });
+
+  const displayNameOption = [
+    {
+      label: "View",
+      value: "View",
+    },
+    {
+      label: "Add",
+      value: "Add",
+    },
+    {
+      label: "Update",
+      value: "Update",
+    },
+    {
+      label: "Delete",
+      value: "Delete",
+    },
+  ];
+
   return (
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
-            menu="inventory"
-            submenu="brands"
-            module="Brand"
+            menu="users"
+            submenu="permissions"
+            module="Permission"
             title={editingId ? "Update" : "Create new"}
           />
           <div className="mt-3 grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
@@ -127,14 +162,51 @@ const BrandForm = ({ editingId, initialBrand }: Props) => {
                 <CardContent>
                   <div className="mt-4 grid gap-6 ">
                     <div className="grid gap-3">
+                      <SelectInput
+                        tooltipText="Add Module"
+                        form={form}
+                        nameInput="module"
+                        title="Module"
+                        options={moduleOption}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                      <SelectInput
+                        tooltipText="Add Display Name"
+                        form={form}
+                        nameInput="displayName"
+                        title="Display Name"
+                        options={displayNameOption}
+                      />
                       <FormField
                         control={form.control}
-                        name="title"
+                        name="permissionName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Title</FormLabel>
+                            <FormLabel>Permission Name</FormLabel>
                             <FormControl>
                               <Input placeholder="Title..." {...field} />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
+                    <div className="grid gap-3">
+                      <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                id="description"
+                                className="min-h-32"
+                                {...field}
+                              />
                             </FormControl>
 
                             <FormMessage />
@@ -209,7 +281,7 @@ const BrandForm = ({ editingId, initialBrand }: Props) => {
                             </Popover>
                             <FormDescription>
                               This is the status that will be used in display
-                              Brand.
+                              Unit.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -219,16 +291,10 @@ const BrandForm = ({ editingId, initialBrand }: Props) => {
                   </div>
                 </CardContent>
               </Card>
-              <ImageInput
-                title="Brand Image"
-                imageUrl={imageUrl}
-                setImageUrl={setImageUrl}
-                endPoint={"brandImage"}
-              />
 
               <SubmitButton
                 loading={isLoading}
-                title={editingId ? "Submit Update" : "Save Brand"}
+                title={editingId ? "Submit Update" : "Save Role"}
               />
             </div>
           </div>
@@ -238,4 +304,4 @@ const BrandForm = ({ editingId, initialBrand }: Props) => {
   );
 };
 
-export default BrandForm;
+export default PermissionForm;

@@ -14,8 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 // import ActionColumn from "@/components/DataTableColumns/ActionColumn";
-// import roleForm from "@/components/Dashboard/Forms/roleForm";
-// import { roleFormProps } from "@/types/types";
+// import permissionForm from "@/components/Dashboard/Forms/permissionForm";
+// import { permissionFormProps } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { z } from "zod";
@@ -24,9 +24,9 @@ import DateColumn from "@/components/datatable-columns/date-column";
 import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
-import { getAllRolesSchema } from "@/config/form-schema";
+import { getAllPermissionsSchema } from "@/config/form-schema";
 
-export const columns: ColumnDef<z.infer<typeof getAllRolesSchema>>[] = [
+export const columns: ColumnDef<z.infer<typeof getAllPermissionsSchema>>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -50,15 +50,25 @@ export const columns: ColumnDef<z.infer<typeof getAllRolesSchema>>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "module",
+    header: ({ column }) => <SortableColumn column={column} title="Module" />,
+  },
+  {
     accessorKey: "displayName",
     header: ({ column }) => (
       <SortableColumn column={column} title="Display Name" />
     ),
   },
   {
-    accessorKey: "roleName",
+    accessorKey: "permissionName",
     header: ({ column }) => (
-      <SortableColumn column={column} title="Role Name" />
+      <SortableColumn column={column} title="Permission Name" />
+    ),
+  },
+  {
+    accessorKey: "description",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Description" />
     ),
   },
   {
@@ -74,15 +84,15 @@ export const columns: ColumnDef<z.infer<typeof getAllRolesSchema>>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const role = row.original;
+      const permission = row.original;
       return (
         <ActionColumn
           row={row}
-          title="role"
-          editEndpoint={`roles/update/${role.id}`}
-          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/role`}
-          id={role.id}
-          queryKey="roles"
+          title="permission"
+          editEndpoint={`permissions/update/${permission.id}`}
+          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/permission`}
+          id={permission.id}
+          queryKey="permissions"
         />
       );
     },

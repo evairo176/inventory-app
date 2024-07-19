@@ -3,18 +3,14 @@ export const permissions = [
     model: "Dashboard",
     permissions: [
       {
-        display: "All",
-        name: "canManageDashboard",
+        display: "Dashboard",
+        name: "canAccessDashboard",
       },
     ],
   },
   {
     model: "Brands",
     permissions: [
-      {
-        display: "All",
-        name: "canManageBrands",
-      },
       {
         display: "View",
         name: "canViewBrands",
@@ -36,10 +32,6 @@ export const permissions = [
   {
     model: "Categories",
     permissions: [
-      {
-        display: "All",
-        name: "canManageCategories",
-      },
       {
         display: "View",
         name: "canViewCategories",

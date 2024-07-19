@@ -2,13 +2,7 @@
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
   Command,
@@ -45,7 +39,6 @@ import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
 import { IUser } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
-import { Country, State, City } from "country-state-city";
 import SelectInput from "@/components/global/form-inputs/select-input";
 
 type Props = {
@@ -72,13 +65,6 @@ const UserForm = ({ editingId, initialUser }: Props) => {
     { label: "Active", value: "ACTIVE" },
     { label: "Disabled", value: "DISABLED" },
   ];
-  // const country = Country?.getCountryByCode("ID");
-  // const state =
-  //   State.getStatesOfCountry(country?.isoCode as string | undefined) ?? [];
-
-  // const city = City.getCitiesOfState(country?.isoCode as string, "PB") ?? [];
-
-  // console.log({ country, state, city });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof createUserSchema>>({
@@ -106,11 +92,6 @@ const UserForm = ({ editingId, initialUser }: Props) => {
 
       toast({
         title: `${response.message}`,
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        ),
       });
 
       form.reset();
@@ -224,7 +205,6 @@ const UserForm = ({ editingId, initialUser }: Props) => {
                                 {...field}
                               />
                             </FormControl>
-
                             <FormMessage />
                           </FormItem>
                         )}

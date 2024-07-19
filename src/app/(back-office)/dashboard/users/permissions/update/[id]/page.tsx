@@ -1,6 +1,6 @@
 import React from "react";
 
-import RoleUpdatePage from "@/components/pages/role/role-update-page";
+import PermissionUpdatePage from "@/components/pages/permission/permission-update-page";
 
 type Props = {
   params: {
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const page = ({ params: { id } }: Props) => {
-  return <RoleUpdatePage id={id} />;
+  return <PermissionUpdatePage id={id} />;
 };
 
 export default page;

@@ -103,8 +103,11 @@ export type IProduct = {
 
 export type IRole = {
   id: string;
-  title: string;
+  displayName: string;
+  roleName: string;
   description: string;
+  status: string;
+  permissions: any;
 };
 export type IUser = {
   id: string;
@@ -116,4 +119,12 @@ export type IUser = {
   role: string;
   status: string;
   imageUrl: string;
+};
+export type IPermission = {
+  id: string;
+  displayName: string;
+  permissionName: string;
+  description: string;
+  status: string;
+  module: string;
 };

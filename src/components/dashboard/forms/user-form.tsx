@@ -28,27 +28,30 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Check, ChevronsUpDown, Upload } from "lucide-react";
+import { Check, ChevronsUpDown, EyeOff, Upload } from "lucide-react";
 import FormHeader from "./form-header";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
-import { createUserSchema } from "@/config/form-schema";
+import { createUsersSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
-import { IUser } from "../../../../types/types";
+import { IPermission, IRole, IUser } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import SelectInput from "@/components/global/form-inputs/select-input";
+import PasswordTextInput from "@/components/global/form-inputs/password-text-input";
 
 type Props = {
   editingId?: string;
   initialUser?: IUser | undefined;
+  roles: IRole[];
 };
 
-const UserForm = ({ editingId, initialUser }: Props) => {
+const UserForm = ({ editingId, initialUser, roles }: Props) => {
   const router = useRouter();
   const initialImage = initialUser?.imageUrl || "/placeholder.svg";
+  const initialRole = initialUser?.roleId || "";
   const [imageUrl, setImageUrl] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -61,25 +64,23 @@ const UserForm = ({ editingId, initialUser }: Props) => {
     editingId as string,
     "users",
   );
-  const status = [
-    { label: "Active", value: "ACTIVE" },
-    { label: "Disabled", value: "DISABLED" },
-  ];
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof createUserSchema>>({
-    resolver: zodResolver(createUserSchema),
+  const form = useForm<z.infer<typeof createUsersSchema>>({
+    resolver: zodResolver(createUsersSchema),
     defaultValues: {
       firstName: initialUser?.firstName,
       lastName: initialUser?.lastName,
       status: initialUser?.status,
       phone: initialUser?.phone,
       email: initialUser?.email,
+      password: initialUser?.password,
       imageUrl: imageUrl,
+      roleId: initialRole,
     },
   });
-
-  async function onSubmit(data: z.infer<typeof createUserSchema>) {
+  console.log({ initialUser });
+  async function onSubmit(data: z.infer<typeof createUsersSchema>) {
     setIsLoading(true);
     try {
       data.imageUrl = imageUrl;
@@ -96,7 +97,7 @@ const UserForm = ({ editingId, initialUser }: Props) => {
 
       form.reset();
 
-      router.push("/dashboard/inventory/user");
+      router.push("/dashboard/users");
     } catch (error: any) {
       console.error("There was an error creating the data!", error);
       toast({
@@ -108,13 +109,21 @@ const UserForm = ({ editingId, initialUser }: Props) => {
     }
   }
 
+  const status = [
+    { label: "Active", value: "ACTIVE" },
+    { label: "Disabled", value: "DISABLED" },
+  ];
+  const roleOptions = roles?.map((row) => {
+    return { label: row.displayName, value: row.id };
+  });
+
   return (
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
-            menu="inventory"
-            submenu="user"
+            menu="users"
+            submenu=""
             module="User"
             title={editingId ? "Update" : "Create new"}
           />
@@ -192,28 +201,12 @@ const UserForm = ({ editingId, initialUser }: Props) => {
                       />
                     </div>
                     <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                      <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="password"
-                                placeholder="Password..."
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      <PasswordTextInput form={form} name="password" />
                       <SelectInput
                         form={form}
-                        nameInput="role"
+                        nameInput="roleId"
                         title="Role"
-                        options={status}
+                        options={roleOptions}
                       />
                     </div>
                   </div>
@@ -225,69 +218,11 @@ const UserForm = ({ editingId, initialUser }: Props) => {
                 <CardContent>
                   <div className="mt-4 grid gap-6">
                     <div className="grid gap-3">
-                      <FormField
-                        control={form.control}
-                        name="status"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-col">
-                            <FormLabel>Status</FormLabel>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    className={cn(
-                                      "w-full justify-between",
-                                      !field.value && "text-muted-foreground",
-                                    )}
-                                  >
-                                    {field.value
-                                      ? status.find(
-                                          (stat) => stat.value === field.value,
-                                        )?.label
-                                      : "Select status"}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className=" p-0">
-                                <Command>
-                                  <CommandInput placeholder="Search status..." />
-                                  <CommandEmpty>No status found.</CommandEmpty>
-                                  <CommandGroup>
-                                    <CommandList>
-                                      {status.map((stat) => (
-                                        <CommandItem
-                                          value={stat.label}
-                                          key={stat.value}
-                                          onSelect={() => {
-                                            form.setValue("status", stat.value);
-                                          }}
-                                        >
-                                          <Check
-                                            className={cn(
-                                              "mr-2 h-4 w-4",
-                                              stat.value === field.value
-                                                ? "opacity-100"
-                                                : "opacity-0",
-                                            )}
-                                          />
-                                          {stat.label}
-                                        </CommandItem>
-                                      ))}
-                                    </CommandList>
-                                  </CommandGroup>
-                                </Command>
-                              </PopoverContent>
-                            </Popover>
-                            <FormDescription>
-                              This is the status that will be used in display
-                              User.
-                            </FormDescription>
-                            <FormMessage />
-                          </FormItem>
-                        )}
+                      <SelectInput
+                        form={form}
+                        nameInput="status"
+                        title="status"
+                        options={status}
                       />
                     </div>
                   </div>

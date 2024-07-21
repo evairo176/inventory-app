@@ -1,6 +1,6 @@
 import React from "react";
 
-import WarehouseUpdatePage from "@/components/pages/warehouse/warehouse-update-page";
+import UserUpdatePage from "@/components/pages/user/user-update-page";
 
 type Props = {
   params: {
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const page = ({ params: { id } }: Props) => {
-  return <WarehouseUpdatePage id={id} />;
+  return <UserUpdatePage id={id} />;
 };
 
 export default page;

@@ -1,10 +1,11 @@
-import WarehousePage from "@/components/pages/warehouse/warehouse-page";
+import UserPage from "@/components/pages/user/user-page";
+
 import React from "react";
 
 type Props = {};
 
 const page = (props: Props) => {
-  return <WarehousePage />;
+  return <UserPage />;
 };
 
 export default page;

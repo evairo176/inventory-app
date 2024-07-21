@@ -119,6 +119,7 @@ export type IUser = {
   role: string;
   status: string;
   imageUrl: string;
+  roleId: string;
 };
 export type IPermission = {
   id: string;

@@ -1,25 +1,32 @@
 "use client";
 
 import React from "react";
-import BrandForm from "@/components/dashboard/forms/brand-form";
-import { useGetById } from "@/action/global-action";
-import WarehouseForm from "@/components/dashboard/forms/warehouse-form";
+import { useGet, useGetById } from "@/action/global-action";
+import UserForm from "@/components/dashboard/forms/user-form";
 
 type Props = {
   id: string;
 };
 
-const WarehouseUpdatePage = ({ id }: Props) => {
+const UserUpdatePage = ({ id }: Props) => {
   const { data, error, isLoading } = useGetById(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/warehouse`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
     id,
-    "warehouses",
+    "users",
   );
 
-  if (error) return <div>failed to load</div>;
-  if (isLoading) return <div>loading...</div>;
+  const {
+    data: dataRole,
+    error: errorRole,
+    isLoading: isLoadingRole,
+  } = useGet(`${process.env.NEXT_PUBLIC_BACKEND_URL}/role`, "roles");
 
-  return <WarehouseForm editingId={id} initialWarehouse={data?.data} />;
+  if (error || errorRole) return <div>failed to load</div>;
+  if (isLoading || isLoadingRole) return <div>loading...</div>;
+
+  return (
+    <UserForm editingId={id} initialUser={data?.data} roles={dataRole?.data} />
+  );
 };
 
-export default WarehouseUpdatePage;
+export default UserUpdatePage;

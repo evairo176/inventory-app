@@ -3,18 +3,18 @@
 import { Checkbox } from "@/components/ui/checkbox";
 
 // import ActionColumn from "@/components/DataTableColumns/ActionColumn";
-// import warehouseForm from "@/components/Dashboard/Forms/warehouseForm";
-// import { warehouseFormProps } from "@/types/types";
+// import userForm from "@/components/Dashboard/Forms/userForm";
+// import { userFormProps } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { z } from "zod";
-import { getAllWarehouseSchema } from "@/config/form-schema";
+import { getAllUsersSchema } from "@/config/form-schema";
 import SortableColumn from "@/components/datatable-columns/sortable-column";
 import DateColumn from "@/components/datatable-columns/date-column";
 import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
-export const columns: ColumnDef<z.infer<typeof getAllWarehouseSchema>>[] = [
+export const columns: ColumnDef<z.infer<typeof getAllUsersSchema>>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -39,14 +39,13 @@ export const columns: ColumnDef<z.infer<typeof getAllWarehouseSchema>>[] = [
   },
   {
     accessorKey: "imageUrl",
-    header: "Warehouse Image",
+    header: "User Image",
     cell: ({ row }) => <ImageColumn row={row} accessorKey="imageUrl" />,
   },
   {
     accessorKey: "name",
     header: ({ column }) => <SortableColumn column={column} title="Name" />,
   },
-
   {
     accessorKey: "email",
     header: ({ column }) => <SortableColumn column={column} title="Email" />,
@@ -56,22 +55,9 @@ export const columns: ColumnDef<z.infer<typeof getAllWarehouseSchema>>[] = [
     header: ({ column }) => <SortableColumn column={column} title="Phone" />,
   },
   {
-    accessorKey: "country",
-    header: ({ column }) => <SortableColumn column={column} title="Country" />,
+    accessorKey: "role.displayName",
+    header: ({ column }) => <SortableColumn column={column} title="Role" />,
   },
-  {
-    accessorKey: "state",
-    header: ({ column }) => <SortableColumn column={column} title="State" />,
-  },
-  {
-    accessorKey: "city",
-    header: ({ column }) => <SortableColumn column={column} title="City" />,
-  },
-  {
-    accessorKey: "zipCode",
-    header: ({ column }) => <SortableColumn column={column} title="Zip Code" />,
-  },
-
   {
     accessorKey: "status",
     header: "Status",
@@ -85,15 +71,15 @@ export const columns: ColumnDef<z.infer<typeof getAllWarehouseSchema>>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const warehouse = row.original;
+      const user = row.original;
       return (
         <ActionColumn
           row={row}
-          title="warehouse"
-          editEndpoint={`warehouse/update/${warehouse.id}`}
-          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/warehouse`}
-          id={warehouse.id}
-          queryKey="warehouses"
+          title="user"
+          editEndpoint={`users/update/${user.id}`}
+          deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/user`}
+          id={user.id}
+          queryKey="users"
         />
       );
     },

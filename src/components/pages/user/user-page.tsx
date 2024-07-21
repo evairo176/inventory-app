@@ -10,10 +10,10 @@ import { useGet } from "@/action/global-action";
 
 type Props = {};
 
-const WarehousePage = (props: Props) => {
+const UserPage = (props: Props) => {
   const { data, error, isLoading } = useGet(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/warehouse`,
-    "warehouses",
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/user`,
+    "users",
   );
 
   if (error) return <div>failed to load</div>;
@@ -23,15 +23,15 @@ const WarehousePage = (props: Props) => {
     <div className="space-y-3">
       <TableHeader
         data={data.data}
-        title="Warehouse"
-        linkTitle="Add Warehouse"
-        href="/dashboard/inventory/warehouse/new"
-        queryKey="warehouses"
-        createBulkPath={`${process.env.NEXT_PUBLIC_BACKEND_URL}/warehouse/bulk`}
+        title="User"
+        linkTitle="Add User"
+        href="/dashboard/users/new"
+        queryKey="users"
+        createBulkPath={`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/bulk`}
       />
       <DataTable data={data.data} columns={columns} />
     </div>
   );
 };
 
-export default WarehousePage;
+export default UserPage;

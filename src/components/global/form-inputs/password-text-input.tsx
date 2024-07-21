@@ -67,7 +67,7 @@ const PasswordTextInput = ({ form, name }: Props) => {
                     <Button
                       onClick={handleGenerateRandomPassword}
                       type="button"
-                      size="icon"
+                      size="sm"
                       variant={"outline"}
                     >
                       <RefreshCcw className="h-4 w-4" />

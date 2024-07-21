@@ -263,6 +263,22 @@ const createUsersSchema = z.object({
   }),
 });
 
+const updateUsersSchema = z.object({
+  firstName: z.string().min(2, {
+    message: "First Name must be at least 2 characters.",
+  }),
+  lastName: z.string().min(2, {
+    message: "Last Name must be at least 2 characters.",
+  }),
+  email: z.string().email(),
+  phone: z.string(),
+  imageUrl: z.string().optional(),
+  roleId: z.string(),
+  status: z.string().min(2, {
+    message: "status must be at least 2 characters.",
+  }),
+});
+
 const getAllUsersSchema = z.object({
   id: z.string(),
   firstName: z.string().min(2, {
@@ -330,6 +346,7 @@ export {
   createRolesSchema,
   getAllRolesSchema,
   createUsersSchema,
+  updateUsersSchema,
   getAllUsersSchema,
   getAllPermissionsSchema,
   createPermissionsSchema,

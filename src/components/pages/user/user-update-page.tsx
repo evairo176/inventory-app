@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useGet, useGetById } from "@/action/global-action";
-import UserForm from "@/components/dashboard/forms/user-form";
+import UpdateUserForm from "@/components/dashboard/forms/update-user-form";
 
 type Props = {
   id: string;
@@ -25,7 +25,11 @@ const UserUpdatePage = ({ id }: Props) => {
   if (isLoading || isLoadingRole) return <div>loading...</div>;
 
   return (
-    <UserForm editingId={id} initialUser={data?.data} roles={dataRole?.data} />
+    <UpdateUserForm
+      editingId={id}
+      initialUser={data?.data}
+      roles={dataRole?.data}
+    />
   );
 };
 

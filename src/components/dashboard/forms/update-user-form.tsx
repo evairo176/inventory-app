@@ -34,7 +34,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "@/components/ui/use-toast";
-import { createUsersSchema } from "@/config/form-schema";
+import { updateUsersSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
 import { IPermission, IRole, IUser } from "../../../../types/types";
@@ -48,7 +48,7 @@ type Props = {
   roles: IRole[];
 };
 
-const UserForm = ({ editingId, initialUser, roles }: Props) => {
+const UpdateUserForm = ({ editingId, initialUser, roles }: Props) => {
   const router = useRouter();
   const initialImage = initialUser?.imageUrl || "/placeholder.svg";
   const initialRole = initialUser?.roleId || "";
@@ -66,21 +66,20 @@ const UserForm = ({ editingId, initialUser, roles }: Props) => {
   );
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof createUsersSchema>>({
-    resolver: zodResolver(createUsersSchema),
+  const form = useForm<z.infer<typeof updateUsersSchema>>({
+    resolver: zodResolver(updateUsersSchema),
     defaultValues: {
       firstName: initialUser?.firstName,
       lastName: initialUser?.lastName,
       status: initialUser?.status,
       phone: initialUser?.phone,
       email: initialUser?.email,
-      password: initialUser?.password,
       imageUrl: imageUrl,
       roleId: initialRole,
     },
   });
 
-  async function onSubmit(data: z.infer<typeof createUsersSchema>) {
+  async function onSubmit(data: z.infer<typeof updateUsersSchema>) {
     setIsLoading(true);
     try {
       data.imageUrl = imageUrl;
@@ -253,4 +252,4 @@ const UserForm = ({ editingId, initialUser, roles }: Props) => {
   );
 };
 
-export default UserForm;
+export default UpdateUserForm;

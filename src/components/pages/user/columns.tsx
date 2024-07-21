@@ -1,10 +1,6 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-
-// import ActionColumn from "@/components/DataTableColumns/ActionColumn";
-// import userForm from "@/components/Dashboard/Forms/userForm";
-// import { userFormProps } from "@/types/types";
 import { ColumnDef } from "@tanstack/react-table";
 
 import { z } from "zod";
@@ -14,6 +10,7 @@ import DateColumn from "@/components/datatable-columns/date-column";
 import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
+import InviteUserColumn from "@/components/datatable-columns/invite-user-column";
 export const columns: ColumnDef<z.infer<typeof getAllUsersSchema>>[] = [
   {
     id: "select",
@@ -57,6 +54,16 @@ export const columns: ColumnDef<z.infer<typeof getAllUsersSchema>>[] = [
   {
     accessorKey: "role.displayName",
     header: ({ column }) => <SortableColumn column={column} title="Role" />,
+  },
+  {
+    id: "select",
+    header: "Invite",
+    cell: ({ row }) => {
+      const user = row.original;
+      return <InviteUserColumn user={user} />;
+    },
+    enableSorting: false,
+    enableHiding: false,
   },
   {
     accessorKey: "status",

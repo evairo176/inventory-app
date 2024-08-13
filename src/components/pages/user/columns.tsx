@@ -11,6 +11,7 @@ import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
 import InviteUserColumn from "@/components/datatable-columns/invite-user-column";
+import { IUser } from "../../../../types/types";
 export const columns: ColumnDef<z.infer<typeof getAllUsersSchema>>[] = [
   {
     id: "select",
@@ -56,11 +57,11 @@ export const columns: ColumnDef<z.infer<typeof getAllUsersSchema>>[] = [
     header: ({ column }) => <SortableColumn column={column} title="Role" />,
   },
   {
-    id: "select",
+    accessorKey: "inviteSent",
     header: "Invite",
     cell: ({ row }) => {
-      const user = row.original;
-      return <InviteUserColumn user={user} />;
+      const user: IUser = row.original as any;
+      return <InviteUserColumn queryKey="users" user={user} />;
     },
     enableSorting: false,
     enableHiding: false,

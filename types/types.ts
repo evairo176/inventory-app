@@ -116,10 +116,12 @@ export type IUser = {
   email: string;
   phone: string;
   password: string;
-  role: string;
+  plainPassword: string;
+  role: IRole;
   status: string;
   imageUrl: string;
   roleId: string;
+  inviteSent: boolean;
 };
 export type IPermission = {
   id: string;

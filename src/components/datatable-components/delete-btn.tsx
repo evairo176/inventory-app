@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash } from "lucide-react";
 
-import { toast } from "../ui/use-toast";
 import { useDeleteBrand } from "@/action/brand-action";
 import { useDelete } from "@/action/global-action";
+import { toast } from "sonner";
 
 type Props = {
   open: boolean;
@@ -33,17 +33,12 @@ const DeleteBtn = ({ open, setOpen, id, deletePath, queryKey }: Props) => {
     try {
       const response = await deleteBrand.mutateAsync();
 
-      toast({
-        title: response.message,
-      });
+      toast.success(response.message);
 
       setOpen(false);
     } catch (error: any) {
       console.error("There was an error deleting the data!", error);
-      toast({
-        title: error?.message,
-        variant: "destructive",
-      });
+      toast.error(`${error?.message}`);
     } finally {
       setLoading(false);
     }

@@ -61,6 +61,7 @@ export const columns: ColumnDef<z.infer<typeof getAllUsersSchema>>[] = [
     header: "Invite",
     cell: ({ row }) => {
       const user: IUser = row.original as any;
+
       return <InviteUserColumn queryKey="users" user={user} />;
     },
     enableSorting: false,

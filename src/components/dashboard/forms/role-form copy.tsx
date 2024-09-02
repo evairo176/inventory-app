@@ -44,7 +44,7 @@ import FormHeader from "./form-header";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import { IRole } from "../../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
@@ -111,10 +111,7 @@ const RoleForm = ({ editingId, initialRole }: Props) => {
       // router.push("/dashboard/inventory/roles");
     } catch (error: any) {
       console.error("There was an error creating the data!", error);
-      toast({
-        title: error?.message,
-        variant: "destructive",
-      });
+      toast.error(`${error?.message}`);
     } finally {
       setIsLoading(false);
     }

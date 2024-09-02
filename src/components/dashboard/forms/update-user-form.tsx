@@ -33,7 +33,7 @@ import FormHeader from "./form-header";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { updateUsersSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
@@ -90,19 +90,14 @@ const UpdateUserForm = ({ editingId, initialUser, roles }: Props) => {
         response = await addUser.mutateAsync(data);
       }
 
-      toast({
-        title: `${response.message}`,
-      });
+      toast.success(`${response.message}`);
 
       form.reset();
 
       router.push("/dashboard/users");
     } catch (error: any) {
       console.error("There was an error creating the data!", error);
-      toast({
-        title: error?.message,
-        variant: "destructive",
-      });
+      toast.error(`${error?.message}`);
     } finally {
       setIsLoading(false);
     }

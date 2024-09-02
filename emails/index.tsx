@@ -41,7 +41,7 @@ export const InviteEmailTemplate = ({
   role,
   inviteLink,
 }: InviteEmailTemplateProps) => {
-  const previewText = `Join Stockify Inventory Management System as${role}`;
+  const previewText = `Join Stockify Inventory Management System as ${role}`;
 
   return (
     <Html>

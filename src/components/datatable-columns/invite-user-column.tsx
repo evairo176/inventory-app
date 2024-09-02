@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { IUser } from "../../../types/types";
 import { inviteUser } from "@/action/email-action";
-import { toast } from "../ui/use-toast";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 type InviteUserColumnProps = {
   user: IUser;
@@ -19,17 +19,14 @@ const InviteUserColumn = ({ user, queryKey }: InviteUserColumnProps) => {
   const queryClient = useQueryClient();
   const sendInvite = async () => {
     if (user.inviteSent) {
-      toast({
-        variant: "destructive",
-        title: "Invite sent",
-      });
+      toast.info("Invite sent");
       return;
     }
     setLoading(true);
     try {
       const data = {
         firstName: user.firstName,
-        password: user.plainPassword,
+        password: user.password,
         invitedByUsername: "Evairo",
         invitedByEmail: "info@evairo.com",
         loginEmail: user.email,
@@ -48,12 +45,10 @@ const InviteUserColumn = ({ user, queryKey }: InviteUserColumnProps) => {
 
       queryClient.invalidateQueries({ queryKey: [`${queryKey}`] });
 
-      toast({
-        variant: "default",
-        title: "Invite sent successfully",
-      });
+      toast.success("Invite sent successfully");
     } catch (error) {
       console.log(error);
+      toast.error("Error sent");
     } finally {
       setLoading(false);
     }

@@ -52,7 +52,7 @@ import { formatFileSize } from "@/utils/format-file-size";
 import * as XLSX from "xlsx";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ExcelCategoryProps } from "../../../../types/types";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { useCreateBulk } from "@/action/global-action";
 import exportDataToExcel from "@/lib/export-data-to-excel";
 
@@ -144,19 +144,14 @@ const TableHeader = ({
             const sumResultSuccess = result.data.filter(
               (row: any) => row.status_upload !== "Error",
             ).length;
-            toast({
-              title: `Import ${sumResultSuccess} data excel successfully`,
-            });
+            toast.success(`Import ${sumResultSuccess} data excel successfully`);
             setExcelFile(null);
             setJsonData("");
             setPreview(false);
             setOpen(false);
           } catch (error) {
             console.log(error);
-            toast({
-              title: "Failed to import",
-              variant: "destructive",
-            });
+            toast.error("Failed to import");
           } finally {
             setLoading(false);
           }

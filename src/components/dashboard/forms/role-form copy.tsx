@@ -46,7 +46,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "sonner";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
-import { IRole } from "../../../../types/types";
+import { IRole } from "../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import { createRolesSchema } from "@/config/form-schema";
 import { permissions } from "@/config/permissions";

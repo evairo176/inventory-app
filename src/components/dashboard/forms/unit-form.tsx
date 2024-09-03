@@ -43,7 +43,7 @@ import { toast } from "sonner";
 import { createUnitSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
-import { IUnit } from "../../../../types/types";
+import { IUnit } from "../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 
 type Props = {
@@ -82,26 +82,28 @@ const UnitForm = ({ editingId, initialUnit }: Props) => {
 
   async function onSubmit(data: z.infer<typeof createUnitSchema>) {
     setIsLoading(true);
-    try {
-      // data.imageUrl = imageUrl;
-      let response: any;
-      if (editingId) {
-        response = await updateUnit.mutateAsync(data);
-      } else {
-        response = await addUnit.mutateAsync(data);
-      }
 
-      toast.success(`${response.message}`);
-
-      form.reset();
-
-      router.push("/dashboard/inventory/units");
-    } catch (error: any) {
-      console.error("There was an error creating the data!", error);
-      toast.error(`${error?.message}`);
-    } finally {
-      setIsLoading(false);
+    // data.imageUrl = imageUrl;
+    let responsePromise: Promise<any>;
+    if (editingId) {
+      responsePromise = updateUnit.mutateAsync(data);
+    } else {
+      responsePromise = addUnit.mutateAsync(data);
     }
+
+    toast.promise(responsePromise, {
+      loading: "Loading...",
+      success: (data: any) => {
+        form.reset();
+        router.push("/dashboard/inventory/units");
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+      error: (data: any) => {
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+    });
   }
 
   return (

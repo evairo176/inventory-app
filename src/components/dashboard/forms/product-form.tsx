@@ -56,7 +56,7 @@ import {
   IProduct,
   ISupplier,
   IUnit,
-} from "../../../../types/types";
+} from "../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import SelectInput from "@/components/global/form-inputs/select-input";
 import {
@@ -165,29 +165,28 @@ const ProductForm = ({
 
   async function onSubmit(data: z.infer<typeof createProductSchema>) {
     setIsLoading(true);
-    try {
-      data.productImages = productImages;
-      data.productThumbnail = productImages[0];
-
-      let response: any;
-
-      if (editingId) {
-        response = await updateProduct.mutateAsync(data);
-      } else {
-        response = await addProduct.mutateAsync(data);
-      }
-
-      toast.success(`${response.message}`);
-
-      form.reset();
-
-      router.push("/dashboard/inventory/products");
-    } catch (error: any) {
-      console.error("There was an error creating the data!", error);
-      toast.error(`${error?.message}`);
-    } finally {
-      setIsLoading(false);
+    data.productImages = productImages;
+    data.productThumbnail = productImages[0];
+    let responsePromise: Promise<any>;
+    if (editingId) {
+      responsePromise = updateProduct.mutateAsync(data);
+    } else {
+      responsePromise = addProduct.mutateAsync(data);
     }
+
+    toast.promise(responsePromise, {
+      loading: "Loading...",
+      success: (data: any) => {
+        form.reset();
+        router.push("/dashboard/inventory/products");
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+      error: (data: any) => {
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+    });
   }
 
   function goBack() {

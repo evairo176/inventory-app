@@ -37,7 +37,7 @@ import { toast } from "sonner";
 import { createUsersSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
-import { IPermission, IRole, IUser } from "../../../../types/types";
+import { IPermission, IRole, IUser } from "../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import SelectInput from "@/components/global/form-inputs/select-input";
 import PasswordTextInput from "@/components/global/form-inputs/password-text-input";
@@ -82,26 +82,26 @@ const UserForm = ({ editingId, initialUser, roles }: Props) => {
 
   async function onSubmit(data: z.infer<typeof createUsersSchema>) {
     setIsLoading(true);
-    try {
-      data.imageUrl = imageUrl;
-      let response: any;
-      if (editingId) {
-        response = await updateUser.mutateAsync(data);
-      } else {
-        response = await addUser.mutateAsync(data);
-      }
-
-      toast.success(`${response.message}`);
-
-      form.reset();
-
-      router.push("/dashboard/users");
-    } catch (error: any) {
-      console.error("There was an error creating the data!", error);
-      toast.error(`${error?.message}`);
-    } finally {
-      setIsLoading(false);
+    data.imageUrl = imageUrl;
+    let responsePromise: Promise<any>;
+    if (editingId) {
+      responsePromise = updateUser.mutateAsync(data);
+    } else {
+      responsePromise = addUser.mutateAsync(data);
     }
+    toast.promise(responsePromise, {
+      loading: "Loading...",
+      success: (data: any) => {
+        form.reset();
+        router.push("/dashboard/users");
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+      error: (data: any) => {
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+    });
   }
 
   const status = [

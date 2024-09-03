@@ -131,3 +131,8 @@ export type IPermission = {
   status: string;
   module: string;
 };
+
+export type LoginProps = {
+  email: string;
+  password: string;
+};

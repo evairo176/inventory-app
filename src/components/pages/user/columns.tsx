@@ -11,7 +11,7 @@ import ActionColumn from "@/components/datatable-columns/action-column";
 import ImageColumn from "@/components/datatable-columns/image-column";
 import StatusColumn from "@/components/datatable-columns/status-column";
 import InviteUserColumn from "@/components/datatable-columns/invite-user-column";
-import { IUser } from "../../../../types/types";
+import { IUser } from "../../../types/types";
 export const columns: ColumnDef<z.infer<typeof getAllUsersSchema>>[] = [
   {
     id: "select",

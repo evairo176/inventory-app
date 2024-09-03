@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { IUser } from "../../../types/types";
+import { IUser } from "../../types/types";
 import { inviteUser } from "@/action/email-action";
 import { Loader2 } from "lucide-react";
 import axios from "axios";

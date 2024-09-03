@@ -46,9 +46,8 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "sonner";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
-import { IPermission } from "../../../../types/types";
+import { IPermission } from "../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
-import { permissions } from "@/config/permissions";
 import { createPermissionsSchema } from "@/config/form-schema";
 import SelectInput from "@/components/global/form-inputs/select-input";
 import { sidebarLinks } from "@/config/sidebar";
@@ -90,25 +89,26 @@ const PermissionForm = ({ editingId, initialPermission }: Props) => {
 
   async function onSubmit(data: z.infer<typeof createPermissionsSchema>) {
     setIsLoading(true);
-    try {
-      let response: any;
-      if (editingId) {
-        response = await updatePermission.mutateAsync(data);
-      } else {
-        response = await addPermission.mutateAsync(data);
-      }
-
-      toast.success(`${response.message}`);
-
-      form.reset();
-
-      router.push("/dashboard/users/permissions");
-    } catch (error: any) {
-      console.error("There was an error creating the data!", error);
-      toast.error(`${error?.message}`);
-    } finally {
-      setIsLoading(false);
+    let responsePromise: Promise<any>;
+    if (editingId) {
+      responsePromise = updatePermission.mutateAsync(data);
+    } else {
+      responsePromise = addPermission.mutateAsync(data);
     }
+
+    toast.promise(responsePromise, {
+      loading: "Loading...",
+      success: (data: any) => {
+        form.reset();
+        router.push("/dashboard/users/permissions");
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+      error: (data: any) => {
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+    });
   }
 
   const moduleOption = sidebarLinks.flatMap((link) => {

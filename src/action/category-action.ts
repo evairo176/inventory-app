@@ -2,7 +2,7 @@ import { createCategorySchema } from "@/config/form-schema";
 import fetcher from "@/utils/fetcher";
 import useSWR, { mutate as globalMutate } from "swr";
 import { z } from "zod";
-import { ExcelCategoryProps } from "../../types/types";
+import { ExcelCategoryProps } from "../types/types";
 
 // Utility function to handle API requests
 const apiRequest = async (path: string, method: string, data?: any) => {

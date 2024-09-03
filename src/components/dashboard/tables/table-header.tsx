@@ -51,7 +51,7 @@ import { ImportModal } from "./import-modal";
 import { formatFileSize } from "@/utils/format-file-size";
 import * as XLSX from "xlsx";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ExcelCategoryProps } from "../../../../types/types";
+import { ExcelCategoryProps } from "../../../types/types";
 import { toast } from "sonner";
 import { useCreateBulk } from "@/action/global-action";
 import exportDataToExcel from "@/lib/export-data-to-excel";

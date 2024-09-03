@@ -43,7 +43,7 @@ import { toast } from "sonner";
 import { createWarehouseSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
-import { IWarehouse } from "../../../../types/types";
+import { IWarehouse } from "../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import { Country, State, City } from "country-state-city";
 
@@ -117,26 +117,26 @@ const WarehouseForm = ({ editingId, initialWarehouse }: Props) => {
 
   async function onSubmit(data: z.infer<typeof createWarehouseSchema>) {
     setIsLoading(true);
-    try {
-      data.imageUrl = imageUrl;
-      let response: any;
-      if (editingId) {
-        response = await updateWarehouse.mutateAsync(data);
-      } else {
-        response = await addWarehouse.mutateAsync(data);
-      }
-
-      toast.success(`${response.message}`);
-
-      form.reset();
-
-      router.push("/dashboard/inventory/warehouse");
-    } catch (error: any) {
-      console.error("There was an error creating the data!", error);
-      toast.error(`${error?.message}`);
-    } finally {
-      setIsLoading(false);
+    data.imageUrl = imageUrl;
+    let responsePromise: Promise<any>;
+    if (editingId) {
+      responsePromise = updateWarehouse.mutateAsync(data);
+    } else {
+      responsePromise = addWarehouse.mutateAsync(data);
     }
+    toast.promise(responsePromise, {
+      loading: "Loading...",
+      success: (data: any) => {
+        form.reset();
+        router.push("/dashboard/inventory/warehouse");
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+      error: (data: any) => {
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+    });
   }
 
   const onCountryChange = (countryCode: string, name: string) => {

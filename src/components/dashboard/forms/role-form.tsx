@@ -46,7 +46,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { toast } from "sonner";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
-import { IPermission, IRole } from "../../../../types/types";
+import { IPermission, IRole } from "../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import { createRolesSchema } from "@/config/form-schema";
 
@@ -99,27 +99,27 @@ const RoleForm = ({ editingId, initialRole, permissions }: Props) => {
 
   async function onSubmit(data: z.infer<typeof createRolesSchema>) {
     setIsLoading(true);
-    try {
-      data.permissionIds = permissionIds;
-
-      let response: any;
-      if (editingId) {
-        response = await updateRole.mutateAsync(data);
-      } else {
-        response = await addRole.mutateAsync(data);
-      }
-
-      toast.success(`${response.message}`);
-
-      form.reset();
-
-      router.push("/dashboard/users/roles");
-    } catch (error: any) {
-      console.error("There was an error creating the data!", error);
-      toast.error(`${error?.message}`);
-    } finally {
-      setIsLoading(false);
+    data.permissionIds = permissionIds;
+    let responsePromise: Promise<any>;
+    if (editingId) {
+      responsePromise = updateRole.mutateAsync(data);
+    } else {
+      responsePromise = addRole.mutateAsync(data);
     }
+
+    toast.promise(responsePromise, {
+      loading: "Loading...",
+      success: (data: any) => {
+        form.reset();
+        router.push("/dashboard/users/roles");
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+      error: (data: any) => {
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+    });
   }
 
   // Handler for checkbox change

@@ -9,7 +9,7 @@ import {
   Settings,
   Users,
 } from "lucide-react";
-import { ISidebarLinks } from "../../types/types";
+import { ISidebarLinks } from "../types/types";
 
 export const sidebarLinks: ISidebarLinks[] = [
   {

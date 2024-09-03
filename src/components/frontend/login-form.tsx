@@ -1,40 +1,76 @@
 "use client";
-import { createUnitSchema } from "@/config/form-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Loader, Lock, LogIn, Mail } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import TextInput from "../global/form-inputs/text-input";
 import PasswordInput from "../global/form-inputs/password-input";
 import { toast } from "sonner";
+import SubmitButtonV2 from "../global/form-inputs/submit-button-v2";
+import { LoginProps } from "@/types/types";
+import { signIn } from "next-auth/react";
 
 type Props = {};
 
 const LoginForm = (props: Props) => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm<LoginProps>();
 
-  async function onSubmit(data: any) {
-    setIsLoading(true);
+  async function onSubmit(data: LoginProps) {
+    setLoading(true);
+
     try {
+      const authenticated = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+
+      if (authenticated?.error) {
+        const promise = () =>
+          new Promise((resolve, reject) =>
+            setTimeout(() => reject({ message: authenticated?.error }), 1000),
+          );
+
+        toast.promise(promise, {
+          loading: "Please wait...",
+          success: (data: any) => {
+            return `${data.message}`;
+          },
+          error: (data: any) => {
+            return `${authenticated?.error}`;
+          },
+        });
+
+        setLoading(false);
+        return;
+      }
+
       // data.imageUrl = imageUrl;
+      const promise = () =>
+        new Promise((resolve) =>
+          setTimeout(() => resolve({ message: "Login Successfully" }), 1000),
+        );
+
+      toast.promise(promise, {
+        loading: "Please wait...",
+        success: (data: any) => {
+          setLoading(false);
+          return `${data.message}`;
+        },
+        error: "Error",
+      });
     } catch (error: any) {
       console.error("There was an error creating the data!", error);
       toast.error(`${error?.message}`);
-    } finally {
-      setIsLoading(false);
     }
   }
-  console.log({ errors });
+
   return (
     <div className="px-5 py-5 lg:px-14 lg:py-8 ">
       <div className="py-4 ">
@@ -65,14 +101,13 @@ const LoginForm = (props: Props) => {
               forgotPasswordLink="/forgot-password"
             />
 
-            <div>
-              <button
-                type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign in
-              </button>
-            </div>
+            <SubmitButtonV2
+              title="Sign In"
+              loading={loading}
+              loadingTitle="Loading please wait.."
+              loaderIcon={Loader}
+              buttonIcon={LogIn}
+            />
           </form>
 
           <p className="mt-10 text-center text-sm text-gray-500">

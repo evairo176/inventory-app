@@ -43,7 +43,7 @@ import { toast } from "sonner";
 import { createSupplierSchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
-import { ISupplier } from "../../../../types/types";
+import { ISupplier } from "../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import { Country, State, City } from "country-state-city";
 
@@ -111,26 +111,27 @@ const SupplierForm = ({ editingId, initialSupplier }: Props) => {
 
   async function onSubmit(data: z.infer<typeof createSupplierSchema>) {
     setIsLoading(true);
-    try {
-      data.imageUrl = imageUrl;
-      let response: any;
-      if (editingId) {
-        response = await updateSupplier.mutateAsync(data);
-      } else {
-        response = await addSupplier.mutateAsync(data);
-      }
-
-      toast.success(`${response.message}`);
-
-      form.reset();
-
-      router.push("/dashboard/inventory/suppliers");
-    } catch (error: any) {
-      console.error("There was an error creating the data!", error);
-      toast.error(`${error?.message}`);
-    } finally {
-      setIsLoading(false);
+    data.imageUrl = imageUrl;
+    let responsePromise: Promise<any>;
+    if (editingId) {
+      responsePromise = updateSupplier.mutateAsync(data);
+    } else {
+      responsePromise = addSupplier.mutateAsync(data);
     }
+
+    toast.promise(responsePromise, {
+      loading: "Loading...",
+      success: (data: any) => {
+        form.reset();
+        router.push("/dashboard/inventory/suppliers");
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+      error: (data: any) => {
+        setIsLoading(false);
+        return `${data?.message}`;
+      },
+    });
   }
 
   const onCountryChange = (countryCode: string, name: string) => {

@@ -35,7 +35,7 @@ export default function RootLayout({
         <MainProviders>
           <TanstackQueryProvider>
             {children}
-            <Toaster />
+            <Toaster richColors />
           </TanstackQueryProvider>
         </MainProviders>
       </body>

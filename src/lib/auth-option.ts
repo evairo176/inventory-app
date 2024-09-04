@@ -42,16 +42,16 @@ export const authOptions: AuthOptions = {
             return null;
           }
         } catch (error: any) {
-          console.log({ error });
-          console.log(error.response.data.message);
+          // console.log({ error });
+          // console.log(error.response.data.message);
           throw new Error(error.response.data.message);
         }
       },
     }),
   ],
   pages: {
-    signIn: "/psaweb/auth/signin",
-    newUser: "/psaweb/auth/signup",
+    signIn: "/login",
+    newUser: "/register",
   },
 
   callbacks: {

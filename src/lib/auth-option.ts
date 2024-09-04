@@ -22,6 +22,7 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials, req): Promise<any> {
         try {
+          // auth
           const response = await axios.post(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
             {

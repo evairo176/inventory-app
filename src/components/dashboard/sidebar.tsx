@@ -15,10 +15,14 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "../ui/scroll-area";
 import Logo from "../global/logo";
 import { sidebarLinks } from "@/config/sidebar";
+import { handleLogout } from "@/utils/handle-logout";
+import { Session } from "next-auth";
 
-type Props = {};
+type SidebarProps = {
+  session: Session | null;
+};
 
-const Sidebar = (props: Props) => {
+const Sidebar = ({ session }: SidebarProps) => {
   const pathname = usePathname();
   const isOpenValue = isOpenMenu();
   const isCurrentPage = pathNameValue();
@@ -148,7 +152,7 @@ const Sidebar = (props: Props) => {
           </ScrollArea>
         </div>
         <div className="mt-auto p-4">
-          <Button size="sm" className="w-full">
+          <Button onClick={handleLogout} size="sm" className="w-full">
             <Power className="mr-2 h-4 w-4" />
             Logout
           </Button>

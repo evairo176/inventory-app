@@ -7,6 +7,7 @@ import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { Toaster } from "@/components/ui/sonner";
 import TanstackQueryProvider from "@/providers/tanstack-query-provider";
+import NextAuthProvider from "@/providers/next-auth-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,12 +33,14 @@ export default function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <MainProviders>
-          <TanstackQueryProvider>
-            {children}
-            <Toaster richColors />
-          </TanstackQueryProvider>
-        </MainProviders>
+        <NextAuthProvider>
+          <MainProviders>
+            <TanstackQueryProvider>
+              {children}
+              <Toaster richColors />
+            </TanstackQueryProvider>
+          </MainProviders>
+        </NextAuthProvider>
       </body>
     </html>
   );

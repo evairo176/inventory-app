@@ -22,6 +22,10 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials, req): Promise<any> {
         try {
+          // check input
+          if (!credentials?.email || !credentials?.password) {
+            throw { error: "No input found", status: 401 };
+          }
           // auth
           const response = await axios.post(
             `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
@@ -31,19 +35,18 @@ export const authOptions: AuthOptions = {
             },
           );
 
-          if (response.data) {
+          if (response?.data?.data) {
             return {
-              ...response.data.user,
-
-              token: response.data.token,
-              expired_token: response.data.expired_token,
+              ...response?.data?.data.user,
+              token: response?.data?.data.token,
+              expired_token: response?.data?.data.expired_token,
             };
           } else {
             return null;
           }
         } catch (error: any) {
           // console.log({ error });
-          // console.log(error.response.data.message);
+          console.log(error.response.data.message);
           throw new Error(error.response.data.message);
         }
       },
@@ -57,13 +60,14 @@ export const authOptions: AuthOptions = {
   callbacks: {
     async jwt({ token, user, trigger, session }) {
       // the token object is passed done to the session call back for persistence
-      if (trigger === "update" && session?.patokBatas) {
-        token.patokBatas = session.patokBatas;
-      }
+      // if (trigger === "update" && session?.patokBatas) {
+      //   token.patokBatas = session.patokBatas;
+      // }
       return { ...token, ...user };
     },
     async session({ session, token }) {
       session.user = token as any;
+      console.log({ session, token });
 
       return session;
     },

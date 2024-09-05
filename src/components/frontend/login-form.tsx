@@ -9,12 +9,13 @@ import { toast } from "sonner";
 import SubmitButtonV2 from "../global/form-inputs/submit-button-v2";
 import { LoginProps } from "@/types/types";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
 const LoginForm = (props: Props) => {
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -60,6 +61,7 @@ const LoginForm = (props: Props) => {
       toast.promise(promise, {
         loading: "Please wait...",
         success: (data: any) => {
+          router.push("/dashboard");
           setLoading(false);
           return `${data.message}`;
         },

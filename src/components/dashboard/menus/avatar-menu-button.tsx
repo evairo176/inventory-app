@@ -11,8 +11,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Image from "next/image";
-
-export function AvatarMenuButton() {
+type AvatarMenuButtonProps = {
+  name: string;
+  image: string;
+};
+export function AvatarMenuButton({ name, image }: AvatarMenuButtonProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -20,15 +23,15 @@ export function AvatarMenuButton() {
           <Image
             width={215}
             height={215}
-            alt="avatar"
-            src={"/avatar.png"}
+            alt={name}
+            src={image ? image : "/avatar.png"}
             className="h-10 w-10 rounded-full border border-gray-600"
           />
         </button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
+          <SheetTitle>{name}</SheetTitle>
           <SheetDescription>
             Make changes to your profile here. Click save when you{"'"}re done.
           </SheetDescription>

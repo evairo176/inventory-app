@@ -49,13 +49,19 @@ import {
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Logo from "../global/logo";
+import { Session } from "next-auth";
+import { generateInitials } from "@/utils/generate-initial-name-user";
 
-type Props = {};
+type NavbarProps = {
+  session: Session | null;
+};
 
-const Navbar = (props: Props) => {
+const Navbar = ({ session }: NavbarProps) => {
   const pathname = usePathname();
   const isOpenValue = isOpenMenu();
   const isCurrentPage = pathNameValue();
+  const user = session?.user;
+  const initialName = user?.id ? generateInitials(user?.name as string) : "ER";
 
   function isOpenMenu() {
     // Get the current path
@@ -207,7 +213,10 @@ const Navbar = (props: Props) => {
         </div>
         <QuickAccessMenuButton />
         <ThemeModeToggle />
-        <AvatarMenuButton />
+        <AvatarMenuButton
+          name={user?.name as string}
+          image={user?.imageUrl as string}
+        />
       </div>
     </header>
   );

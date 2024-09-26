@@ -46,7 +46,7 @@ export const authOptions: AuthOptions = {
           }
         } catch (error: any) {
           // console.log({ error });
-          console.log(error.response.data.message);
+          // console.log(error.response.data.message);
           throw new Error(error.response.data.message);
         }
       },
@@ -67,7 +67,7 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }) {
       session.user = token as any;
-      console.log({ session, token });
+      // console.log({ session, token });
 
       return session;
     },

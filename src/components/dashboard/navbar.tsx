@@ -216,6 +216,7 @@ const Navbar = ({ session }: NavbarProps) => {
         <AvatarMenuButton
           name={user?.name as string}
           image={user?.imageUrl as string}
+          email={user?.email as string}
         />
       </div>
     </header>

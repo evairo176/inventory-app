@@ -42,7 +42,7 @@ export const sidebarLinks: ISidebarLinks[] = [
   },
   {
     title: "Inventory",
-    href: "/dashboard/inventory",
+    href: "/dashboard/inventory/products",
     module: "inventory",
     icon: BriefcaseBusiness,
     dropdown: true,
@@ -100,7 +100,7 @@ export const sidebarLinks: ISidebarLinks[] = [
   },
   {
     title: "Stock",
-    href: "/dashboard/stock",
+    href: "/dashboard/stock/transfer",
     module: "stock",
     icon: FolderTree,
     dropdown: true,
@@ -117,7 +117,7 @@ export const sidebarLinks: ISidebarLinks[] = [
   },
   {
     title: "POS",
-    href: "/dashboard/pos",
+    href: "/pos",
     module: "pos",
     icon: Presentation,
     dropdown: false,

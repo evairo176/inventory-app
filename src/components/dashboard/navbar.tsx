@@ -54,9 +54,10 @@ import { generateInitials } from "@/utils/generate-initial-name-user";
 
 type NavbarProps = {
   session: Session | null;
+  pos?: boolean;
 };
 
-const Navbar = ({ session }: NavbarProps) => {
+const Navbar = ({ session, pos = false }: NavbarProps) => {
   const pathname = usePathname();
   const isOpenValue = isOpenMenu();
   const isCurrentPage = pathNameValue();
@@ -107,8 +108,14 @@ const Navbar = ({ session }: NavbarProps) => {
     // Navigate to the new path
     return newPath;
   }
+
   return (
-    <header className="fixed left-0 top-0 z-50 w-full md:pl-72 lg:pl-72">
+    <header
+      className={cn(
+        "fixed left-0 top-0 z-50 w-full ",
+        pos ? "md:pl-14 lg:pl-14" : "md:pl-72 lg:pl-72",
+      )}
+    >
       <div className="flex h-14 items-center gap-4 border-b border-border/40 bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:bg-muted/40 lg:h-[60px] lg:pl-0  lg:pr-6 ">
         <Sheet>
           <SheetTrigger asChild>

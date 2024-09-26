@@ -12,9 +12,9 @@ const page = (props: Props) => {
     <div>
       <div className="grid grid-cols-12">
         <div className="col-span-3 border-r">
-          <ScrollArea className="h-96 w-full rounded-md border">
+          <ScrollArea className="max-h-screen w-full rounded-md border">
             <div className="p-4">
-              <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
+              <h4 className="mb-4 text-sm font-medium leading-none">Tags 1</h4>
               {tags.map((tag) => (
                 <>
                   <div key={tag} className="text-sm">

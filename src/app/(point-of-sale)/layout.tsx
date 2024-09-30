@@ -24,7 +24,7 @@ const Layout = async ({ children }: LayoutProps) => {
         <Sidebar />
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
           <Navbar session={session} pos={true} />
-          <main className="mt-12">{children}</main>
+          <main className="pt-12">{children}</main>
         </div>
       </div>
     </CheckSessionProvider>

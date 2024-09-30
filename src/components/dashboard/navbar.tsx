@@ -129,7 +129,7 @@ const Navbar = ({ session, pos = false }: NavbarProps) => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="flex flex-col">
-            <Logo />
+            <Logo href="/dashboard" />
             <ScrollArea className="h-[630px]">
               <nav className="grid gap-2 text-lg font-medium ">
                 {sidebarLinks?.map((item, i) => {

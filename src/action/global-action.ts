@@ -9,6 +9,19 @@ export const useGet = (path: string, queryKey: string) => {
   });
 };
 
+// Fetch all datas
+export const useGetEnable = (
+  path: string,
+  queryKey: string,
+  enableValue: string,
+) => {
+  return useQuery({
+    queryKey: [`${queryKey}`],
+    queryFn: () => fetcher(path),
+    enabled: !!enableValue,
+  });
+};
+
 // Fetch a single data by ID
 export const useGetById = (path: string, id: string, queryKey: string) => {
   return useQuery({

@@ -8,12 +8,12 @@ type Props = {
   onSearch: (filteredData: any[]) => void;
 };
 
-const SearchBar = ({ data, onSearch }: Props) => {
+const SearchBar = ({ data = [], onSearch }: Props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [valueDebounce] = useDebounce(searchTerm, 500);
 
   useEffect(() => {
-    const filteredData = data.filter((item: any) =>
+    const filteredData = data?.filter((item: any) =>
       Object.values(item).some((value: any) =>
         value?.toString().toLowerCase().includes(valueDebounce.toLowerCase()),
       ),

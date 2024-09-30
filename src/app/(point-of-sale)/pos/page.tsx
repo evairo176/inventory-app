@@ -1,9 +1,14 @@
+import PointOfSale from "@/components/pos/point-of-sale";
 import React from "react";
 
 type Props = {};
 
-const page = (props: Props) => {
-  return <div>POS</div>;
+const page = async ({}: Props) => {
+  return (
+    <div>
+      <PointOfSale />
+    </div>
+  );
 };
 
 export default page;

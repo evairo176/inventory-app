@@ -81,6 +81,7 @@ export type ISupplier = {
 };
 
 export type IProduct = {
+  id: string;
   name: string;
   slug: string;
   productCode: string;

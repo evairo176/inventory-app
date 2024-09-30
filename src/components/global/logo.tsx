@@ -1,18 +1,34 @@
+import { cn } from "@/lib/utils";
 import { ShoppingBag } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 interface LogoProps {
   labelShown?: boolean;
+  size?: "sm" | "md" | "lg";
+  href?: string;
 }
 
-const Logo = ({ labelShown = true }: LogoProps) => {
+const Logo = ({ labelShown = true, size = "md", href = "/" }: LogoProps) => {
   return (
-    <div className="flex items-center gap-2">
-      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-900 text-slate-50">
-        <ShoppingBag className="h-6 w-6" />
+    <Link href={href} className="flex items-center gap-2">
+      <div
+        className={cn(
+          "flex h-8 w-8 items-center justify-center rounded-full bg-slate-900 text-slate-50",
+          size === "lg" && "h-12 w-12",
+          size === "sm" && "h-7 w-7",
+        )}
+      >
+        <ShoppingBag
+          className={cn(
+            "h-4 w-4",
+            size === "lg" && "h-8 w-8",
+            size === "sm" && "h-4 w-4",
+          )}
+        />
       </div>
       {labelShown && <h2 className="text-xl font-semibold">Stokify</h2>}
-    </div>
+    </Link>
   );
 };
 

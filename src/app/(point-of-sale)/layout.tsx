@@ -4,45 +4,7 @@ import CheckSessionProvider from "@/providers/check-session-provider";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  Search,
-  Settings,
-  ShoppingCart,
-  Users2,
-} from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import Navbar from "@/components/dashboard/navbar";
-
-export const description =
-  "An products dashboard with a sidebar navigation. The sidebar has icon navigation. The content area has a breadcrumb and search in the header. It displays a list of products in a table with actions.";
 
 interface LayoutProps {
   children: React.ReactNode;

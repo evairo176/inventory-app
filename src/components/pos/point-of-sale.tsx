@@ -29,7 +29,9 @@ function PointOfSale({}: Props) {
 
         {/* products  */}
       </div>
-      <div className="col-span-3 px-3">Orders</div>
+      <div className="col-span-3 px-3">
+        <h2 className="py-4 font-semibold">Orders</h2>
+      </div>
     </div>
   );
 }

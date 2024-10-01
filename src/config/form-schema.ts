@@ -168,9 +168,9 @@ const getAllUnitSchema = z.object({
 
 const createProductSchema = z.object({
   name: z.string(),
-  isFeatured: z.boolean(),
-  batchNumber: z.string(),
-  expiryDate: z.date(),
+  isFeatured: z.boolean().optional(),
+  batchNumber: z.string().optional(),
+  expiryDate: z.date().optional(),
   productCode: z.string(),
   stockQty: z.number(),
   supplierId: z.string(),

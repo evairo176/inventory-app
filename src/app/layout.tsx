@@ -8,6 +8,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import { Toaster } from "@/components/ui/sonner";
 import TanstackQueryProvider from "@/providers/tanstack-query-provider";
 import NextAuthProvider from "@/providers/next-auth-provider";
+import ReduxProvider from "@/providers/redux-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,10 +36,12 @@ export default function RootLayout({
         />
         <NextAuthProvider>
           <MainProviders>
-            <TanstackQueryProvider>
-              {children}
-              <Toaster richColors />
-            </TanstackQueryProvider>
+            <ReduxProvider>
+              <TanstackQueryProvider>
+                {children}
+                <Toaster richColors closeButton position="top-center" />
+              </TanstackQueryProvider>
+            </ReduxProvider>
           </MainProviders>
         </NextAuthProvider>
       </body>

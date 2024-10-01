@@ -4,16 +4,15 @@ import { cn } from "@/lib/utils";
 import { ICategory } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 
 import Product from "./product";
 import { useSearchParams } from "next/navigation";
 import Category from "./category";
-import { Badge } from "../ui/badge";
-import { Plus, X } from "lucide-react";
-import OrderItem from "./order-item";
-import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+import Orders from "./orders";
+// import dynamic from "next/dynamic";
+// const Orders = dynamic(() => import("./orders"), { ssr: false });
 
 type Props = {
   // selectedCategoryId: string;
@@ -21,8 +20,7 @@ type Props = {
 
 function PointOfSale({}: Props) {
   const searchParams = useSearchParams();
-
-  const selectedCategoryId = searchParams.get("cat");
+  const selectedCategoryId = searchParams.get("cat") || "all";
 
   return (
     <div className="grid grid-cols-12 divide-x-2 divide-gray-200">
@@ -42,18 +40,7 @@ function PointOfSale({}: Props) {
         {/* Make this container fill the screen height and use flex layout */}
         <div className="flex h-[calc(100vh-7.5rem)] flex-col pt-3">
           {/* Scrollable area for the order items */}
-          <ScrollArea className="flex-1 gap-4">
-            <div className="space-y-4 px-3 py-3 pr-3">
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
-              <OrderItem />
-            </div>
-            <ScrollBar orientation="vertical" />
-          </ScrollArea>
+          <Orders />
 
           {/* Scrollable Order Summary */}
           <div className="w-full rounded-t-md border-t bg-white px-3 py-3 shadow-lg">

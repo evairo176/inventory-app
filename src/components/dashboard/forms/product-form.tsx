@@ -189,9 +189,6 @@ const ProductForm = ({
     });
   }
 
-  function goBack() {
-    router.back();
-  }
   function genarateBarcode() {
     const uniqueNumber = generateUniqueNineDigitNumber(); // Generate a unique barcode number
     const barcodeDataUrl = generateBarcode(uniqueNumber);
@@ -333,7 +330,6 @@ const ProductForm = ({
                                   toYear={2050}
                                   translate="en"
                                   onSelect={field.onChange}
-                                  disabled={(date) => date <= new Date()}
                                 />
                               </PopoverContent>
                             </Popover>

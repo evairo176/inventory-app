@@ -145,6 +145,10 @@ export default withUt({
         "tremor-metric": ["1.875rem", { lineHeight: "2.25rem" }],
       },
       keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: " 1", transform: "translateY(0)" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -162,6 +166,7 @@ export default withUt({
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
+        fadeIn: "fadeIn 0.5s ease-in-out",
       },
     },
   },

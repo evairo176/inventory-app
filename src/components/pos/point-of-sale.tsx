@@ -11,6 +11,7 @@ import Product from "./product";
 import { useSearchParams } from "next/navigation";
 import Category from "./category";
 import Orders from "./orders";
+import OrderSummary from "./order-summary";
 // import dynamic from "next/dynamic";
 // const Orders = dynamic(() => import("./orders"), { ssr: false });
 
@@ -43,34 +44,7 @@ function PointOfSale({}: Props) {
           <Orders />
 
           {/* Scrollable Order Summary */}
-          <div className="w-full rounded-t-md border-t bg-white px-3 py-3 shadow-lg">
-            <h2 className="scroll-m-20 border-b pb-2 text-xl font-semibold tracking-tight text-muted-foreground first:mt-0">
-              Order Summary
-            </h2>
-            <div className="space-y-2 border-b">
-              <div className="flex items-center justify-between">
-                <p className="text-muted-foreground">Items</p>
-                <p className="font-medium">4 items</p>
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="text-muted-foreground">SubTotal</p>
-                <p className="font-medium">$500</p>
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="text-muted-foreground">Tax</p>
-                <p className="font-medium">5%</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-between py-3">
-              <h2 className="scroll-m-20 pb-2 text-base font-semibold tracking-tight text-muted-foreground first:mt-0">
-                Total
-              </h2>
-              <h2 className="scroll-m-20  pb-2 text-base font-semibold tracking-tight first:mt-0">
-                $6000
-              </h2>
-            </div>
-            <Button className="w-full">Place Order</Button>
-          </div>
+          <OrderSummary />
         </div>
       </div>
     </div>

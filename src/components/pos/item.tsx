@@ -10,6 +10,7 @@ import {
   removeProductFromOrderLine,
 } from "@/redux/slices/point-of-sale";
 import { toast } from "sonner";
+import { formatToRupiah } from "@/utils/formatToRupiah";
 
 type ItemProps = {
   item: IProduct;
@@ -31,53 +32,14 @@ const Item = ({ item }: ItemProps) => {
       id: item.id,
       name: item.name,
       price: item.productPrice,
+      qty: 1,
       productThumbnail: item.productThumbnail,
     };
     dispatch(addProductToOrderLine(newOrderLineItem));
-    localStorage.setItem(
-      "posItems",
-      JSON.stringify([...orderLineItems, newOrderLineItem]),
-    );
-
-    const promise = () =>
-      new Promise((resolve) =>
-        setTimeout(() => resolve({ message: "Item added successfully" }), 600),
-      );
-
-    toast.promise(promise, {
-      loading: "Loading...",
-      success: (data: any) => {
-        return `${data?.message}`;
-      },
-      error: (data: any) => {
-        return `${data?.message}`;
-      },
-    });
   }
 
   const handleRemove = (productId: string) => {
     dispatch(removeProductFromOrderLine(productId));
-    localStorage.setItem(
-      "posItems",
-      JSON.stringify(
-        orderLineItems.filter((product) => product.id !== productId),
-      ),
-    );
-
-    const promise = () =>
-      new Promise((resolve, error) =>
-        setTimeout(() => error({ message: "Item deleted successfully" }), 600),
-      );
-
-    toast.promise(promise, {
-      loading: "Loading...",
-      success: (data: any) => {
-        return `${data?.message}`;
-      },
-      error: (data: any) => {
-        return `${data?.message}`;
-      },
-    });
   };
   return (
     <div className="rounded-md border bg-card p-2 text-card-foreground shadow-sm">
@@ -91,7 +53,9 @@ const Item = ({ item }: ItemProps) => {
       <h2 className="font-semibold">{item.name}</h2>
       <p className="line-clamp-2 text-xs">{item.productDetails}</p>
       <div className="flex items-center justify-between py-2">
-        <p className="text-sm text-blue-600">$ {item.productPrice}</p>
+        <p className="text-sm text-blue-600">
+          {formatToRupiah(item.productPrice)}
+        </p>
         <Badge variant={"outline"} className="">
           {item.stockQty} items
         </Badge>

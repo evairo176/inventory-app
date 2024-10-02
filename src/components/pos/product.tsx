@@ -35,7 +35,7 @@ const Product = ({ categoryId = "all" }: ProductProps) => {
     );
 
   return (
-    <div className="grid grid-cols-4 gap-4 py-4">
+    <div className="grid grid-cols-2 gap-4 py-4 md:grid-cols-3 lg:grid-cols-4">
       {data?.data?.length > 0 ? (
         data?.data?.map((row: IProduct) => {
           return <Item item={row} key={row.id} />;

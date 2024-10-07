@@ -25,14 +25,14 @@ function PointOfSale({}: Props) {
 
   return (
     <div className="grid grid-cols-12 divide-x-2 divide-gray-200">
-      <div className="col-span-12 px-3 md:col-span-8 lg:col-span-9">
+      <div className="col-span-full px-3 md:col-span-8 lg:col-span-9">
         {/* categories  */}
         <Category selectedCategoryId={selectedCategoryId as string} />
         <Product categoryId={selectedCategoryId as string} />
 
         {/* products  */}
       </div>
-      <div className="col-span-12 md:col-span-4 lg:col-span-3">
+      <div className="col-span-full md:col-span-4 lg:col-span-3">
         {/* Make the Order Items header sticky */}
         <h2 className="sticky top-0 z-10 scroll-m-20 border-b bg-white px-3 py-3 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
           Order Items

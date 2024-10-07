@@ -1,7 +1,6 @@
 import React from "react";
 
-import CategoryForm from "@/components/dashboard/forms/category-form";
-import CategoryUpdatePage from "@/components/pages/categories/category-update-page";
+import ProductUpdatePage from "@/components/pages/product/product-update-page";
 
 type Props = {
   params: {
@@ -10,7 +9,7 @@ type Props = {
 };
 
 const page = ({ params: { id } }: Props) => {
-  return <CategoryUpdatePage id={id} />;
+  return <ProductUpdatePage id={id} />;
 };
 
 export default page;

@@ -100,6 +100,9 @@ export type IProduct = {
   productThumbnail: string;
   productDetails: string;
   status: string;
+  isFeatured: boolean;
+  batchNumber: string;
+  expiryDate: any;
 };
 
 export type IRole = {

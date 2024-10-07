@@ -98,8 +98,9 @@ const UserForm = ({ editingId, initialUser, roles }: Props) => {
         return `${data?.message}`;
       },
       error: (data: any) => {
+        const error = data?.message ? JSON.parse(data?.message) : "Blank";
         setIsLoading(false);
-        return `${data?.message}`;
+        return `${error?.message}`;
       },
     });
   }

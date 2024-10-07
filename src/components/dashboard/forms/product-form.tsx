@@ -94,10 +94,13 @@ const ProductForm = ({
     "/placeholder.svg",
     "/placeholder.svg",
   ];
+  const productCode = initialProduct?.productCode
+    ? generateBarcode(initialProduct?.productCode)
+    : "";
   const [productImages, setProductImages] = useState(initialImages);
   const [isLoading, setIsLoading] = useState(false);
   const [barcode, setBarcode] = useState<string>("");
-  const [imageBarcode, setImageBarcode] = useState<string>("");
+  const [imageBarcode, setImageBarcode] = useState<string>(productCode);
   const addProduct = useCreate(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/product`,
     "products",
@@ -112,8 +115,27 @@ const ProductForm = ({
   const form = useForm<z.infer<typeof createProductSchema>>({
     resolver: zodResolver(createProductSchema),
     defaultValues: {
-      productThumbnail: "/placeholder.svg",
+      name: initialProduct?.name,
+      productDetails: initialProduct?.productDetails,
+      alertQty: initialProduct?.alertQty,
+      productCost: initialProduct?.productCost,
+      productPrice: initialProduct?.productPrice,
+      productTax: initialProduct?.productTax,
+      productThumbnail: initialProduct?.productThumbnail,
       productImages: productImages,
+      isFeatured: initialProduct?.isFeatured,
+      batchNumber: initialProduct?.batchNumber,
+      productCode: initialProduct?.productCode,
+      stockQty: initialProduct?.stockQty,
+      status: initialProduct?.status,
+      categoryId: initialProduct?.categoryId,
+      brandId: initialProduct?.brandId,
+      supplierId: initialProduct?.supplierId,
+      expiryDate: initialProduct?.expiryDate
+        ? new Date(initialProduct?.expiryDate)
+        : undefined,
+      unitId: initialProduct?.unitId,
+      taxMethod: initialProduct?.taxMethod as "INCLUSIVE" | "EXCLUSIVE",
     },
   });
 
@@ -183,8 +205,9 @@ const ProductForm = ({
         return `${data?.message}`;
       },
       error: (data: any) => {
+        const error = data?.message ? JSON.parse(data?.message) : "Blank";
         setIsLoading(false);
-        return `${data?.message}`;
+        return `${error?.message}`;
       },
     });
   }

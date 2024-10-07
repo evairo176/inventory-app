@@ -83,7 +83,7 @@ export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
         <ActionColumn
           row={row}
           title="Product"
-          editEndpoint={`categories/update/${product.id}`}
+          editEndpoint={`products/update/${product.id}`}
           deleteEndpoint={`${process.env.NEXT_PUBLIC_BACKEND_URL}/product`}
           id={product.id}
           queryKey="products"

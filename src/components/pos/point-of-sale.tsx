@@ -1,17 +1,23 @@
 "use client";
-import { useGet } from "@/action/global-action";
-import { cn } from "@/lib/utils";
-import { ICategory } from "@/types/types";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { Button } from "../ui/button";
+import React from "react";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command";
 
 import Product from "./product";
 import { useSearchParams } from "next/navigation";
 import Category from "./category";
 import Orders from "./orders";
 import OrderSummary from "./order-summary";
+import { SearchComponent } from "../global/search-component";
 // import dynamic from "next/dynamic";
 // const Orders = dynamic(() => import("./orders"), { ssr: false });
 
@@ -34,9 +40,12 @@ function PointOfSale({}: Props) {
       </div>
       <div className="col-span-full md:col-span-4 lg:col-span-3">
         {/* Make the Order Items header sticky */}
-        <h2 className="sticky top-0 z-10 scroll-m-20 border-b bg-white px-3 py-3 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-          Order Items
-        </h2>
+        <div className="flex w-full  items-center justify-between bg-white ">
+          <h2 className="sticky top-0 z-10 scroll-m-20 border-b px-3 py-3 pb-2 text-base font-semibold tracking-tight first:mt-0">
+            Order Items
+          </h2>
+          <SearchComponent />
+        </div>
 
         {/* Make this container fill the screen height and use flex layout */}
         <div className="flex h-[calc(100vh-7.5rem)] flex-col pt-3">

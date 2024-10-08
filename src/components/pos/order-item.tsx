@@ -26,7 +26,7 @@ const OrderItem = ({ item }: OrderItemProps) => {
     dispatch(decrementQty(id));
   };
   return (
-    <div className="animate-fadeIn flex w-full gap-2 rounded-md border bg-card p-2 text-card-foreground shadow-sm">
+    <div className="flex w-full animate-fadeIn gap-2 rounded-md border bg-card p-2 text-card-foreground shadow-sm">
       <Image
         className="h-16 w-16 rounded-md object-cover"
         src={item.productThumbnail ?? "/placeholder.svg"}
@@ -35,7 +35,7 @@ const OrderItem = ({ item }: OrderItemProps) => {
         alt={item.name}
       />
       <div className="w-full">
-        <h2 className="text-md font-semibold">{item.name}</h2>
+        <h2 className="text-md line-clamp-1 font-semibold">{item.name}</h2>
         <div className="flex items-center justify-between">
           <p className="text-sm text-blue-600">{formatToRupiah(item.price)}</p>
           <div className="flex items-center gap-2">

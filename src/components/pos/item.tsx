@@ -50,10 +50,10 @@ const Item = ({ item }: ItemProps) => {
         width={200}
         alt={item.name}
       />
-      <h2 className="font-semibold">{item.name}</h2>
+      <h2 className="line-clamp-1 font-semibold">{item.name}</h2>
       <p className="line-clamp-2 text-xs">{item.productDetails}</p>
       <div className="flex items-center justify-between py-2">
-        <p className="text-sm text-blue-600">
+        <p className=" text-sm text-blue-600">
           {formatToRupiah(item.productPrice)}
         </p>
         <Badge variant={"outline"} className="">

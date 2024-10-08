@@ -121,7 +121,9 @@ const ProductForm = ({
       productCost: initialProduct?.productCost,
       productPrice: initialProduct?.productPrice,
       productTax: initialProduct?.productTax,
-      productThumbnail: initialProduct?.productThumbnail,
+      productThumbnail: initialProduct?.productThumbnail
+        ? initialProduct?.productThumbnail
+        : "/placeholder.svg",
       productImages: productImages,
       isFeatured: initialProduct?.isFeatured,
       batchNumber: initialProduct?.batchNumber,
@@ -186,6 +188,7 @@ const ProductForm = ({
   ];
 
   async function onSubmit(data: z.infer<typeof createProductSchema>) {
+    console.log({ data });
     setIsLoading(true);
     data.productImages = productImages;
     data.productThumbnail = productImages[0];
@@ -211,7 +214,7 @@ const ProductForm = ({
       },
     });
   }
-
+  console.log({ form: form.formState.errors });
   function genarateBarcode() {
     const uniqueNumber = generateUniqueNineDigitNumber(); // Generate a unique barcode number
     const barcodeDataUrl = generateBarcode(uniqueNumber);

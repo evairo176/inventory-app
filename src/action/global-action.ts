@@ -40,6 +40,17 @@ export const useCreate = (path: string, queryKey: string) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${queryKey}`] });
+      if (queryKey === "customers") {
+        queryClient.invalidateQueries({ queryKey: [`users`] });
+      }
+
+      const splitQuery = queryKey.split("-");
+      if (splitQuery?.length > 0) {
+        if (splitQuery[0] === "pos") {
+          console.log(splitQuery[0]);
+          queryClient.invalidateQueries({ queryKey: [`analytic-sales`] });
+        }
+      }
     },
   });
 };
@@ -69,6 +80,10 @@ export const useUpdate = (path: string, id: string, queryKey: string) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${queryKey}`] });
       queryClient.invalidateQueries({ queryKey: [`${queryKey}`, id] });
+      if (queryKey === "customers") {
+        queryClient.invalidateQueries({ queryKey: [`users`] });
+        queryClient.invalidateQueries({ queryKey: [`users`, id] });
+      }
     },
   });
 };

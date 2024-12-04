@@ -126,6 +126,15 @@ export type IUser = {
   imageUrl: string;
   roleId: string;
   inviteSent: boolean;
+  name: string;
+};
+
+export type ICustomer = {
+  id: string;
+  user: IUser;
+  additionalInfo: string;
+  shippingAddress: string;
+  billingAddress: string;
 };
 export type IPermission = {
   id: string;
@@ -140,3 +149,28 @@ export type LoginProps = {
   email: string;
   password: string;
 };
+
+export type SalesSummary = {
+  todayOrders: number;
+  yesterdayOrders: number;
+  thisMonthOrders: number;
+  lastMonthOrders: number;
+  totalOrders: number;
+  orderPending: number;
+  orderProcessing: number;
+  orderDelivered: number;
+  orderFailed: number;
+};
+
+export interface LineOrder {
+  id: string;
+  customerId: string;
+  customerName: string;
+  customerEmail: string;
+  orderNumber: string;
+  orderAmount: number;
+  orderType: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -34,6 +34,7 @@ const Item = ({ item }: ItemProps) => {
       price: item.productPrice,
       qty: 1,
       productThumbnail: item.productThumbnail,
+      maxStock: item.stockQty,
     };
     dispatch(addProductToOrderLine(newOrderLineItem));
   }

@@ -23,7 +23,7 @@ const UserPage = (props: Props) => {
     <div className="space-y-3">
       <TableHeader
         data={data.data}
-        title="User"
+        title="Users"
         linkTitle="Add User"
         href="/dashboard/users/new"
         queryKey="users"

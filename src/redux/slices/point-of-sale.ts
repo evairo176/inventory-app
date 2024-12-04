@@ -9,21 +9,24 @@ interface OrderLineItem {
   price: number;
   qty: number;
   productThumbnail: string;
+  maxStock: number;
 }
 
 interface OrderLineItems {
   products: OrderLineItem[];
 }
+const isBrowser = typeof window !== "undefined";
 
-// Safely retrieve cart items from localStorage
 const getInitialOrderLineItems = (): OrderLineItem[] => {
-  try {
-    const storedItems = localStorage.getItem("posItems");
-    if (storedItems) {
-      return JSON.parse(storedItems);
+  if (isBrowser) {
+    try {
+      const storedItems = localStorage.getItem("posItems");
+      if (storedItems) {
+        return JSON.parse(storedItems);
+      }
+    } catch (error) {
+      console.error("Failed to parse pos items from localStorage", error);
     }
-  } catch (error) {
-    console.error("Failed to parse pos items from localStorage", error);
   }
   return [];
 };
@@ -41,6 +44,19 @@ const pointOfSale = createSlice({
   initialState,
   reducers: {
     addProductToOrderLine: (state, action: PayloadAction<OrderLineItem>) => {
+      if (action.payload.maxStock < 1) {
+        const promise = () =>
+          new Promise((resolve, error) =>
+            setTimeout(() => error({ message: "Out of stock" }), 600),
+          );
+
+        toast.promise(promise, {
+          loading: "Loading...",
+          success: (data: any) => `${data?.message}`,
+          error: (data: any) => `${data?.message}`,
+        });
+        return;
+      }
       state.products.push(action.payload);
       saveItemsToLocalStorage(state.products);
 
@@ -91,26 +107,35 @@ const pointOfSale = createSlice({
         (product) => product.id === action.payload,
       );
       if (item) {
-        item.qty += 1;
-        saveItemsToLocalStorage(state.products);
+        if (item.qty < item.maxStock) {
+          item.qty += 1;
+          saveItemsToLocalStorage(state.products);
 
-        const promise = () =>
-          new Promise((resolve) =>
-            setTimeout(
-              () => resolve({ message: "Item added successfully" }),
-              600,
-            ),
-          );
+          const promise = () =>
+            new Promise((resolve) =>
+              setTimeout(
+                () => resolve({ message: "Item added successfully" }),
+                600,
+              ),
+            );
 
-        toast.promise(promise, {
-          loading: "Loading...",
-          success: (data: any) => {
-            return `${data?.message}`;
-          },
-          error: (data: any) => {
-            return `${data?.message}`;
-          },
-        });
+          toast.promise(promise, {
+            loading: "Loading...",
+            success: (data: any) => `${data?.message}`,
+            error: (data: any) => `${data?.message}`,
+          });
+        } else {
+          const promise = () =>
+            new Promise((resolve, error) =>
+              setTimeout(() => error({ message: "Out of stock" }), 600),
+            );
+
+          toast.promise(promise, {
+            loading: "Loading...",
+            success: (data: any) => `${data?.message}`,
+            error: (data: any) => `${data?.message}`,
+          });
+        }
       }
     },
     decrementQty: (state, action: PayloadAction<string>) => {
@@ -136,14 +161,14 @@ const pointOfSale = createSlice({
 
         toast.promise(promise, {
           loading: "Loading...",
-          success: (data: any) => {
-            return `${data?.message}`;
-          },
-          error: (data: any) => {
-            return `${data?.message}`;
-          },
+          success: (data: any) => `${data?.message}`,
+          error: (data: any) => `${data?.message}`,
         });
       }
+    },
+    removeAllProductFromOrderLine: (state) => {
+      state.products = [];
+      saveItemsToLocalStorage(state.products);
     },
   },
 });
@@ -153,5 +178,6 @@ export const {
   removeProductFromOrderLine,
   incrementQty,
   decrementQty,
+  removeAllProductFromOrderLine,
 } = pointOfSale.actions;
 export default pointOfSale.reducer;

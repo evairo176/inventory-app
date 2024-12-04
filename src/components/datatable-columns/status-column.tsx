@@ -4,11 +4,15 @@ import { Badge } from "../ui/badge";
 export default function StatusColumn({
   row,
   accessorKey,
+  object = false,
 }: {
   row: any;
   accessorKey: any;
+  object?: boolean;
 }) {
-  const status = row.getValue(`${accessorKey}`);
+  const status = object
+    ? row[`${accessorKey}`]
+    : row.getValue(`${accessorKey}`);
 
   // console.log(imageUrl);
   return (

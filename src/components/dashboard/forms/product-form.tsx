@@ -188,7 +188,6 @@ const ProductForm = ({
   ];
 
   async function onSubmit(data: z.infer<typeof createProductSchema>) {
-    console.log({ data });
     setIsLoading(true);
     data.productImages = productImages;
     data.productThumbnail = productImages[0];

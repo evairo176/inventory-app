@@ -5,12 +5,16 @@ export default function ImageColumn({
   row,
   accessorKey,
   index = false,
+  object = false,
 }: {
   row: any;
   accessorKey: any;
   index?: boolean;
+  object?: boolean;
 }) {
-  const imageUrl = row.getValue(`${accessorKey}`);
+  const imageUrl = object
+    ? row[`${accessorKey}`]
+    : row.getValue(`${accessorKey}`);
 
   // const thum = row.getValue(`${accessorKey}`);
   // console.log(imageUrl);

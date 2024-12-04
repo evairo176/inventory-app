@@ -46,7 +46,7 @@ interface DataTableProps<TData, TValue> {
 }
 export default function DataTable<TData, TValue>({
   columns,
-  data,
+  data = [],
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState({});

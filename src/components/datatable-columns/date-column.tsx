@@ -3,11 +3,15 @@ import React from "react";
 export default function DateColumn({
   row,
   accessorKey,
+  object = false,
 }: {
   row: any;
   accessorKey: any;
+  object?: boolean;
 }) {
-  const createdAt = row.getValue(`${accessorKey}`);
+  const createdAt = object
+    ? row[`${accessorKey}`]
+    : row.getValue(`${accessorKey}`);
   const originalDate = new Date(createdAt);
 
   const day = originalDate.getDate();

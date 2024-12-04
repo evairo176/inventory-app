@@ -1,13 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { useAppSelector } from "@/hooks/use-redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/use-redux";
 import { Skeleton } from "../ui/skeleton";
 import { formatToRupiah } from "@/utils/formatToRupiah";
+import { useCreate } from "@/action/global-action";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { removeAllProductFromOrderLine } from "@/redux/slices/point-of-sale";
 
-type Props = {};
+import PrintReceipt from "./print-receipt";
 
-const OrderSummary = (props: Props) => {
+type OrderSummaryProps = {
+  selectCustomer: string;
+  categoryId: string;
+};
+
+const OrderSummary = ({ selectCustomer, categoryId }: OrderSummaryProps) => {
   const orderLineItems = useAppSelector((state) => state?.pos?.products);
   const subTotal = orderLineItems.reduce(
     (total, item) => total + item.price * item.qty,
@@ -17,10 +27,55 @@ const OrderSummary = (props: Props) => {
   const tax = (taxPercent * subTotal) / 100;
   const totalSum = subTotal + tax;
   const [isClient, setIsClient] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [success, isSuccess] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const createLineOrder = useCreate(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/pos/create-line-order`,
+    `pos-products-${categoryId}`,
+  );
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const handleCreateLineOrder = async () => {
+    setProcessing(true);
+    const customerData = {
+      customerId: selectCustomer,
+    };
+    const orderItems = orderLineItems;
+
+    const data = {
+      customerData,
+      orderItems,
+    };
+
+    let responsePromise: Promise<any>;
+    responsePromise = createLineOrder.mutateAsync(data);
+
+    toast.promise(responsePromise, {
+      loading: "Loading...",
+      success: (data: any) => {
+        setProcessing(false);
+
+        isSuccess(true);
+        return `${data?.message}`;
+      },
+      error: (data: any) => {
+        const error = data?.message ? JSON.parse(data?.message) : "Blank";
+        setProcessing(false);
+        isSuccess(false);
+        return `${error?.error}`;
+      },
+    });
+  };
+
+  const clearOrder = () => {
+    dispatch(removeAllProductFromOrderLine());
+    isSuccess(false);
+  };
 
   if (!isClient) {
     return (
@@ -35,10 +90,11 @@ const OrderSummary = (props: Props) => {
       </div>
     );
   }
+
   return (
     <>
       {orderLineItems?.length > 0 ? (
-        <div className="animate-fadeIn w-full rounded-t-md border-t bg-white px-3 py-3 shadow-lg">
+        <div className="w-full animate-fadeIn rounded-t-md border-t bg-card px-3 py-3 shadow-lg">
           <h2 className="scroll-m-20 border-b pb-2 text-xl font-semibold tracking-tight text-muted-foreground first:mt-0">
             Order Summary
           </h2>
@@ -66,7 +122,46 @@ const OrderSummary = (props: Props) => {
               {formatToRupiah(totalSum)}
             </h2>
           </div>
-          <Button className="w-full">Place Order</Button>
+          {processing ? (
+            <Button className="w-full" disabled>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Please wait
+            </Button>
+          ) : (
+            <>
+              {success && (
+                <div className="space-y-2">
+                  <PrintReceipt
+                    selectCustomer={selectCustomer}
+                    createLineOrder={createLineOrder}
+                    isSuccess={isSuccess}
+                  />
+                  <Button
+                    onClick={clearOrder}
+                    className="w-full"
+                    variant={"destructive"}
+                  >
+                    Clear All
+                  </Button>
+                </div>
+              )}
+
+              {!success && orderLineItems?.length > 0 && (
+                <div className="space-y-2">
+                  <Button onClick={handleCreateLineOrder} className="w-full">
+                    Place Order
+                  </Button>
+                  <Button
+                    onClick={clearOrder}
+                    className="w-full"
+                    variant={"destructive"}
+                  >
+                    Clear All
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
         </div>
       ) : (
         ""

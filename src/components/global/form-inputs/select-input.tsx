@@ -38,6 +38,7 @@ type SelectInputProps = {
   href?: string;
   tooltipText?: string;
   add?: boolean;
+  disabled?: boolean;
 };
 
 const SelectInput = ({
@@ -48,6 +49,7 @@ const SelectInput = ({
   href,
   tooltipText,
   add = false,
+  disabled = false,
 }: SelectInputProps) => {
   return (
     <FormField
@@ -62,6 +64,7 @@ const SelectInput = ({
               <PopoverTrigger asChild>
                 <FormControl>
                   <Button
+                    disabled={disabled}
                     variant="outline"
                     role="combobox"
                     className={cn(

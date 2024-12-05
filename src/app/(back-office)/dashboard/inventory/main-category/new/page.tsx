@@ -1,13 +1,13 @@
 import React from "react";
 
-import CategoryForm from "@/components/dashboard/forms/category-form";
+import MainCategoryForm from "@/components/dashboard/forms/main-category-form";
 
 type Props = {};
 
 const page = (props: Props) => {
   return (
     <div>
-      <CategoryForm />
+      <MainCategoryForm />
     </div>
   );
 };

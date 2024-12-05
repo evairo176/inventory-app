@@ -48,8 +48,16 @@ export const sidebarLinks: ISidebarLinks[] = [
     dropdown: true,
     dropdownMenu: [
       {
-        title: "Categories",
-        href: "/dashboard/inventory/categories",
+        title: "Main Category",
+        href: "/dashboard/inventory/main-category",
+      },
+      {
+        title: "Category",
+        href: "/dashboard/inventory/category",
+      },
+      {
+        title: "Sub Category",
+        href: "/dashboard/inventory/sub-category",
       },
       {
         title: "Brands",
@@ -123,8 +131,8 @@ export const sidebarLinks: ISidebarLinks[] = [
     dropdown: false,
   },
   {
-    title: "Integrations",
-    href: "/dashboard/integrations",
+    title: "API Integrations",
+    href: "/dashboard/api",
     module: "integrations",
     icon: Cable,
     dropdown: false,

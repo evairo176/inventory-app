@@ -36,28 +36,30 @@ import { z } from "zod";
 import { createCategorySchema } from "@/config/form-schema";
 import SubmitButton from "@/components/global/form-inputs/submit-button";
 import ImageInput from "@/components/global/form-inputs/image-input";
-import { ICategory } from "../../../types/types";
+import { ICategory, IMainCategory } from "../../../types/types";
 import { useCreate, useUpdate } from "@/action/global-action";
 import { toast } from "sonner";
+import SelectInput from "@/components/global/form-inputs/select-input";
 
 type Props = {
   editingId?: string;
   initialCategory?: ICategory | undefined;
+  mainCategory?: IMainCategory[] | undefined;
 };
 
-const CategoryForm = ({ editingId, initialCategory }: Props) => {
+const CategoryForm = ({ editingId, initialCategory, mainCategory }: Props) => {
   const router = useRouter();
   const initialImage = initialCategory?.imageUrl || "/placeholder.svg";
   const [imageUrl, setImageUrl] = useState(initialImage);
   const [isLoading, setIsLoading] = useState(false);
   const addCategory = useCreate(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
-    "categories",
+    "category",
   );
   const updateCategory = useUpdate(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
     editingId as string,
-    "categories",
+    "category",
   );
 
   const status = [
@@ -71,9 +73,19 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
       title: initialCategory?.title,
       description: initialCategory?.description,
       status: initialCategory?.status,
+      mainCategoryId: initialCategory?.mainCategoryId,
       imageUrl: imageUrl,
     },
   });
+
+  const mainCategoryOptions = mainCategory
+    ? mainCategory?.map((row: IMainCategory) => {
+        return {
+          label: row.title,
+          value: row.id,
+        };
+      })
+    : [];
 
   async function onSubmit(data: z.infer<typeof createCategorySchema>) {
     setIsLoading(true);
@@ -89,7 +101,7 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
       loading: "Loading...",
       success: (data: any) => {
         form.reset();
-        router.push("/dashboard/inventory/categories");
+        router.push("/dashboard/inventory/category");
         setIsLoading(false);
         return `${data?.message}`;
       },
@@ -107,7 +119,7 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormHeader
             menu="inventory"
-            submenu="categories"
+            submenu="category"
             module="Category"
             title={editingId ? "Update" : "Create new"}
           />
@@ -116,6 +128,17 @@ const CategoryForm = ({ editingId, initialCategory }: Props) => {
               <Card>
                 <CardContent>
                   <div className="mt-4 grid gap-6 ">
+                    <div className="grid gap-3">
+                      <SelectInput
+                        add
+                        tooltipText="Add Main Category"
+                        form={form}
+                        nameInput="mainCategoryId"
+                        title="Main Category"
+                        options={mainCategoryOptions}
+                        href="/dashboard/inventory/main-category/new"
+                      />
+                    </div>
                     <div className="grid gap-3">
                       <FormField
                         control={form.control}

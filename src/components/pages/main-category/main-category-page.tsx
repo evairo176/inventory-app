@@ -1,19 +1,17 @@
 "use client";
 
-import { useGetCategory } from "@/action/category-action";
 import React from "react";
 import TableHeader from "../../dashboard/tables/table-header";
-import CustomDatatable from "../../dashboard/tables/custom-datatable";
 import DataTable from "../../datatable-columns/data-table";
 import { columns } from "./columns";
 import { useGet } from "@/action/global-action";
 
 type Props = {};
 
-const CategoryPage = (props: Props) => {
+const MainCategoryPage = (props: Props) => {
   const { data, error, isLoading } = useGet(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
-    "category",
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/main-category`,
+    "main-category",
   );
 
   if (error) return <div>failed to load</div>;
@@ -23,11 +21,11 @@ const CategoryPage = (props: Props) => {
     <div className="space-y-3">
       <TableHeader
         data={data.data}
-        title="Category"
-        linkTitle="Add Category"
-        href="/dashboard/inventory/category/new"
-        queryKey="category"
-        createBulkPath={`${process.env.NEXT_PUBLIC_BACKEND_URL}/category/bulk`}
+        title="Main Category"
+        linkTitle="Add Main Category"
+        href="/dashboard/inventory/main-category/new"
+        queryKey="main-category"
+        createBulkPath={`${process.env.NEXT_PUBLIC_BACKEND_URL}/main-category/bulk`}
       />
       <DataTable
         filterKeys={["title", "status"]}
@@ -38,4 +36,4 @@ const CategoryPage = (props: Props) => {
   );
 };
 
-export default CategoryPage;
+export default MainCategoryPage;

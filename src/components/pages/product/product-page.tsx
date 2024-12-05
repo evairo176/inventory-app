@@ -20,7 +20,7 @@ const ProductPage = (props: Props) => {
   return (
     <div className="space-y-3">
       <TableHeader
-        data={data.data}
+        data={data?.data}
         title="Products"
         linkTitle="Add Product"
         href="/dashboard/inventory/products/new"
@@ -29,7 +29,7 @@ const ProductPage = (props: Props) => {
       />
       <DataTable
         filterKeys={["title", "status"]}
-        data={data.data}
+        data={data?.data}
         columns={columns}
       />
     </div>

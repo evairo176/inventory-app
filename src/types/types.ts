@@ -32,6 +32,7 @@ export type ICategory = {
   status: string; // Assuming status can only be "ACTIVE" or "INACTIVE"
   title: string;
   updatedAt: string; // ISO date string
+  mainCategoryId: string;
 };
 
 export type IBrand = {
@@ -161,7 +162,7 @@ export type SalesSummary = {
   orderDelivered: number;
   orderFailed: number;
 };
-
+type OrderStatus = "PENDING" | "PROCESSING" | "DELIVERED" | "FAILED";
 export interface LineOrder {
   id: string;
   customerId: string;
@@ -170,7 +171,24 @@ export interface LineOrder {
   orderNumber: string;
   orderAmount: number;
   orderType: string;
-  status: string;
+  status: OrderStatus;
   createdAt: string;
   updatedAt: string;
 }
+
+export type ISubCategory = {
+  id: string;
+  slug: string;
+  title: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  categoryId: string;
+};
+
+export type IMainCategory = {
+  id: string;
+  slug: string;
+  title: string;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+};

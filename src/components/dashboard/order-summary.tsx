@@ -22,6 +22,9 @@ import { getFormattedDate } from "@/utils/convert-to-iso-datetime";
 import { formatHumanDate } from "@/utils/format";
 import { formatToRupiah } from "@/utils/formatToRupiah";
 import { cn } from "@/lib/utils";
+import { Button } from "../ui/button";
+import Link from "next/link";
+import { MoveUpRight } from "lucide-react";
 
 export default function OrderSummary() {
   const {
@@ -49,8 +52,20 @@ export default function OrderSummary() {
   return (
     <Card>
       <CardHeader className="px-7">
-        <CardTitle>Recent Orders</CardTitle>
-        <CardDescription>Recent orders from your store.</CardDescription>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>Recent Orders</CardTitle>
+            <CardDescription>Recent orders from your store.</CardDescription>
+          </div>
+          <div>
+            <Button asChild size={"sm"} variant={"outline"}>
+              <Link href={"#"}>
+                <span>View All</span>
+                <MoveUpRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         {ordersResponse?.data?.lineOrder?.length > 0 ? (
@@ -63,6 +78,7 @@ export default function OrderSummary() {
                   <TableHead className="hidden sm:table-cell">Status</TableHead>
                   <TableHead className="hidden md:table-cell">Date</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
+                  <TableHead className="text-right">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -84,15 +100,50 @@ export default function OrderSummary() {
                           {row.orderType}
                         </TableCell>
                         <TableCell className="hidden sm:table-cell">
-                          <Badge className="text-xs" variant="outline">
-                            {row.status}
-                          </Badge>
+                          {row.status === "DELIVERED" ? (
+                            <button
+                              className={cn(
+                                "rounded-full bg-green-500 px-3 py-1.5 text-xs text-white",
+                              )}
+                            >
+                              {row.status}
+                            </button>
+                          ) : row.status === "PROCESSING" ? (
+                            <button
+                              className={cn(
+                                "rounded-full bg-cyan-500 px-3 py-1.5 text-xs text-white",
+                              )}
+                            >
+                              {row.status}
+                            </button>
+                          ) : row.status === "PENDING" ? (
+                            <button
+                              className={cn(
+                                "rounded-full bg-sky-500 px-3 py-1.5 text-xs text-white",
+                              )}
+                            >
+                              {row.status}
+                            </button>
+                          ) : (
+                            <button
+                              className={cn(
+                                "rounded-full bg-rose-500 px-3 py-1.5 text-xs text-white",
+                              )}
+                            >
+                              {row.status}
+                            </button>
+                          )}
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
                           {formatHumanDate(new Date(row.createdAt))}
                         </TableCell>
                         <TableCell className="text-right">
                           {formatToRupiah(row.orderAmount)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button asChild variant={"outline"} size={"sm"}>
+                            <Link href={""}> View</Link>
+                          </Button>
                         </TableCell>
                       </TableRow>
                     );

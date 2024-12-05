@@ -213,7 +213,7 @@ const ProductForm = ({
       },
     });
   }
-  console.log({ form: form.formState.errors });
+
   function genarateBarcode() {
     const uniqueNumber = generateUniqueNineDigitNumber(); // Generate a unique barcode number
     const barcodeDataUrl = generateBarcode(uniqueNumber);

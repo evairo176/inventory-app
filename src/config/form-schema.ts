@@ -12,6 +12,7 @@ const createCategorySchema = z.object({
     message: "status must be at least 2 characters.",
   }),
   imageUrl: z.string().optional(),
+  mainCategoryId: z.string(),
 });
 
 const getAllCategorySchema = z.object({
@@ -387,6 +388,21 @@ const createPermissionsSchema = z.object({
   module: z.string().optional(),
 });
 
+const createMainCategorySchema = z.object({
+  title: z.string().min(2, {
+    message: "title must be at least 2 characters.",
+  }),
+  slug: z.string().optional(),
+});
+
+const createSubCategorySchema = z.object({
+  title: z.string().min(2, {
+    message: "title must be at least 2 characters.",
+  }),
+  slug: z.string().optional(),
+  categoryId: z.string(),
+});
+
 export {
   createCategorySchema,
   getAllCategorySchema,
@@ -409,4 +425,6 @@ export {
   createPermissionsSchema,
   createCustomersSchema,
   updateCustomerSchema,
+  createMainCategorySchema,
+  createSubCategorySchema,
 };

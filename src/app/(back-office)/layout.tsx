@@ -1,5 +1,7 @@
 import { AppSidebar } from "@/components/dashboard/app-sidebar";
 import Breadcrumb from "@/components/dashboard/breadcrumb";
+import { AvatarMenuButton } from "@/components/dashboard/menus/avatar-menu-button";
+import QuickAccessMenuButton from "@/components/dashboard/menus/quick-access-menu-button";
 import Navbar from "@/components/dashboard/navbar";
 import Sidebar from "@/components/dashboard/sidebar";
 import { ThemeModeToggle } from "@/components/global/theme-mode-toggle";
@@ -47,9 +49,18 @@ const Layout = async ({ children }: LayoutProps) => {
           <div className="flex items-center">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
+            <div></div>
             <Breadcrumb />
           </div>
-          <ThemeModeToggle />
+          <div className="flex items-center gap-2">
+            <QuickAccessMenuButton />
+            <ThemeModeToggle />
+            <AvatarMenuButton
+              name={session?.user.name}
+              image={session?.user.imageUrl}
+              email={session?.user.email}
+            />
+          </div>
         </header>
         <main className="gap-4 p-4 lg:gap-6 lg:p-6">{children}</main>
       </SidebarInset>

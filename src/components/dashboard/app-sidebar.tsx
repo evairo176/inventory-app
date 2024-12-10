@@ -30,6 +30,7 @@ import {
   GalleryVerticalEnd,
   Minus,
   Plus,
+  ShoppingBag,
   User2,
 } from "lucide-react";
 import {
@@ -48,6 +49,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import Link from "next/link";
+import Logo from "../global/logo";
 
 export function AppSidebar({ session }: { session: Session | null }) {
   const pathname = usePathname();
@@ -115,15 +117,9 @@ export function AppSidebar({ session }: { session: Session | null }) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-              <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <GalleryVerticalEnd className="size-4" />
-                </div>
-                <div className="flex flex-col gap-0.5 leading-none">
-                  <span className="font-semibold">Documentation</span>
-                  <span className="">v1.0.0</span>
-                </div>
-              </a>
+              <div className="pl-2">
+                <Logo />
+              </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

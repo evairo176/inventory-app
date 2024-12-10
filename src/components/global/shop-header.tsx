@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { ThemeModeToggle } from "./theme-mode-toggle";
 import { HelpMenu } from "../frontend/help-menu";
 import { CartMenu } from "../frontend/cart-menu";
+import { MobileMenu } from "../frontend/mobile-menu";
 
 type ShopHeaderProps = {
   session: Session | null;
@@ -44,8 +45,8 @@ const ShopHeader = ({ session }: ShopHeaderProps) => {
   }
   return (
     <header className="border-b border-gray-200 px-4 py-4">
-      <div className="md:container">
-        <nav className="flex items-center justify-between gap-6">
+      <div className="md:container ">
+        <nav className="hidden items-center justify-between gap-6 sm:flex">
           <div className="flex items-center gap-2">
             <div className="mr-2">
               <Logo />
@@ -58,7 +59,7 @@ const ShopHeader = ({ session }: ShopHeaderProps) => {
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 space-x-2">
             <HelpMenu />
             {user?.id ? (
               <DropdownMenu>
@@ -91,6 +92,17 @@ const ShopHeader = ({ session }: ShopHeaderProps) => {
 
             <ThemeModeToggle />
           </div>
+        </nav>
+
+        {/* Mobile  Version */}
+        <nav className="flex items-center justify-between gap-6 sm:hidden">
+          <div className="flex items-center gap-4">
+            <MobileMenu />
+            <div className="">
+              <Logo size="sm" href="/" />
+            </div>
+          </div>
+          <CartMenu />
         </nav>
       </div>
     </header>

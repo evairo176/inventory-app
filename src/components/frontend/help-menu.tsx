@@ -11,11 +11,13 @@ import {
 import {
   Headset,
   HelpCircle,
+  LogOut,
   Mail,
   MessageSquareMore,
   PhoneCall,
   Presentation,
   Settings,
+  User,
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
@@ -71,10 +73,11 @@ export function HelpMenu({}: HelpMenuProps) {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>
-            <h1>Need help with Our Services</h1>
-          </SheetTitle>
-          <SheetDescription></SheetDescription>
+          <SheetHeader>
+            <h2 className="scroll-m-20 border-b pb-3 text-xl font-semibold tracking-tight first:mt-0">
+              Need Help with Our services
+            </h2>
+          </SheetHeader>
         </SheetHeader>
         {/* Content here  */}
         <div className="grid grid-cols-3 gap-4 border-b py-4">

@@ -58,6 +58,12 @@ export const columns: ColumnDef<z.infer<typeof getAllCategorySchema>>[] = [
     header: ({ column }) => <SortableColumn column={column} title="Title" />,
   },
   {
+    accessorKey: "mainCategory.title",
+    header: ({ column }) => (
+      <SortableColumn column={column} title="Main Category" />
+    ),
+  },
+  {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => <StatusColumn row={row} accessorKey="status" />,

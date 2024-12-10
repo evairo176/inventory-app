@@ -62,7 +62,7 @@ export const columns: ColumnDef<z.infer<typeof getAllProductSchema>>[] = [
     ),
   },
   {
-    accessorKey: "category.title",
+    accessorKey: "subCategory.title",
     header: ({ column }) => <SortableColumn column={column} title="Category" />,
   },
   {

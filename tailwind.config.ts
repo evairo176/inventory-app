@@ -22,64 +22,62 @@ export default withUt({
     },
     extend: {
       colors: {
-        // light mode
         tremor: {
           brand: {
-            faint: colors.blue[50],
-            muted: colors.blue[200],
-            subtle: colors.blue[400],
-            DEFAULT: colors.blue[500],
-            emphasis: colors.blue[700],
-            inverted: colors.white,
+            faint: "colors.blue[50],",
+            muted: "colors.blue[200],",
+            subtle: "colors.blue[400],",
+            DEFAULT: "colors.blue[500],",
+            emphasis: "colors.blue[700],",
+            inverted: "colors.white",
           },
           background: {
-            muted: colors.gray[50],
-            subtle: colors.gray[100],
-            DEFAULT: colors.white,
-            emphasis: colors.gray[700],
+            muted: "colors.gray[50],",
+            subtle: "colors.gray[100],",
+            DEFAULT: "colors.white",
+            emphasis: "colors.gray[700]",
           },
           border: {
-            DEFAULT: colors.gray[200],
+            DEFAULT: "colors.gray[200]",
           },
           ring: {
-            DEFAULT: colors.gray[200],
+            DEFAULT: "colors.gray[200]",
           },
           content: {
-            subtle: colors.gray[400],
-            DEFAULT: colors.gray[500],
-            emphasis: colors.gray[700],
-            strong: colors.gray[900],
-            inverted: colors.white,
+            subtle: "colors.gray[400],",
+            DEFAULT: "colors.gray[500],",
+            emphasis: "colors.gray[700],",
+            strong: "colors.gray[900],",
+            inverted: "colors.white",
           },
         },
-        // dark mode
         "dark-tremor": {
           brand: {
             faint: "#0B1229",
-            muted: colors.blue[950],
-            subtle: colors.blue[800],
-            DEFAULT: colors.blue[500],
-            emphasis: colors.blue[400],
-            inverted: colors.blue[950],
+            muted: "colors.blue[950],",
+            subtle: "colors.blue[800],",
+            DEFAULT: "colors.blue[500],",
+            emphasis: "colors.blue[400],",
+            inverted: "colors.blue[950]",
           },
           background: {
             muted: "#131A2B",
-            subtle: colors.gray[800],
-            DEFAULT: colors.gray[900],
-            emphasis: colors.gray[300],
+            subtle: "colors.gray[800],",
+            DEFAULT: "colors.gray[900],",
+            emphasis: "colors.gray[300]",
           },
           border: {
-            DEFAULT: colors.gray[800],
+            DEFAULT: "colors.gray[800]",
           },
           ring: {
-            DEFAULT: colors.gray[800],
+            DEFAULT: "colors.gray[800]",
           },
           content: {
-            subtle: colors.gray[600],
-            DEFAULT: colors.gray[500],
-            emphasis: colors.gray[200],
-            strong: colors.gray[50],
-            inverted: colors.gray[950],
+            subtle: "colors.gray[600],",
+            DEFAULT: "colors.gray[500],",
+            emphasis: "colors.gray[200],",
+            strong: "colors.gray[50],",
+            inverted: "colors.gray[950]",
           },
         },
         border: "hsl(var(--border))",
@@ -115,15 +113,23 @@ export default withUt({
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
       },
       boxShadow: {
-        // light
         "tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
         "tremor-card":
           "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
         "tremor-dropdown":
           "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-        // dark
         "dark-tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
         "dark-tremor-card":
           "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
@@ -146,20 +152,38 @@ export default withUt({
       },
       keyframes: {
         fadeIn: {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: " 1", transform: "translateY(0)" },
+          "0%": {
+            opacity: "0",
+            transform: "translateY(10px)",
+          },
+          "100%": {
+            opacity: " 1",
+            transform: "translateY(0)",
+          },
         },
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
         "caret-blink": {
-          "0%,70%,100%": { opacity: "1" },
-          "20%,50%": { opacity: "0" },
+          "0%,70%,100%": {
+            opacity: "1",
+          },
+          "20%,50%": {
+            opacity: "0",
+          },
         },
       },
       animation: {

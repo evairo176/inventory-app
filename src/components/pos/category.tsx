@@ -1,6 +1,6 @@
 "use client";
 import { useGet } from "@/action/global-action";
-import { ICategory } from "@/types/types";
+import { ICategory, ISubCategory } from "@/types/types";
 import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -14,8 +14,8 @@ type CategoryProps = {
 
 const Category = ({ selectedCategoryId }: CategoryProps) => {
   const { data, error, isLoading } = useGet(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/category`,
-    "pos-categories",
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/sub-category`,
+    "pos-sub-category",
   );
 
   if (error) return <div>failed to load</div>;
@@ -35,7 +35,7 @@ const Category = ({ selectedCategoryId }: CategoryProps) => {
       </ScrollArea>
     );
 
-  const categories: ICategory[] = data?.data || [];
+  const categories: ISubCategory[] = data?.data || [];
   return (
     <ScrollArea className="w-full gap-4 whitespace-nowrap rounded-md border">
       <div className="flex w-max space-x-4 p-4">
@@ -67,7 +67,11 @@ const Category = ({ selectedCategoryId }: CategoryProps) => {
                 <Link href={`/pos?cat=${row.id}`}>
                   <Image
                     className="mr-2 h-6 w-6 rounded-full"
-                    src={row.imageUrl ? row.imageUrl : "/placeholder.svg"}
+                    src={
+                      row.category.imageUrl
+                        ? row.category.imageUrl
+                        : "/placeholder.svg"
+                    }
                     height={200}
                     width={200}
                     alt={row.title}

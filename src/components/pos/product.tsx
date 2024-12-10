@@ -11,7 +11,7 @@ type ProductProps = {
 
 const Product = ({ categoryId = "all" }: ProductProps) => {
   const { data, error, isLoading } = useGetEnable(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/product?categoryId=${categoryId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/product?subCategoryId=${categoryId}`,
     `pos-products-${categoryId}`,
     categoryId,
   );

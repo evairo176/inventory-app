@@ -90,7 +90,7 @@ export type IProduct = {
   // warehouseId: string;
   supplierId: string;
   brandId: string;
-  categoryId: string;
+  subCategoryId: string;
   unitId: string;
   productCost: number;
   productPrice: number;
@@ -183,6 +183,7 @@ export type ISubCategory = {
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
   categoryId: string;
+  category: ICategory;
 };
 
 export type IMainCategory = {

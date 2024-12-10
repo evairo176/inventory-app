@@ -1,7 +1,12 @@
 "use client";
 import React from "react";
 import Logo from "./logo";
-import { LayoutGrid, ShoppingBasket } from "lucide-react";
+import {
+  HelpCircle,
+  LayoutGrid,
+  ShoppingBasket,
+  ShoppingCart,
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -17,6 +22,9 @@ import Link from "next/link";
 import { generateInitials } from "@/utils/generate-initial-name-user";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ThemeModeToggle } from "./theme-mode-toggle";
+import { HelpMenu } from "../frontend/help-menu";
+import { CartMenu } from "../frontend/cart-menu";
 
 type ShopHeaderProps = {
   session: Session | null;
@@ -42,10 +50,6 @@ const ShopHeader = ({ session }: ShopHeaderProps) => {
             <div className="mr-2">
               <Logo />
             </div>
-            <button className="lg:item-center hidden gap-2 rounded-md bg-slate-900 px-3 py-2 text-slate-50 lg:flex">
-              <LayoutGrid className="h-4 w-4" />
-              <span className="text-xs">Catalogue</span>
-            </button>
           </div>
           <div className="flex-1">
             <input
@@ -55,9 +59,7 @@ const ShopHeader = ({ session }: ShopHeaderProps) => {
             />
           </div>
           <div className="flex items-center gap-2">
-            <button>
-              <ShoppingBasket className="h-5 w-5" />
-            </button>
+            <HelpMenu />
             {user?.id ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -84,6 +86,10 @@ const ShopHeader = ({ session }: ShopHeaderProps) => {
                 <Link href={"/login"}>Login</Link>
               </Button>
             )}
+
+            <CartMenu />
+
+            <ThemeModeToggle />
           </div>
         </nav>
       </div>

@@ -33,7 +33,7 @@ const SearchBar = ({ data = [], onSearch }: Props) => {
         autoComplete="search"
         name="search"
         type="search"
-        placeholder="Search category..."
+        placeholder="Search..."
         value={searchTerm}
         onChange={handleSearch}
         className="w-full appearance-none bg-background pl-8 shadow-none "

@@ -130,7 +130,7 @@ const ProductForm = ({
       productCode: initialProduct?.productCode,
       stockQty: initialProduct?.stockQty,
       status: initialProduct?.status,
-      categoryId: initialProduct?.categoryId,
+      subCategoryId: initialProduct?.subCategoryId,
       brandId: initialProduct?.brandId,
       supplierId: initialProduct?.supplierId,
       expiryDate: initialProduct?.expiryDate
@@ -191,6 +191,7 @@ const ProductForm = ({
     setIsLoading(true);
     data.productImages = productImages;
     data.productThumbnail = productImages[0];
+    console.log(data);
     let responsePromise: Promise<any>;
     if (editingId) {
       responsePromise = updateProduct.mutateAsync(data);
@@ -285,10 +286,10 @@ const ProductForm = ({
                         add
                         tooltipText="Add Category"
                         form={form}
-                        nameInput="categoryId"
+                        nameInput="subCategoryId"
                         title="Category"
                         options={categoryOptions}
-                        href="/dashboard/inventory/products/new"
+                        href="/dashboard/inventory/sub-category/new"
                       />
 
                       <SelectInput

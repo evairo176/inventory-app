@@ -176,7 +176,7 @@ const createProductSchema = z.object({
   stockQty: z.number(),
   supplierId: z.string(),
   brandId: z.string(),
-  categoryId: z.string(),
+  subCategoryId: z.string(),
   unitId: z.string(),
   productCost: z.number(),
   productPrice: z.number(),

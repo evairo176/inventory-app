@@ -20,7 +20,10 @@ const ProductUpdatePage = ({ id }: Props) => {
     data: dataCategory,
     error: errorCategory,
     isLoading: isLoadingCategory,
-  } = useGet(`${process.env.NEXT_PUBLIC_BACKEND_URL}/category`, "categories");
+  } = useGet(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/sub-category`,
+    "sub-category",
+  );
 
   const {
     data: dataBrand,

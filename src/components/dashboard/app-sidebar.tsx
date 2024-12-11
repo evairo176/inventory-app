@@ -55,17 +55,7 @@ export function AppSidebar({ session }: { session: Session | null }) {
   const pathname = usePathname();
   const isOpenValue = isOpenMenu();
   const isCurrentPage = pathNameValue();
-  const {
-    state,
-    open,
-    setOpen,
-    openMobile,
-    setOpenMobile,
-    isMobile,
-    toggleSidebar,
-  } = useSidebar();
-
-  console.log({ state });
+  const { state } = useSidebar();
 
   function isOpenMenu() {
     // Get the current path

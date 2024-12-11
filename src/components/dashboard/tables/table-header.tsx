@@ -171,7 +171,7 @@ const TableHeader = ({
   return (
     <React.Fragment>
       <div className="mb-3 flex flex-wrap items-center justify-between border-b border-gray-200 py-3 dark:border-gray-600">
-        <h2 className="mt-10 scroll-m-20  text-2xl font-semibold tracking-tight transition-colors first:mt-0">
+        <h2 className="mt-10 scroll-m-20 text-base  font-semibold tracking-tight transition-colors first:mt-0 md:text-2xl">
           {title}({data?.length})
         </h2>
 

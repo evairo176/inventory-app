@@ -18,7 +18,7 @@ const ProductPage = (props: Props) => {
   if (isLoading) return <div>loading...</div>;
 
   return (
-    <div className="space-y-3">
+    <div className="grid grid-cols-1 space-y-3">
       <TableHeader
         data={data?.data}
         title="Products"

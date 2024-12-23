@@ -25,6 +25,7 @@ import Link from "next/link";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import Logo from "../global/logo";
+import React from "react";
 
 const tags = Array.from({ length: 50 }).map(
   (_, i, a) => `v1.2.0-beta.${a.length - i}`,
@@ -95,17 +96,17 @@ export function MobileMenu() {
               </h4>
             </div>
 
-            {tags.map((tag) => (
-              <>
-                <div className="flex items-center justify-between">
-                  <div key={tag} className="text-sm text-muted-foreground">
-                    {tag}
+            {tags.map((tag) => {
+              return (
+                <React.Fragment key={tag}>
+                  <div className="flex items-center justify-between">
+                    <div className="text-sm text-muted-foreground">{tag}</div>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
                   </div>
-                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                </div>
-                <Separator className="my-2" />
-              </>
-            ))}
+                  <Separator className="my-2" />
+                </React.Fragment>
+              );
+            })}
           </div>
         </div>
 

@@ -17,14 +17,14 @@ const CategoryHeaderMobile = ({}: CategoryProps) => {
 
   const { data, error, isLoading } = useGet(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/sub-category`,
-    "pos-sub-category",
+    "shop-sub-category",
   );
 
   if (error) return <div>failed to load</div>;
   if (isLoading)
     return (
       <ScrollArea className="block w-full gap-4 whitespace-nowrap sm:hidden">
-        <div className="flex w-max space-x-4 p-4">
+        <div className="flex w-max gap-2 p-2">
           {[1, 2, 3, 4, 5, 6]?.map((row, key) => {
             return (
               <div key={key} className="flex items-center space-x-2">

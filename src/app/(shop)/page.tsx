@@ -1,3 +1,4 @@
+import CategoryListing from "@/components/frontend/category-listing";
 import Hero from "@/components/frontend/hero";
 import { ThemeModeToggle } from "@/components/global/theme-mode-toggle";
 import Image from "next/image";
@@ -46,6 +47,7 @@ export default function Home() {
   return (
     <main className="my-8 md:container">
       <Hero banners={banners} adverts={adverts} />
+      <CategoryListing />
     </main>
   );
 }

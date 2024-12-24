@@ -82,7 +82,7 @@ const SelectInput = ({
                   </Button>
                 </FormControl>
               </PopoverTrigger>
-              <PopoverContent className="min-w-[600px] max-w-[700px] p-0">
+              <PopoverContent className="p-0" align="start">
                 <Command>
                   <CommandInput placeholder={`Search ${title}...`} />
                   <CommandEmpty>No {title} found.</CommandEmpty>

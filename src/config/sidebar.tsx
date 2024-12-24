@@ -79,6 +79,10 @@ export const sidebarLinks: ISidebarLinks[] = [
         title: "Suppliers",
         href: "/dashboard/inventory/suppliers",
       },
+      {
+        title: "Advert",
+        href: "/dashboard/inventory/advert",
+      },
     ],
   },
   {

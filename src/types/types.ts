@@ -193,3 +193,16 @@ export type IMainCategory = {
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
 };
+
+export type AdvertSize = "FULL" | "HALF" | "QUARTER";
+export type AdvertType = "BANNER" | "ADVERT";
+
+export type IAdvert = {
+  id: string;
+  title: string;
+  imageUrl: string;
+  status: string;
+  link: string;
+  size: AdvertSize;
+  type: AdvertType;
+};

@@ -79,6 +79,17 @@ export const ourFileRouter = {
     // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
     return { uploadedBy: "evairo" };
   }),
+
+  advertImage: f({
+    image: { maxFileSize: "1MB", maxFileCount: 1 },
+  }).onUploadComplete(async ({ file }) => {
+    // This code RUNS ON YOUR SERVER after upload
+
+    console.log("file url", file.url);
+
+    // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+    return { uploadedBy: "evairo" };
+  }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

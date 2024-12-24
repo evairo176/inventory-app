@@ -15,6 +15,26 @@ const createCategorySchema = z.object({
   mainCategoryId: z.string(),
 });
 
+const createAdvertSchema = z.object({
+  title: z
+    .string({ required_error: "Title is required" })
+    .min(3, { message: "Title must be at least 3 characters" }),
+  status: z.enum(["ACTIVE", "DISABLED"]),
+  type: z.enum(["BANNER", "ADVERT"]),
+  size: z.enum(["FULL", "HALF", "QUARTER"]),
+  imageUrl: z.string({ required_error: "Image is required" }),
+  link: z.string({ required_error: "Link is required" }),
+});
+
+const getAllAdvertSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  status: z.string(),
+  imageUrl: z.string(),
+  link: z.string(),
+  size: z.string(),
+});
+
 const getAllCategorySchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -427,4 +447,6 @@ export {
   updateCustomerSchema,
   createMainCategorySchema,
   createSubCategorySchema,
+  createAdvertSchema,
+  getAllAdvertSchema,
 };

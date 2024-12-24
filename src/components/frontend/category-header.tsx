@@ -14,207 +14,88 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { BabyIcon } from "lucide-react";
-import Logo from "../global/logo";
-type SubCategoryProps = {
+import { Skeleton } from "../ui/skeleton";
+import { useGet } from "@/action/global-action";
+interface PopulateMainCategory {
+  id: string;
   title: string;
   slug: string;
-};
-type CategoryProps = {
+  createdAt: string;
+  updatedAt: string;
+  categories: Category[];
+}
+
+interface Category {
+  id: string;
   title: string;
   slug: string;
-  subCategory: SubCategoryProps[];
-};
-const mainCategory: {
+  description: string;
+  imageUrl: string;
+  status: string;
+  mainCategoryId: string;
+  createdAt: string;
+  updatedAt: string;
+  subCategories: SubCategory[];
+}
+
+interface SubCategory {
+  id: string;
   title: string;
   slug: string;
-  category: CategoryProps[];
-}[] = [
-  {
-    title: "Computer and Accessories",
-    slug: "computer-and-accessories",
-    category: [
-      {
-        title: "Laptops",
-        slug: "laptops",
-        subCategory: [
-          {
-            title: "Macbook",
-            slug: "macbook",
-          },
-        ],
-      },
-      {
-        title: "Desktop and Monitor",
-        slug: "desktop-and-monitor",
-        subCategory: [
-          {
-            title: "Monitor",
-            slug: "monitor",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Phone and Tablet",
-    slug: "phone-and-tablet",
-    category: [
-      {
-        title: "Laptops",
-        slug: "laptops",
-        subCategory: [
-          {
-            title: "Macbook",
-            slug: "macbook",
-          },
-        ],
-      },
-      {
-        title: "Desktop and Monitor",
-        slug: "desktop-and-monitor",
-        subCategory: [
-          {
-            title: "Monitor",
-            slug: "monitor",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Electronics",
-    slug: "electronics",
-    category: [
-      {
-        title: "Laptops",
-        slug: "laptops",
-        subCategory: [
-          {
-            title: "Macbook",
-            slug: "macbook",
-          },
-        ],
-      },
-      {
-        title: "Desktop and Monitor",
-        slug: "desktop-and-monitor",
-        subCategory: [
-          {
-            title: "Monitor",
-            slug: "monitor",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Fashion",
-    slug: "fashion",
-    category: [
-      {
-        title: "Laptops",
-        slug: "laptops",
-        subCategory: [
-          {
-            title: "Macbook",
-            slug: "macbook",
-          },
-        ],
-      },
-      {
-        title: "Desktop and Monitor",
-        slug: "desktop-and-monitor",
-        subCategory: [
-          {
-            title: "Monitor",
-            slug: "monitor",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    title: "Home and Kitchen",
-    slug: "home-and-kitchen",
-    category: [
-      {
-        title: "Laptops",
-        slug: "laptops",
-        subCategory: [
-          {
-            title: "Macbook",
-            slug: "macbook",
-          },
-        ],
-      },
-      {
-        title: "Desktop and Monitor",
-        slug: "desktop-and-monitor",
-        subCategory: [
-          {
-            title: "Monitor",
-            slug: "monitor",
-          },
-        ],
-      },
-    ],
-  },
-];
+  categoryId: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export function CategoryHeader() {
+  const { data, error, isLoading } = useGet(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/home/populate-main-category`,
+    "home-populate-main-category",
+  );
+
+  if (error) return <div>failed to load</div>;
+  if (isLoading) return <Skeleton className="h-full w-full rounded-md" />;
+
+  const mainCategory: PopulateMainCategory[] = data?.data;
   return (
-    <div className="hidden md:container sm:block ">
+    <div className="hidden md:container sm:block">
       <NavigationMenu>
         <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-            <NavigationMenuContent className="relative">
-              <ul className="grid w-[400px] grid-cols-2 gap-3 p-4 md:w-[500px] md:grid-cols-3 lg:w-[600px] ">
-                {mainCategory.map((Mcategory) => {
-                  return (
-                    <li
-                      key={Mcategory.title}
-                      title={Mcategory.title}
-                      // href={Mcategory.slug}
-                    >
-                      <Link
-                        className="text-sm font-bold hover:text-blue-600"
-                        href={Mcategory.slug}
-                      >
-                        {Mcategory.title}
-                      </Link>
-                      {Mcategory?.category.map((CCategory) => {
-                        return (
-                          <div className="pl-1" key={CCategory.slug}>
-                            <Link
-                              className="text-xs font-bold hover:text-blue-600"
-                              href={CCategory.slug}
-                            >
-                              {CCategory.title}
-                            </Link>
-                            {CCategory?.subCategory?.map((SCategory) => {
-                              return (
-                                <div className="pl-1" key={SCategory.slug}>
-                                  <Link
-                                    className="text-xs text-muted-foreground hover:text-blue-600"
-                                    href={SCategory.slug}
-                                  >
-                                    {" "}
-                                    {SCategory.title}
-                                  </Link>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        );
-                      })}
-                    </li>
-                  );
-                })}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
+          {mainCategory?.map((Mcategory) => {
+            return (
+              <NavigationMenuItem key={Mcategory.id}>
+                <NavigationMenuTrigger>{Mcategory.title}</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[400px] grid-cols-2 gap-3 p-4 md:w-[80vw] md:grid-cols-5">
+                    {Mcategory?.categories.map((CCategory) => {
+                      return (
+                        <li key={CCategory.title} title={CCategory.title}>
+                          <Link
+                            className="text-sm font-bold hover:text-blue-600"
+                            href={CCategory.slug}
+                          >
+                            {CCategory.title}
+                          </Link>
+                          {CCategory?.subCategories.map((SCategory) => {
+                            return (
+                              <div className="pl-1" key={SCategory.slug}>
+                                <Link
+                                  className="text-xs font-bold text-muted-foreground hover:text-blue-600"
+                                  href={SCategory.slug}
+                                >
+                                  {SCategory.title}
+                                </Link>
+                              </div>
+                            );
+                          })}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            );
+          })}
 
           {/* <NavigationMenuItem>
             <NavigationMenuTrigger>Components</NavigationMenuTrigger>
